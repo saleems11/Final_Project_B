@@ -5,7 +5,7 @@ import gensim
 from elmoformanylangs import Embedder
 import numpy as np
 
-working_dir = sys.path[1]
+working_dir = sys.path[0] if 'Ghazali' in sys.path[0] else sys.path[1]
 
 
 class Embedding:

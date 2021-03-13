@@ -3,10 +3,11 @@ import sys
 
 from typing import List
 
-working_dir = sys.path[1]
 
 
 class Documents_utils():
+    working_dir = sys.path[0] if 'Ghazali' in sys.path[0] else sys.path[1]
+
     c1 = '\\'.join([working_dir, 'Books', 't1'])
     c2 = '\\'.join([working_dir, 'Books', 't2'])
     c3 = '\\'.join([working_dir, 'Books', 't3'])
@@ -14,7 +15,10 @@ class Documents_utils():
     @staticmethod
     def get_list_of_docs_files(folder_path: str) -> List[str]:
         """ this function get a folder path and return list of docs with name"""
-        list_of_files = os.listdir(path=folder_path)
+        try:
+            list_of_files = os.listdir(path=folder_path)
+        except:
+            return
         doc_list: List[str] = []
         for file in list_of_files:
             if file.endswith('.txt'):
