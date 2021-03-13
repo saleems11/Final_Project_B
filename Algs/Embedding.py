@@ -1,21 +1,26 @@
 import re
+import sys
+
 import gensim
 from elmoformanylangs import Embedder
 import numpy as np
+
+working_dir = sys.path[1]
+
 
 class Embedding:
     """Procces the data and embed them using AraVec OR ELMo"""
 
     @staticmethod
-    def clean_str(text:str) -> str:
+    def clean_str(text: str) -> str:
         """Removing any additional characters found in the TEXT, Based on AraVec.\n
          text in str format as a book :parameter\n
          str as a preprocessed book :returns"""
 
         search = ["أ", "إ", "آ", "ة", "_", "-", "/", ".", "،", " و ", " يا ", '"', "ـ", "'", "ى", "\\", '\n', '\t',
-                  '&quot;', '?', '؟', '!']
+                  '&quot;', '?', '؟', '!', ':', '(', ')', '']
         replace = ["ا", "ا", "ا", "ه", " ", " ", "", "", "", " و", " يا", "", "", "", "ي", "", ' ', ' ', ' ', ' ? ',
-                   ' ؟ ', ' ! ']
+                   ' ؟ ', ' ! ', '', '', '', '']
 
         # remove tashkeel
         p_tashkeel = re.compile(r'[\u0617-\u061A\u064B-\u0652]')
@@ -39,7 +44,7 @@ class Embedding:
         return text
 
     @staticmethod
-    def AraVec(striped_text:[str])->[[int]]:
+    def AraVec(striped_text: [str]) -> [[int]]:
         """Embed each word in the book into a Vector in a 100 dimension, based on wikipedia.\n
         Unigram is used, because it Based on single word, unlike N-gram witch based on multiple.
         Addetionaly, skip-gram is used, because it give more than one representation of a word.\n
@@ -49,17 +54,24 @@ class Embedding:
         be smaller.\n
         AraVec Github link: https://github.com/bakrianoo/aravec/tree/master/AraVec%202.0"""
 
-        t_model = gensim.models.Word2Vec.load('models/AraVec/full_uni_sg_100_wiki.mdl')
-        embedded_book_array=[]
+        t_model = gensim.models.Word2Vec.load('\\'.join([working_dir, 'models', 'AraVec', 'full_uni_sg_100_wiki.mdl']))
+        embedded_book_array = []
+
+        def expect_unwated_words(word: str, unwanted_chars: int):
+            try:
+                embedded_book_array.append(t_model.wv[word[unwanted_chars:len(word)]])
+            except:
+                print(word)
 
         for word in striped_text:
             try:
                 embedded_book_array.append(t_model.wv[word])
             except:
-                print(word)
-
+                if str(word)[0] == 'و':
+                    expect_unwated_words(word=word, unwanted_chars=1)
+                elif str(word)[0] == 'وال':
+                    expect_unwated_words(word=word, unwanted_chars=3)
         return embedded_book_array
-
 
     @staticmethod
     def Elmo(sentences: [str], batch_size=32, output_layer=-1) -> [[int]]:
@@ -74,7 +86,7 @@ class Embedding:
         model_dir: the absolute path from the repo top dir to you model dir.
         batch_size: the batch_size you want when the model inference, you can specify
         it properly according to your gpu/cpu ram size. (default: 64)"""
-        e = Embedder('C:\CNN\FinalProjectB\models\ArabicElmo', batch_size=batch_size)
+        e = Embedder('\\'.join([working_dir, 'models', 'ArabicElmo']), batch_size=batch_size)
 
         """def sents2elmo(sents, output_layer=-1):
         sents: the list of lists which store the sentences after segment if necessary.
