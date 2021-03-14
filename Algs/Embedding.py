@@ -5,8 +5,6 @@ import gensim
 from elmoformanylangs import Embedder
 import numpy as np
 
-working_dir = sys.path[0] if 'Ghazali' in sys.path[0] else sys.path[1]
-
 
 class Embedding:
     """Procces the data and embed them using AraVec OR ELMo"""
@@ -44,7 +42,7 @@ class Embedding:
         return text
 
     @staticmethod
-    def AraVec(striped_text: [str]) -> [[int]]:
+    def AraVec(striped_text: [str], embedding_dimension) -> [[int]]:
         """Embed each word in the book into a Vector in a 100 dimension, based on wikipedia.\n
         Unigram is used, because it Based on single word, unlike N-gram witch based on multiple.
         Addetionaly, skip-gram is used, because it give more than one representation of a word.\n
@@ -54,7 +52,8 @@ class Embedding:
         be smaller.\n
         AraVec Github link: https://github.com/bakrianoo/aravec/tree/master/AraVec%202.0"""
 
-        t_model = gensim.models.Word2Vec.load('\\'.join([working_dir, 'models', 'AraVec', 'full_uni_sg_100_wiki.mdl']))
+        if embedding_dimension == 100:
+            t_model = gensim.models.Word2Vec.load('\\'.join(['models', 'AraVec', 'full_uni_sg_100_wiki.mdl']))
         embedded_book_array = []
 
         def expect_unwated_words(word: str, unwanted_chars: int):
@@ -86,7 +85,7 @@ class Embedding:
         model_dir: the absolute path from the repo top dir to you model dir.
         batch_size: the batch_size you want when the model inference, you can specify
         it properly according to your gpu/cpu ram size. (default: 64)"""
-        e = Embedder('\\'.join([working_dir, 'models', 'ArabicElmo']), batch_size=batch_size)
+        e = Embedder('\\'.join(['models','ArabicElmo']), batch_size=batch_size)
 
         """def sents2elmo(sents, output_layer=-1):
         sents: the list of lists which store the sentences after segment if necessary.

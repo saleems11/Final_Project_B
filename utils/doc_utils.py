@@ -6,11 +6,10 @@ from typing import List
 
 
 class Documents_utils():
-    working_dir = sys.path[0] if 'Ghazali' in sys.path[0] else sys.path[1]
 
-    c1 = '\\'.join([working_dir, 'Books', 't1'])
-    c2 = '\\'.join([working_dir, 'Books', 't2'])
-    c3 = '\\'.join([working_dir, 'Books', 't3'])
+    c1 = '\\'.join(['Books', 't1'])
+    c2 = '\\'.join(['Books', 't2'])
+    c3 = '\\'.join(['Books', 't3'])
 
     @staticmethod
     def get_list_of_docs_files(folder_path: str) -> List[str]:
