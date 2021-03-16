@@ -42,7 +42,7 @@ class Embedding:
         return text
 
     @staticmethod
-    def AraVec(striped_text: [str], embedding_dimension) -> [[int]]:
+    def AraVec(striped_text: [str], embedding_dimension=100) -> [[int]]:
         """Embed each word in the book into a Vector in a 100 dimension, based on wikipedia.\n
         Unigram is used, because it Based on single word, unlike N-gram witch based on multiple.
         Addetionaly, skip-gram is used, because it give more than one representation of a word.\n
@@ -52,25 +52,35 @@ class Embedding:
         be smaller.\n
         AraVec Github link: https://github.com/bakrianoo/aravec/tree/master/AraVec%202.0"""
 
+        count_unknown=0
+        words_index=0
+
         if embedding_dimension == 100:
             t_model = gensim.models.Word2Vec.load('\\'.join(['models', 'AraVec', 'full_uni_sg_100_wiki.mdl']))
-        embedded_book_array = []
 
-        def expect_unwated_words(word: str, unwanted_chars: int):
-            try:
-                embedded_book_array.append(t_model.wv[word[unwanted_chars:len(word)]])
-            except:
-                print(word)
+        embedded_book_array = np.empty(shape=[len(striped_text), embedding_dimension])
 
         for word in striped_text:
             try:
-                embedded_book_array.append(t_model.wv[word])
-            except:
+                embedded_book_array[words_index]=t_model.wv[word]
+                words_index+=1
+            except KeyError:
                 if str(word)[0] == 'و':
-                    expect_unwated_words(word=word, unwanted_chars=1)
-                elif str(word)[0] == 'وال':
-                    expect_unwated_words(word=word, unwanted_chars=3)
-        return embedded_book_array
+                    try:
+                        embedded_book_array[words_index]=t_model.wv[word]
+                        words_index += 1
+                    except KeyError:
+                        # print(word)
+                        count_unknown+=1
+                else:
+                    # print(word)
+                    count_unknown += 1
+
+        print("Total unknown words {0}/{1}, witch is {2}%.".format(count_unknown,
+                                                                   len(striped_text),
+                                                                    int((count_unknown/len(striped_text)*100))))
+
+        return embedded_book_array[0:words_index]
 
     @staticmethod
     def Elmo(sentences: [str], batch_size=32, output_layer=-1) -> [[int]]:
@@ -95,4 +105,10 @@ class Embedding:
         2 for the second LSTM hidden layer
         -1 for an average of 3 layers. (default)
         -2 for all 3 layers"""
-        return e.sents2elmo(sentences, output_layer=output_layer)
+
+        embedded = np.empty(shape=(len(sentences), len(sentences[0]),1024))
+        arrayofnumpy = e.sents2elmo(sentences, output_layer=output_layer)
+        for i in range(0, len(sentences)):
+            embedded[i]=arrayofnumpy[i]
+
+        return embedded
