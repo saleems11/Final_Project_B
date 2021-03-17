@@ -18,17 +18,24 @@ class Embedd_DataSet:
 
             emb_Data = Embedding.Embedding.AraVec(splited_word,embedding_dimension)
 
-            for i in range(0, len(splited_word), tweet_size):
+            for i in range(0, len(emb_Data), tweet_size):
                 if i + tweet_size > len(emb_Data):
-                    last = np.zeros(shape= ((i + tweet_size)-len(emb_Data), embedding_dimension))
+                    last = np.zeros(shape=((i + tweet_size)-len(emb_Data), embedding_dimension))
                     last = np.append(emb_Data[i:len(emb_Data)], last, axis= 0)
                     embedded_DataSet.append(last)
                 else:
                     embedded_DataSet.append(emb_Data[i:i+tweet_size])
 
-        embedded_DataSet=np.array(embedded_DataSet)
-        print("the shape of araVec res is :" + str(embedded_DataSet.shape))
-        return embedded_DataSet
+
+
+        result = np.empty(shape=(len(embedded_DataSet),
+                                 len(embedded_DataSet[0]),
+                                 len(embedded_DataSet[0][0])))
+
+        for i,tweet in enumerate(embedded_DataSet):
+            result[i]=tweet
+
+        return result
 
 
 

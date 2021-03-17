@@ -1,5 +1,5 @@
 import os
-import sys
+import rootpath
 
 from typing import List
 
@@ -7,16 +7,19 @@ from typing import List
 
 class Documents_utils():
 
-    c1 = '\\'.join(['Books', 't1'])
-    c2 = '\\'.join(['Books', 't2'])
-    c3 = '\\'.join(['Books', 't3'])
+    project_working_dir = rootpath.detect()
+
+    c1 = '\\'.join([project_working_dir, 'Books', 't1'])
+    c2 = '\\'.join([project_working_dir, 'Books', 't2'])
+    c3 = '\\'.join([project_working_dir, 'Books', 't3'])
 
     @staticmethod
     def get_list_of_docs_files(folder_path: str) -> List[str]:
         """ this function get a folder path and return list of docs with name"""
         try:
             list_of_files = os.listdir(path=folder_path)
-        except:
+        except Exception as e:
+            print(e)
             return
         doc_list: List[str] = []
         for file in list_of_files:
@@ -28,6 +31,7 @@ class Documents_utils():
     def read_doc_file(file_path: str) -> str:
         f = open(file_path, 'r', encoding='utf-8')
         data_in_file = f.read()
+        f.close()
         return data_in_file
 
     @staticmethod
@@ -37,6 +41,7 @@ class Documents_utils():
         for name in books_name:
             curr_book_path = os.path.join(folder_path, name)
             meta_data.append(Documents_utils.read_doc_file(file_path=curr_book_path))
+
 
 
         return meta_data

@@ -1,6 +1,6 @@
 import re
-import sys
 
+import rootpath
 import gensim
 from elmoformanylangs import Embedder
 import numpy as np
@@ -8,6 +8,7 @@ import numpy as np
 
 class Embedding:
     """Procces the data and embed them using AraVec OR ELMo"""
+    project_working_dir = rootpath.detect()
 
     @staticmethod
     def clean_str(text: str) -> str:
@@ -56,7 +57,7 @@ class Embedding:
         words_index=0
 
         if embedding_dimension == 100:
-            t_model = gensim.models.Word2Vec.load('\\'.join(['models', 'AraVec', 'full_uni_sg_100_wiki.mdl']))
+            t_model = gensim.models.Word2Vec.load('\\'.join([Embedding.project_working_dir, 'models', 'AraVec', 'full_uni_sg_100_wiki.mdl']))
 
         embedded_book_array = np.empty(shape=[len(striped_text), embedding_dimension])
 
@@ -95,7 +96,7 @@ class Embedding:
         model_dir: the absolute path from the repo top dir to you model dir.
         batch_size: the batch_size you want when the model inference, you can specify
         it properly according to your gpu/cpu ram size. (default: 64)"""
-        e = Embedder('\\'.join(['models','ArabicElmo']), batch_size=batch_size)
+        e = Embedder('\\'.join([Embedding.project_working_dir, 'models','ArabicElmo']), batch_size=batch_size)
 
         """def sents2elmo(sents, output_layer=-1):
         sents: the list of lists which store the sentences after segment if necessary.
