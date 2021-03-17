@@ -1,4 +1,5 @@
 import random as rnd
+import numpy as np
 
 class Balancing_DataSet:
 
@@ -11,32 +12,26 @@ class Balancing_DataSet:
         multisampling:parameter\n
         random parts od d1, d2 as s1,s2:returns"""
 
-        if f1<1 or f2<1:
-            raise Exception('f1 and f2 should be bigger than 1.'
-                            ' The value of f1 was: {0}, The value of f1 was: {1}'.format(
-                f1, f2))
-
-        if f1>f2:
-            raise Exception('f1 should be smaller than f2.'
-                            ' The value of f1 was: {0}, The value of f1 was: {1}'.format(
-                f1, f2))
-
-        percent_of_undersampling = 1/f1
-        percent_of_multisampling = f1/f2
+        if f1*f2*len(d2)>len(d1):
+            raise Exception('f1*f2*|d2|< |d1|'
+                            ' The value of f1 was: {0}, The value of f1 was: {1}\n'
+                            '|d1| = {2}, |d2|={3}'.format(
+                f1, f2, len(d1), len(d2)))
 
         size_of_d1 = len(d1)
         size_of_d2 = len(d2)
-        d1_rand_indexes = rnd.sample(range(0,size_of_d1),
-                                     int(percent_of_undersampling*size_of_d1))
-        d2_rand_indexes = rnd.sample(range(0,size_of_d2),
-                                     int(percent_of_multisampling*size_of_d2))
+        d1_rand_indexes = rnd.sample(range(0,size_of_d1), size_of_d2)
 
-        s1=[]
-        s2=[]
+        s1 = np.empty(shape=(size_of_d2*f1, len(d1[0]), len(d1[0][0])))
+        s2 = np.repeat(d2, f2, axis=1)
 
+        i=0
         for index in d1_rand_indexes:
-            s1.append(d1[index])
-        for index in d2_rand_indexes:
-            s2.append(d2[index])
+            # copy the same data for f1 times
+            for j in range(0,f1):
+                s1[i+j*size_of_d2] = d1[index]
+            i += 1
+
+
 
         return s1, s2

@@ -17,18 +17,17 @@ class Embedd_DataSet:
             splited_word = clean_book.split()
 
             emb_Data = Embedding.Embedding.AraVec(splited_word,embedding_dimension)
-            tweets = []
+
             for i in range(0, len(splited_word), tweet_size):
                 if i + tweet_size > len(emb_Data):
                     last = np.zeros(shape= ((i + tweet_size)-len(emb_Data), embedding_dimension))
                     last = np.append(emb_Data[i:len(emb_Data)], last, axis= 0)
-                    tweets.append(last)
+                    embedded_DataSet.append(last)
                 else:
-                    tweets.append(emb_Data[i:i+tweet_size])
+                    embedded_DataSet.append(emb_Data[i:i+tweet_size])
 
-            embedded_DataSet.append(tweets)
-
-
+        embedded_DataSet=np.array(embedded_DataSet)
+        print("the shape of araVec res is :" + str(embedded_DataSet.shape))
         return embedded_DataSet
 
 
@@ -50,12 +49,12 @@ class Embedd_DataSet:
             tweets=[]
             for i in range(0, len(splited_word), tweet_size):
                 if i + tweet_size > len(splited_word):
-                    last = [" "] * ((i + tweet_size) - len(splited_word))
+                    last = [""] * ((i + tweet_size) - len(splited_word))
                     last.extend(splited_word[i: len(splited_word)])
                     tweets.append(last)
                 else:
                     tweets.append(splited_word[i: i+tweet_size])
 
-            embedded_DataSet.append(Embedding.Embedding.Elmo(tweets))
+            embedded_DataSet.extend(Embedding.Embedding.Elmo(tweets))
 
-        return embedded_DataSet
+        return np.array(embedded_DataSet)
