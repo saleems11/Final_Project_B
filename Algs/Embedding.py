@@ -59,6 +59,9 @@ class Embedding:
         if embedding_dimension == 100:
             t_model = gensim.models.Word2Vec.load('\\'.join([Embedding.project_working_dir, 'models', 'AraVec', 'full_uni_sg_100_wiki.mdl']))
 
+        if embedding_dimension == 300:
+            t_model = gensim.models.Word2Vec.load('\\'.join([Embedding.project_working_dir, 'models', 'AraVec', 'full_uni_sg_300_wiki.mdl']))
+
         embedded_book_array = np.empty(shape=[len(striped_text), embedding_dimension])
 
         for word in striped_text:
