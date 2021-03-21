@@ -90,3 +90,9 @@ Data un-Normalized:
 
 -- tweet len:200, epochs:25, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:100
 accuracy:0.9691619062423706, validation accuracy: 0.5347528517246246, learning rate: 0.0001, embedding_size: 300
+-- tweet len:200, epochs:25, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:50
+accuracy:0.9358476185798645, validation accuracy: 0.5867680609226227, learning rate: 0.0001, embedding_size: 300
+-- tweet len:200, epochs:25, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:50
+accuracy:0.9499673581123352, validation accuracy: 0.2516751247644424, learning rate: 0.0001, embedding_size: 300
+-- tweet len:200, epochs:25, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:50
+accuracy:0.9159085988998413, validation accuracy: 0.8862944173812867, learning rate: 0.0001, embedding_size: 300

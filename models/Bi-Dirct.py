@@ -35,7 +35,7 @@ def train_model_itteration(model, c1, c2, epoch, batch_size, itterations):
 
     for _ in range(itterations):
         x_train, y_train = create_new_batch(c1, c2)
-        history = model.fit(x_train, y_train, validation_split=.20, epochs=epoch, batch_size=batch_size, verbose=1)
+        history = model.fit(x_train, y_train, validation_split=.30, epochs=epoch, batch_size=batch_size, verbose=1)
 
         result = DataFrame()
         accuracy = list()
@@ -115,19 +115,24 @@ def create_new_batch(embedded_data_c1, embedded_data_c2):
     y2 = np.tile(np.array([0, 1]), (len(s2), 1))
     y_train = np.concatenate((y1, y2))
 
+    # Random permutation
+    p = np.random.permutation(len(x_train))
+    x_train = x_train[p]
+    y_train = y_train[p]
+
     return x_train, y_train
 
 
 # parameters
 embedding_size = 300
 tweet_lenght = 200
-bi_lstm_hidden_state_size = 100
+bi_lstm_hidden_state_size = 50
 drop_out = 0.3
 learning_rate = 0.0001
 epoch = 25
 batch_size = 100
 itterations = 2
-fully_connected_layer = 30
+fully_connected_layer = 10
 
 # file for saving the result and the parameters
 file = open("result_checks.txt", "a")
