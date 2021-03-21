@@ -96,3 +96,5 @@ accuracy:0.9358476185798645, validation accuracy: 0.5867680609226227, learning r
 accuracy:0.9499673581123352, validation accuracy: 0.2516751247644424, learning rate: 0.0001, embedding_size: 300
 -- tweet len:200, epochs:25, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:50
 accuracy:0.9159085988998413, validation accuracy: 0.8862944173812867, learning rate: 0.0001, embedding_size: 300
+-- tweet len:200, epochs:30, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:50
+accuracy:0.9865070621172587, validation accuracy: 0.9613790214061737, learning rate: 0.001, embedding_size: 300

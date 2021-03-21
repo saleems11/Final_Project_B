@@ -128,11 +128,11 @@ embedding_size = 300
 tweet_lenght = 200
 bi_lstm_hidden_state_size = 50
 drop_out = 0.3
-learning_rate = 0.0001
-epoch = 25
+learning_rate = 0.001
+epoch = 30
 batch_size = 100
 itterations = 2
-fully_connected_layer = 10
+fully_connected_layer = 30
 
 # file for saving the result and the parameters
 file = open("result_checks.txt", "a")
