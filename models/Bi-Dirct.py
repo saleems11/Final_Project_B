@@ -84,7 +84,7 @@ def create_new_batch(embedded_data_c1, embedded_data_c2):
 
 
 embedding_size = 100
-tweet_lenght = 150
+tweet_lenght = 200
 
 # file for saving the result and the parameters
 file = open("result_checks.txt","a")
@@ -93,7 +93,7 @@ file = open("result_checks.txt","a")
 c1, c2, c3 = load_data(tweet_lenght)
 
 """ creatin the model"""
-bi_lstm_hidden_state_size = 100
+bi_lstm_hidden_state_size = 300
 drop_out = 0.5
 
 model = Sequential()
@@ -105,15 +105,15 @@ model.add(Bidirectional(
 model.add(Dropout(drop_out))
 model.add(Dense(30, activation='relu'))
 model.add(Dropout(drop_out))
-model.add(Dense(2, activation='relu'))
+model.add(Dense(2, activation='softmax'))
 
 print(model.summary())
-learning_rate = 0.0005
+learning_rate = 0.05
 opt = tf.keras.optimizers.Adam(learning_rate=learning_rate, )
 model.compile(loss='mean_squared_error', optimizer=opt, metrics=['accuracy'])
 
-epoch =50
-batch_size=30
+epoch = 50
+batch_size=50
 x_train,y_train =create_new_batch(c1, c2)
 history = model.fit(x_train, y_train, validation_split=.20, epochs=epoch, batch_size=batch_size, verbose=1)
 
@@ -130,15 +130,18 @@ results = DataFrame()
 accuracy = list()
 val_accuracy = list()
 loss = list()
+validation_loss = list()
 for i in range(0, len(history.history['accuracy'])):
 	accuracy.append(history.history['accuracy'][i])
 	val_accuracy.append(history.history['val_accuracy'][i])
 	loss.append(history.history['loss'][i])
+	validation_loss.append(history.history['val_loss'][i])
 
 
 results['accuracy'] = accuracy
 results['val_accuracy'] = val_accuracy
 results['loss'] = loss
+results['val_loss'] = validation_loss
 results.plot()
 plt.show()
 
