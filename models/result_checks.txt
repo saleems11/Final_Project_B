@@ -42,3 +42,51 @@ accuracy:0.8494539260864258, validation accuracy: 0.7180836330289426, learning r
 accuracy:0.87621510806291, validation accuracy: 0.6601126142170118, learning rate: 0.0005
 -- tweet len:200, epochs:50, batch_size=50, drop_out=0.5,bi_lstm_hidden_state_size:300
 accuracy:0.9449920380115509, validation accuracy: 0.5938853503763676, learning rate: 0.0005
+-- tweet len:200, epochs:50, batch_size=50, drop_out=0.5,bi_lstm_hidden_state_size:300
+accuracy:0.6732342267036437, validation accuracy: 0.0, learning rate: 0.05
+-- tweet len:200, epochs:50, batch_size=50, drop_out=0.5,bi_lstm_hidden_state_size:300
+accuracy:0.8411683523654938, validation accuracy: 0.5726539297681302, learning rate: 0.0005
+-- tweet len:200, epochs:50, batch_size=50, drop_out=0.5,bi_lstm_hidden_state_size:100
+accuracy:0.9268189108371735, validation accuracy: 0.6591932062339038, learning rate: 0.0005
+-- tweet len:200, epochs:25, batch_size=50, drop_out=0.5,bi_lstm_hidden_state_size:100
+accuracy:0.9598725461959838, validation accuracy: 0.646284499168396, learning rate: 0.0005
+-- tweet len:200, epochs:25, batch_size=50, drop_out=0.5,bi_lstm_hidden_state_size:100
+accuracy:0.8297610211372376, validation accuracy: 0.6687898069620133, learning rate: 0.0005
+-- tweet len:200, epochs:25, batch_size=50, drop_out=0.5, bi_lstm_hidden_state_size:100
+accuracy:0.8293998956680297, validation accuracy: 0.6715923544764518, learning rate: 0.0005
+-- tweet len:200, epochs:50, batch_size=100, drop_out=0.5, bi_lstm_hidden_state_size:100
+accuracy:0.8552416372299194, validation accuracy: 0.7026751589775085, learning rate: 0.0005
+-- tweet len:200, epochs:50, batch_size=200, drop_out=0.5, bi_lstm_hidden_state_size:100
+accuracy:0.8767498660087586, validation accuracy: 0.7270488321781159, learning rate: 0.0005
+-- tweet len:200, epochs:50, batch_size=200, drop_out=0.5, bi_lstm_hidden_state_size:200
+accuracy:0.6733510613441467, validation accuracy: 0.0, learning rate: 0.0005
+-- tweet len:200, epochs:50, batch_size=200, drop_out=0.5, bi_lstm_hidden_state_size:200
+accuracy:0.871120558977127, validation accuracy: 0.7214862006902695, learning rate: 0.0005
+-- tweet len:200, epochs:50, batch_size=200, drop_out=0.5, bi_lstm_hidden_state_size:200
+accuracy:0.6732236015796661, validation accuracy: 0.0, learning rate: 0.0005
+
+Data Normalized:
+
+-- tweet len:200, epochs:50, batch_size=100, drop_out=0.5, bi_lstm_hidden_state_size:150
+accuracy:0.6748380279541015, validation accuracy: 0.0146072194352746, learning rate: 0.0005, embedding_size: 300
+-- tweet len:100, epochs:20, batch_size=50, drop_out=0.3, bi_lstm_hidden_state_size:100
+accuracy:0.6747066527605057, validation accuracy: 0.0, learning rate: 0.005, embedding_size: 300
+-- tweet len:100, epochs:20, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:100
+accuracy:0.676093327999115, validation accuracy: 0.02345415746094659, learning rate: 0.005, embedding_size: 300
+-- tweet len:100, epochs:20, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:50
+accuracy:0.6751999855041504, validation accuracy: 0.0, learning rate: 0.05, embedding_size: 100
+-- tweet len:200, epochs:15, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:200
+accuracy:0.6733935475349426, validation accuracy: 0.0, learning rate: 0.01, embedding_size: 300
+-- tweet len:200, epochs:15, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:200
+accuracy:0.6707735975583394, validation accuracy: 0.029440904998530946, learning rate: 0.0001, embedding_size: 300
+-- tweet len:200, epochs:15, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:100
+accuracy:0.7293968359629314, validation accuracy: 0.0, learning rate: 0.0001, embedding_size: 300
+-- tweet len:200, epochs:15, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:100
+accuracy:0.7947301546732585, validation accuracy: 0.35183776893342533, learning rate: 0.0001, embedding_size: 300
+-- tweet len:200, epochs:25, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:100
+accuracy:0.9750666642189025, validation accuracy: 0.5183269941806793, learning rate: 0.0001, embedding_size: 300
+
+Data un-Normalized:
+
+-- tweet len:200, epochs:25, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:100
+accuracy:0.9691619062423706, validation accuracy: 0.5347528517246246, learning rate: 0.0001, embedding_size: 300

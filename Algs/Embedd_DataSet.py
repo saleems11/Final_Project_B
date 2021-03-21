@@ -5,7 +5,7 @@ import numpy as np
 class Embedd_DataSet:
 
     @staticmethod
-    def embedd_Aravec(books:[str], tweet_size: int, embedding_dimension = 100)->[[[[int]]]]:
+    def embedd_Aravec(books:[str], tweet_size: int, embedding_dimension = 100, epselon=0.001)->[[[[int]]]]:
         """Take the data and return the embedded result using AraVec\n
         The collection of books as array of string array, embed_dim could be choosed
         (100[default], 300):parameter\n
@@ -17,6 +17,21 @@ class Embedd_DataSet:
             splited_word = clean_book.split()
 
             emb_Data = Embedding.Embedding.AraVec(splited_word,embedding_dimension)
+            emb_Data = emb_Data.astype(dtype='f')
+
+            # normalize the vectors
+            # for i in range(0, len(emb_Data)):
+            #     # add = min(0, min(emb_Data[i])) * -1
+            #     # add += epselon
+            #     # emb_Data[i] += add
+            #     norm = np.linalg.norm(emb_Data[i])
+            #     emb_Data[i] = emb_Data[i] / norm
+            #
+            # # make the data more distributed
+            # max_val = np.max(emb_Data)
+            # if max_val < 0.7:
+            #     emb_Data *= (1/max_val)
+
 
             for i in range(0, len(emb_Data), tweet_size):
                 if i + tweet_size > len(emb_Data):
@@ -40,7 +55,7 @@ class Embedd_DataSet:
 
 
     @staticmethod
-    def embedd_Elmo(books: [str], tweet_size: int)->[[ [[int]]]]:
+    def embedd_Elmo(books: [str], tweet_size: int, epselon=0.001)->[[ [[int]]]]:
         """for Now each book is divided into tweets\n
         there is need to check if the model is trained on tweets or data batches
         and what the effect of l and l0\n
@@ -64,4 +79,16 @@ class Embedd_DataSet:
 
             embedded_DataSet.extend(Embedding.Embedding.Elmo(tweets))
 
-        return np.array(embedded_DataSet)
+        embedded_DataSet = np.array(embedded_DataSet)
+
+        # normalize the data
+        # for i in range(0, len(embedded_DataSet)):
+        #     for j in range(0, len(embedded_DataSet[i])):
+        #         # for each word
+        #         # add = min(0, min(embedded_DataSet[i][j])) * -1
+        #         # add += epselon
+        #         # embedded_DataSet[i][j] += add
+        #         norm = np.linalg.norm(embedded_DataSet[i][j])
+        #         embedded_DataSet[i][j] = embedded_DataSet[i][j] / norm
+
+        return embedded_DataSet

@@ -12,8 +12,8 @@ books=books[:min(2,len(books))]
 # test for embedding DataSet class
 
 # print("There is " + str(len(books))+" BOOKs")
-embedded_data = Emb_D.Embedd_DataSet.embedd_Elmo(books=books, tweet_size=100)
-# embedded_data = Emb_D.Embedd_DataSet.embedd_Aravec(books=books, tweet_size=100)
+# embedded_data = Emb_D.Embedd_DataSet.embedd_Elmo(books=books, tweet_size=100)
+embedded_data = Emb_D.Embedd_DataSet.embedd_Aravec(books=books, tweet_size=100)
 print(embedded_data.shape)
 print("Test")
 
