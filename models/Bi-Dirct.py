@@ -52,8 +52,10 @@ def test_model(anchor_c1, anchor_c2, c3):
     c2_prediction = []
     for i in range(0, len(anchor_c1)):
         prediction_c1 = make_prediction(anchor_c1[i])
-        prediction_c2 = make_prediction(anchor_c2[i])
         c1_prediction.append(prediction_c1)
+
+    for i in range(0, len(anchor_c2)):
+        prediction_c2 = make_prediction(anchor_c2[i])
         c2_prediction.append(prediction_c2)
 
     c1_prediction = np.array(c1_prediction, dtype='f')
@@ -129,15 +131,15 @@ def create_model(bi_lstm_hidden_state_size, tweet_lenght, embedding_size, drop_o
 
 def load_data(tweet_size, embedding_size):
     c1 = Documents_utils.get_list_of_books(Documents_utils.c1)
-    c1 = c1[:min(40, len(c1))]
+    c1 = c1[:min(44, len(c1))]
     c2 = Documents_utils.get_list_of_books(Documents_utils.c2)
     c2 = c2[:min(20, len(c2))]
     c3 = Documents_utils.get_list_of_books(Documents_utils.c3)
-    c3 = c3[:min(15, len(c3))]
+    c3 = c3[:min(1, len(c3))]
 
 
     # the anchor data set
-    anchor_index_c1 = rnd.sample(range(len(c1)), 2)
+    anchor_index_c1 = rnd.sample(range(len(c1)), 7)
     anchor_index_c2 = rnd.sample(range(len(c2)), 2)
     anchor_index_c1.sort()
     anchor_index_c2.sort()
@@ -148,10 +150,14 @@ def load_data(tweet_size, embedding_size):
     # remove from c1, c2 the anchor books, and create anchor books list
     for i in range(0, len(anchor_index_c1)):
         anchor_c1.append(c1[anchor_index_c1[i]])
+
+    for i in range(0, len(anchor_index_c2)):
         anchor_c2.append(c2[anchor_index_c2[i]])
 
     for i in range(0, len(anchor_index_c1)):
         c1.pop(anchor_index_c1[i]-i)
+
+    for i in range(0, len(anchor_index_c2)):
         c2.pop(anchor_index_c2[i]-i)
 
     embedded_anchor_c1 = []
@@ -165,11 +171,12 @@ def load_data(tweet_size, embedding_size):
         for i in range(0, len(c3)):
             embedded_data_c3.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=c3[i], tweet_size=tweet_size))
 
-        embedded_anchor_c1.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=anchor_c1[0], tweet_size=tweet_size))
-        embedded_anchor_c1.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=anchor_c1[1], tweet_size=tweet_size))
+        for i in range(len(anchor_c1)):
+            embedded_anchor_c1.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=anchor_c1[i], tweet_size=tweet_size))
 
-        embedded_anchor_c2.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=anchor_c2[0], tweet_size=tweet_size))
-        embedded_anchor_c2.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=anchor_c2[1], tweet_size=tweet_size))
+        for i in range(len(anchor_c2)):
+            embedded_anchor_c2.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=anchor_c2[i], tweet_size=tweet_size))
+
 
     if embedding_size == 300 or embedding_size == 100:
         embedded_data_c1 = Emb_D.Embedd_DataSet.embedd_Aravec(books=c1, tweet_size=tweet_size, embedding_dimension=embedding_size)
@@ -184,6 +191,8 @@ def load_data(tweet_size, embedding_size):
 
         for i in range(len(anchor_c1)):
             embedded_anchor_c1.append(Emb_D.Embedd_DataSet.embedd_Aravec(books=np.array([anchor_c1[i], ]), tweet_size=tweet_size, embedding_dimension=embedding_size))
+
+        for i in range(len(anchor_c2)):
             embedded_anchor_c2.append(Emb_D.Embedd_DataSet.embedd_Aravec(books=np.array([anchor_c2[i], ]), tweet_size=tweet_size, embedding_dimension=embedding_size))
 
     return embedded_data_c1, embedded_data_c2, embedded_data_c3, embedded_anchor_c1, embedded_anchor_c2
@@ -216,7 +225,7 @@ tweet_lenght = 200
 bi_lstm_hidden_state_size = 50
 drop_out = 0.4
 learning_rate = 0.001
-epoch = 25
+epoch = 23
 batch_size = 100
 itterations = 2
 fully_connected_layer = 30
@@ -254,7 +263,7 @@ labels = kmeans.fit_predict(M)
 plt.scatter(M[:, 0], M[:, 1], c=labels, s=50, cmap='viridis')
 
 centers = kmeans.cluster_centers_
-plt.scatter(centers[:, 0], centers[:, 1], c='black', s=200, alpha=0.5)
+plt.scatter(centers[:, 0], centers[:, 1], c='black', s=200, alpha=0.3)
 plt.show()
 
 score = silhouette_score(M, labels=labels, metric='euclidean')

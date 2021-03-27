@@ -125,3 +125,18 @@ accuracy:0.9420695556534662, validation accuracy: 0.892641974820031, learning ra
 -- tweet len:200, epochs:25, batch_size=100, drop_out=0.4, bi_lstm_hidden_state_size:50
 accuracy:0.9820940446853638, validation accuracy: 0.9471929860115051, learning rate: 0.001, embedding_size: 300
 The Silhouette score: 0.579470694065094
+-- tweet len:200, epochs:25, batch_size=100, drop_out=0.4, bi_lstm_hidden_state_size:50
+accuracy:0.8990403056144715, validation accuracy: 0.8487164211273194, learning rate: 0.001, embedding_size: 300
+The Silhouette score: 0.623471200466156
+-- tweet len:200, epochs:10, batch_size=100, drop_out=0.4, bi_lstm_hidden_state_size:50
+accuracy:0.9986857950687409, validation accuracy: 0.9983286678791046, learning rate: 0.001, embedding_size: 300
+The Silhouette score: 0.6218109130859375
+-- tweet len:200, epochs:25, batch_size=100, drop_out=0.4, bi_lstm_hidden_state_size:50
+accuracy:0.7835006141662597, validation accuracy: 0.7864194011688233, learning rate: 0.001, embedding_size: 300
+The Silhouette score: 0.5594246983528137
+-- tweet len:200, epochs:25, batch_size=100, drop_out=0.4, bi_lstm_hidden_state_size:50
+accuracy:0.8579310345649719, validation accuracy: 0.8472309899330139, learning rate: 0.001, embedding_size: 300
+The Silhouette score: 0.6642411351203918
+-- tweet len:200, epochs:25, batch_size=100, drop_out=0.4, bi_lstm_hidden_state_size:50
+accuracy:0.8400997495651246, validation accuracy: 0.7983139562606811, learning rate: 0.001, embedding_size: 300
+The Silhouette score: 0.8174965977668762
