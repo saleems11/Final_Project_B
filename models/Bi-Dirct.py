@@ -220,14 +220,14 @@ def create_new_batch(embedded_data_c1, embedded_data_c2):
 
 
 # parameters
-embedding_size = 300
+embedding_size = 1024
 tweet_lenght = 200
 bi_lstm_hidden_state_size = 50
 drop_out = 0.4
 learning_rate = 0.001
-epoch = 23
+epoch = 25
 batch_size = 100
-itterations = 2
+itterations = 1
 fully_connected_layer = 30
 
 # file for saving the result and the parameters
