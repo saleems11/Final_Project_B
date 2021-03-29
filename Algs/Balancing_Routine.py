@@ -27,7 +27,7 @@ class Balancing_DataSet:
         size_of_s1 = int(size_of_d1/f1)
         d1_rand_indexes = rnd.sample(range(0,size_of_d1), size_of_s1)
 
-        s1 = np.empty(shape=(size_of_s1, len(d1[0]), len(d1[0][0])))
+        s1 = np.empty(shape=(size_of_s1, len(d1[0]), len(d1[0][0])), dtype='f')
         s2 = np.repeat(d2, f2, axis=0)
 
         for i, index in enumerate(d1_rand_indexes):

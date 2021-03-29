@@ -25,14 +25,14 @@ import Algs.Embedd_DataSet as Emb_D
 from utils.doc_utils import Documents_utils
 import Algs.Balancing_Routine as BR
 
-# to run on the GPU
-gpus = tf.config.experimental.list_physical_devices('GPU')
-for gpu in gpus:
-    tf.config.experimental.set_memory_growth(gpu, True)
+
+# to run on the GPU and solve a bug
+# gpu_devices = tf.config.experimental.list_physical_devices('GPU')
+# for device in gpu_devices:
+#     tf.config.experimental.set_memory_growth(device, True)
 
 
-# physical_devices = tf.config.list_physical_devices('GPU')
-# tf.config.experimental.set_memory_growth(physical_devices[0], True)
+
 
 def make_prediction(data):
     prediction_res = np.zeros(shape=(2,))
@@ -131,7 +131,7 @@ def create_model(bi_lstm_hidden_state_size, tweet_lenght, embedding_size, drop_o
 
 def load_data(tweet_size, embedding_size):
     c1 = Documents_utils.get_list_of_books(Documents_utils.c1)
-    c1 = c1[:min(44, len(c1))]
+    c1 = c1[:min(40, len(c1))]
     c2 = Documents_utils.get_list_of_books(Documents_utils.c2)
     c2 = c2[:min(20, len(c2))]
     c3 = Documents_utils.get_list_of_books(Documents_utils.c3)
@@ -169,13 +169,13 @@ def load_data(tweet_size, embedding_size):
         embedded_data_c2 = Emb_D.Embedd_DataSet.embedd_Elmo(books=c2, tweet_size=tweet_size)
 
         for i in range(0, len(c3)):
-            embedded_data_c3.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=c3[i], tweet_size=tweet_size))
+            embedded_data_c3.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=np.array([c3[i], ]), tweet_size=tweet_size))
 
         for i in range(len(anchor_c1)):
-            embedded_anchor_c1.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=anchor_c1[i], tweet_size=tweet_size))
+            embedded_anchor_c1.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=np.array([anchor_c1[i], ]), tweet_size=tweet_size))
 
         for i in range(len(anchor_c2)):
-            embedded_anchor_c2.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=anchor_c2[i], tweet_size=tweet_size))
+            embedded_anchor_c2.append(Emb_D.Embedd_DataSet.embedd_Elmo(books=np.array([anchor_c2[i], ]), tweet_size=tweet_size))
 
 
     if embedding_size == 300 or embedding_size == 100:
@@ -202,14 +202,20 @@ def create_new_batch(embedded_data_c1, embedded_data_c2):
     # Now lets balance the data
     s1, s2 = BR.Balancing_DataSet.Balancing_Routine(embedded_data_c1,
                                                     embedded_data_c2,
-                                                    3,
+                                                    1,
                                                     2)
 
-    x_train = np.concatenate((s1, s2))
     # the first value is gazali, the sec is psedo
-    y1 = np.tile(np.array([1, 0]), (len(s1), 1))
-    y2 = np.tile(np.array([0, 1]), (len(s2), 1))
-    y_train = np.concatenate((y1, y2))
+    y1 = np.tile(np.array([1, 0], dtype='f'), (len(s1), 1))
+    y2 = np.tile(np.array([0, 1], dtype='f'), (len(s2), 1))
+
+    x_train = s1
+    s1 = None
+    x_train = np.concatenate((x_train, s2))
+
+    y_train = y1
+    y1 = None
+    y_train = np.concatenate((y_train, y2))
 
     # Random permutation
     p = np.random.permutation(len(x_train))
@@ -235,6 +241,9 @@ file = open("result_checks.txt", "a")
 
 # the data need to be normalized
 c1, c2, c3, anchor_c1, anchor_c2 = load_data(tweet_lenght, embedding_size)
+
+# clear gpu cache
+# torch.cuda.empty_cache()
 
 model = create_model(bi_lstm_hidden_state_size=bi_lstm_hidden_state_size,
                      tweet_lenght=tweet_lenght,

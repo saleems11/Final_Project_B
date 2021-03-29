@@ -64,7 +64,7 @@ class Embedd_DataSet:
         , each tweet contain several words, and each word is embedded into a vector:returns\n"""
         embedded_DataSet = []
 
-        for book in books:
+        for index, book in enumerate(books):
             clean_book = Embedding.Embedding.clean_str(book)
             splited_word = clean_book.split()
 
@@ -78,8 +78,9 @@ class Embedd_DataSet:
                     tweets.append(splited_word[i: i+tweet_size])
 
             embedded_DataSet.extend(Embedding.Embedding.Elmo(tweets))
+            print("Book with index {0} had finished embedding".format(index))
 
-        embedded_DataSet = np.array(embedded_DataSet)
+        embedded_DataSet = np.array(embedded_DataSet, dtype= 'f')
 
         # normalize the data
         # for i in range(0, len(embedded_DataSet)):

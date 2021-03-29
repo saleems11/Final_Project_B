@@ -8,6 +8,7 @@ import numpy as np
 
 class Embedding:
     """Procces the data and embed them using AraVec OR ELMo"""
+
     project_working_dir = rootpath.detect()
     e = None
     t_model = None
@@ -91,7 +92,7 @@ class Embedding:
         return embedded_book_array[0:words_index]
 
     @staticmethod
-    def Elmo(sentences: [str], batch_size=32, output_layer=-1) -> [[int]]:
+    def Elmo(sentences: [str], batch_size=4, output_layer=-1) -> [[int]]:
         """Embedding each word in a sentence according to it's position, each sentence is splitted\n
         The func return the avg of the three layers of the model.\n
         Embeding size is 1024 for each word.\n
@@ -106,6 +107,7 @@ class Embedding:
         if Embedding.e == None:
             Embedding.e = Embedder('\\'.join([Embedding.project_working_dir, 'models','ArabicElmo']), batch_size=batch_size)
 
+
         """def sents2elmo(sents, output_layer=-1):
         sents: the list of lists which store the sentences after segment if necessary.
         output_layer: the target layer to output.
@@ -115,9 +117,9 @@ class Embedding:
         -1 for an average of 3 layers. (default)
         -2 for all 3 layers"""
 
-        embedded = np.empty(shape=(len(sentences), len(sentences[0]),1024))
+        embedded = np.empty(shape=(len(sentences), len(sentences[0]),1024), dtype='f')
         arrayofnumpy = Embedding.e.sents2elmo(sentences, output_layer=output_layer)
         for i in range(0, len(sentences)):
-            embedded[i]=arrayofnumpy[i]
+            embedded[i] = arrayofnumpy[i]
 
         return embedded
