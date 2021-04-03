@@ -272,7 +272,7 @@ labels = kmeans.fit_predict(M)
 plt.scatter(M[:, 0], M[:, 1], c=labels, s=50, cmap='viridis')
 
 centers = kmeans.cluster_centers_
-plt.scatter(centers[:, 0], centers[:, 1], c='black', s=100, alpha=0.3)
+plt.scatter(centers[:, 0], centers[:, 1], c='black', s=200, alpha=0.3)
 plt.show()
 
 score = silhouette_score(M, labels=labels, metric='euclidean')
