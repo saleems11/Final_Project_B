@@ -124,7 +124,7 @@ def create_model(bi_lstm_hidden_state_size, tweet_lenght, embedding_size, drop_o
 
     print(model.summary())
     opt = tf.keras.optimizers.Adam(learning_rate=learning_rate, )
-    model.compile(loss='mean_squared_error', optimizer=opt, metrics=['accuracy'])
+    model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
 
     return model
 
@@ -202,7 +202,7 @@ def create_new_batch(embedded_data_c1, embedded_data_c2):
     # Now lets balance the data
     s1, s2 = BR.Balancing_DataSet.Balancing_Routine(embedded_data_c1,
                                                     embedded_data_c2,
-                                                    1,
+                                                    3,
                                                     2)
 
     # the first value is gazali, the sec is psedo
@@ -226,7 +226,7 @@ def create_new_batch(embedded_data_c1, embedded_data_c2):
 
 
 # parameters
-embedding_size = 1024
+embedding_size = 300
 tweet_lenght = 200
 bi_lstm_hidden_state_size = 50
 drop_out = 0.4
@@ -272,7 +272,7 @@ labels = kmeans.fit_predict(M)
 plt.scatter(M[:, 0], M[:, 1], c=labels, s=50, cmap='viridis')
 
 centers = kmeans.cluster_centers_
-plt.scatter(centers[:, 0], centers[:, 1], c='black', s=200, alpha=0.3)
+plt.scatter(centers[:, 0], centers[:, 1], c='black', s=100, alpha=0.3)
 plt.show()
 
 score = silhouette_score(M, labels=labels, metric='euclidean')
