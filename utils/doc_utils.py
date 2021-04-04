@@ -9,7 +9,7 @@ def get_project_root() -> Path:
 
 
 class Documents_utils():
-    project_working_dir = str(get_project_root)
+    project_working_dir = str(get_project_root())
 
     c1 = '\\'.join([project_working_dir, 'Books', 't1'])
     c2 = '\\'.join([project_working_dir, 'Books', 't2'])
