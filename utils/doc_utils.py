@@ -1,13 +1,15 @@
 import os
-import rootpath
+from pathlib import Path
 
 from typing import List
 
 
+def get_project_root() -> Path:
+    return Path(__file__).parent.parent
+
 
 class Documents_utils():
-
-    project_working_dir = rootpath.detect()
+    project_working_dir = str(get_project_root())
 
     c1 = '\\'.join([project_working_dir, 'Books', 't1'])
     c2 = '\\'.join([project_working_dir, 'Books', 't2'])
@@ -41,7 +43,5 @@ class Documents_utils():
         for name in books_name:
             curr_book_path = os.path.join(folder_path, name)
             meta_data.append(Documents_utils.read_doc_file(file_path=curr_book_path))
-
-
 
         return meta_data

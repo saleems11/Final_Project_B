@@ -1,15 +1,18 @@
 import re
 
-import rootpath
 import gensim
 from elmoformanylangs import Embedder
 import numpy as np
 
+from utils.doc_utils import get_project_root
+
 
 class Embedding:
     """Procces the data and embed them using AraVec OR ELMo"""
+    
+    # Code added by elia to get project directory
+    project_working_dir = str(get_project_root())
 
-    project_working_dir = rootpath.detect()
     e = None
     t_model = None
 
@@ -56,38 +59,40 @@ class Embedding:
         be smaller.\n
         AraVec Github link: https://github.com/bakrianoo/aravec/tree/master/AraVec%202.0"""
 
-        count_unknown=0
-        words_index=0
+        count_unknown = 0
+        words_index = 0
 
         if embedding_dimension == 100:
             if Embedding.t_model == None:
-                Embedding.t_model = gensim.models.Word2Vec.load('\\'.join([Embedding.project_working_dir, 'models', 'AraVec', 'full_uni_sg_100_wiki.mdl']))
+                Embedding.t_model = gensim.models.Word2Vec.load(
+                    '\\'.join([Embedding.project_working_dir, 'models', 'AraVec', 'full_uni_sg_100_wiki.mdl']))
 
         if embedding_dimension == 300:
             if Embedding.t_model == None:
-                Embedding.t_model = gensim.models.Word2Vec.load('\\'.join([Embedding.project_working_dir, 'models', 'AraVec', 'full_uni_sg_300_wiki.mdl']))
+                Embedding.t_model = gensim.models.Word2Vec.load(
+                    '\\'.join([Embedding.project_working_dir, 'models', 'AraVec', 'full_uni_sg_300_wiki.mdl']))
 
         embedded_book_array = np.empty(shape=[len(striped_text), embedding_dimension])
 
         for word in striped_text:
             try:
-                embedded_book_array[words_index]=Embedding.t_model.wv[word]
-                words_index+=1
+                embedded_book_array[words_index] = Embedding.t_model.wv[word]
+                words_index += 1
             except KeyError:
                 if str(word)[0] == 'و':
                     try:
-                        embedded_book_array[words_index]=Embedding.t_model.wv[word]
+                        embedded_book_array[words_index] = Embedding.t_model.wv[word]
                         words_index += 1
                     except KeyError:
                         # print(word)
-                        count_unknown+=1
+                        count_unknown += 1
                 else:
                     # print(word)
                     count_unknown += 1
 
         print("Total unknown words {0}/{1}, witch is {2}%.".format(count_unknown,
                                                                    len(striped_text),
-                                                                    int((count_unknown/len(striped_text)*100))))
+                                                                   int((count_unknown / len(striped_text) * 100))))
 
         return embedded_book_array[0:words_index]
 
@@ -105,7 +110,8 @@ class Embedding:
         batch_size: the batch_size you want when the model inference, you can specify
         it properly according to your gpu/cpu ram size. (default: 64)"""
         if Embedding.e == None:
-            Embedding.e = Embedder('\\'.join([Embedding.project_working_dir, 'models','ArabicElmo']), batch_size=batch_size)
+            Embedding.e = Embedder('\\'.join([Embedding.project_working_dir, 'models', 'ArabicElmo']),
+                                   batch_size=batch_size)
 
 
         """def sents2elmo(sents, output_layer=-1):
@@ -117,7 +123,9 @@ class Embedding:
         -1 for an average of 3 layers. (default)
         -2 for all 3 layers"""
 
+
         embedded = np.empty(shape=(len(sentences), len(sentences[0]),1024), dtype='f')
+        
         arrayofnumpy = Embedding.e.sents2elmo(sentences, output_layer=output_layer)
         for i in range(0, len(sentences)):
             embedded[i] = arrayofnumpy[i]
