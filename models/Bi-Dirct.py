@@ -113,7 +113,7 @@ def create_model(bi_lstm_hidden_state_size, tweet_lenght, embedding_size, drop_o
                  learning_rate):
     model = Sequential()
     model.add(Bidirectional(
-        LSTM(units=bi_lstm_hidden_state_size, return_sequences=False),
+        LSTM(units=bi_lstm_hidden_state_size, return_sequences=False, stateful=False),
         input_shape=(tweet_lenght, embedding_size),
         merge_mode="concat"))
 
@@ -231,9 +231,9 @@ tweet_lenght = 200
 bi_lstm_hidden_state_size = 50
 drop_out = 0.4
 learning_rate = 0.001
-epoch = 25
+epoch = 15
 batch_size = 100
-itterations = 1
+itterations = 5
 fully_connected_layer = 30
 
 # file for saving the result and the parameters
