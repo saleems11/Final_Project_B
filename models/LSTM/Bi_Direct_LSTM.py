@@ -84,39 +84,23 @@ class Bi_Direct_LSTM:
 
         plt.show()
 
-        # accuracy = val_accuracy = loss = validation_loss = list()
-
-        # for i in range(0, len(history.history['accuracy'])):
-        #     accuracy.append(history.history['accuracy'][i])
-        #     val_accuracy.append(history.history['val_accuracy'][i])
-        #     loss.append(history.history['loss'][i])
-        #     validation_loss.append(history.history['val_loss'][i])
-        #
-        # result['accuracy'] = accuracy
-        # result['val_accuracy'] = val_accuracy
-        # result['loss'] = loss
-        # result['val_loss'] = validation_loss
-
-        # this is simpler code for above !! need to check if it is working
-
         return history, M
 
     @staticmethod
     def test_model(model, anchor_c1, anchor_c2, c1, c2, c3):
         """Test the model by running anchor dataSet(c1, c2) and additional
-        data(c1, c2, c3). return numpy array concatenate of all the classes results"""
+        data(c1, c2, c3). return numpy array concatenate of all the classes results
+        the order of the data is anchors(c1, c2), c1,c2,c3"""
 
         c1_anchor_prediction = Bi_Direct_LSTM.make_prediction(model, anchor_c1)
         c2_anchor_prediction = Bi_Direct_LSTM.make_prediction(model, anchor_c2)
         c3_prediction = Bi_Direct_LSTM.make_prediction(model, c3)
-
-        prediction_t = np.concatenate((c1_anchor_prediction, c2_anchor_prediction), axis=0)
-
-        if c1 == None or c2 == None: print("in the training method change the call from  None!!")
         c1_prediction = Bi_Direct_LSTM.make_prediction(model, c1)
         c2_prediction = Bi_Direct_LSTM.make_prediction(model, c2)
-        np.concatenate((prediction_t, c1_prediction), axis=0)
-        np.concatenate((prediction_t, c2_prediction), axis=0)
+
+        prediction_t = np.concatenate((c1_anchor_prediction, c2_anchor_prediction), axis=0)
+        prediction_t = np.concatenate((prediction_t, c1_prediction), axis=0)
+        prediction_t = np.concatenate((prediction_t, c2_prediction), axis=0)
 
         return np.concatenate((prediction_t, c3_prediction), axis=0)
 
@@ -144,21 +128,21 @@ class Bi_Direct_LSTM:
 
             # -------------------------------   header   ------------------------------------
             # anchor_c1
-            for k in range(len(len_anchor_c1)): print("%-8s%2d|" % ("anc_CL1:", k), end="")
+            for k in range(len_anchor_c1): print("%-8s%2d|" % ("anc_CL1:", k), end="")
             # anchor_c2
-            for k in range(len(len_anchor_c2)): print("%-8s%2d|" % ("anc_CL2:", k), end="")
+            for k in range(len_anchor_c2): print("%-8s%2d|" % ("anc_CL2:", k), end="")
             # c1
-            for k in range(len(len_c1)): print("%-8s%2d|" % ("CL1:", k), end="")
+            for k in range(len_c1): print("%-8s%2d|" % ("CL1:", k), end="")
             # c2
-            for k in range(len(len_c2)): print("%-8s%2d|" % ("CL2:", k), end="")
+            for k in range(len_c2): print("%-8s%2d|" % ("CL2:", k), end="")
             # c3
-            for k in range(len(len_c3)): print("%-8s%2d|" % ("CL3:", k), end="")
+            for k in range(len_c3): print("%-8s%2d|" % ("CL3:", k), end="")
 
             separator = "-" * 100
             print("\n" + separator)
 
             for j in range(iteration_size):
-                print("%3.2f,%3.2f|" % (M[i * iteration_size + j][0],
+                print("%3.2f, %3.2f|" % (M[i * iteration_size + j][0],
                                         M[i * iteration_size + j][1]), end="")
 
             # new line

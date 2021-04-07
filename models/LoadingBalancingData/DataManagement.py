@@ -17,7 +17,7 @@ class DataManagement:
         c2 = Documents_utils.get_list_of_books(Documents_utils.c2)
         c2 = c2[:min(1000, len(c2))]
         c3 = Documents_utils.get_list_of_books(Documents_utils.c3)
-        c3 = [c3[rnd.randint(0, len(c3))]]
+        c3 = [c3[rnd.randint(0, len(c3)-1)]]
 
         c1, c2, anchor_c1, anchor_c2 = DataManagement.manage_anchor_data(c1, c2, c1_anchor_size, c2_anchor_size)
 

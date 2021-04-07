@@ -1,11 +1,10 @@
 import numpy as np
-from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_score
-from yellowbrick.cluster import SilhouetteVisualizer
-import matplotlib.pyplot as plt
+import traceback
 
 import models.LSTM.Bi_Direct_LSTM as BD_lstm
 import models.LoadingBalancingData.DataManagement as DM
+import models.K_means_Siluete.K_means_Siluete as KMS
+import models.LSTM.Save_results as SR
 
 # to run on the GPU and solve a bug
 # gpu_devices = tf.config.experimental.list_physical_devices('GPU')
@@ -14,7 +13,7 @@ import models.LoadingBalancingData.DataManagement as DM
 
 
 # parameters
-embedding_size = 100
+embedding_size = 300
 tweet_length = 200
 bi_lstm_hidden_state_size = 50
 drop_out = 0.4
@@ -39,39 +38,16 @@ history, M = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(model=lstm.model, c
                                                              c3=c3, epoch=epoch, batch_size=batch_size,
                                                              iterations=iterations, accuracy_thresh_hold=0.75)
 
-BD_lstm.Bi_Direct_LSTM.show_results_of_tests(M=M, len_anchor_c1=1, len_anchor_c2=1, len_c1=len(anchor_c1)-1,
-                                             len_c2=len(anchor_c2)-1, len_c3= len(c3))
-
-# the K-means
 M = np.concatenate(M, axis=0)
 
-kmeans = KMeans(n_clusters=2, init='k-means++', n_init=10, max_iter=100, random_state=42)
-labels = kmeans.fit_predict(M)
+iteration_size = 1 + 1 + len(anchor_c1) - 1 + len(anchor_c2) - 1 + len(c3)
+BD_lstm.Bi_Direct_LSTM.show_results_of_tests(M=M, len_anchor_c1=1, len_anchor_c2=1, len_c1=len(anchor_c1) - 1,
+                                             len_c2=len(anchor_c2) - 1, len_c3=len(c3))
 
-plt.scatter(M[:, 0], M[:, 1], c=labels, s=50, cmap='viridis')
-
-centers = kmeans.cluster_centers_
-plt.scatter(centers[:, 0], centers[:, 1], c='black', s=200, alpha=0.3)
-plt.show()
-
-score = silhouette_score(M, labels=labels, metric='euclidean')
-print("The Silhouette score is :" + str(score))
-
-visualizer = SilhouetteVisualizer(kmeans, colors='yellowbrick')
-visualizer.fit(M)
-visualizer.show()
-
-
-def save_history_data():
-    # file for saving the result and the parameters
-    file = open("result_checks.txt", "a")
-
-    file.write("-- tweet len:{0}, epochs:{1}, batch_size={2}, drop_out={3}, bi_lstm_hidden_state_size:{4}"
-               "\naccuracy:{5}, validation accuracy: {6}, learning rate: {7}, embedding_size: {8}\n"
-               "The Silhouette score: {9}\n".format(
-        tweet_length, epoch, batch_size, drop_out,
-        bi_lstm_hidden_state_size, sum(history.history['accuracy']) / len(history.history['accuracy']),
-                                   sum(history.history['val_accuracy']) / len(history.history['val_accuracy']),
-        learning_rate,
-        embedding_size, score))
-    file.close()
+try:
+    labels, kmeans = KMS.calculate_plot_Kmeans(M, iteration_size)
+    score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans, iteration_size=iteration_size)
+    SR.save_history_data(tweet_length, epoch, batch_size, drop_out, bi_lstm_hidden_state_size,
+                         history, learning_rate, embedding_size, score)
+except Exception as e:
+    print(str(e)+'\n'+traceback.format_exc())
