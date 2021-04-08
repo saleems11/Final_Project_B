@@ -9,9 +9,9 @@ def calculate_plot_Kmeans(M, iteration_size):
     lst_labels = []
     lst_kmeans = []
 
-    for i in range(int(len(M)/iteration_size)):
-        begin = i*iteration_size
-        end = (i+1)*iteration_size
+    for i in range(int(len(M) / iteration_size)):
+        begin = i * iteration_size
+        end = (i + 1) * iteration_size
         labels = kmeans.fit_predict(M[begin:end])
         centers = kmeans.cluster_centers_
 
@@ -21,7 +21,7 @@ def calculate_plot_Kmeans(M, iteration_size):
 
         # plot the anchors
         plt.scatter(M[begin, 0], M[begin, 1], c='green', s=200, alpha=0.5)
-        plt.scatter(M[begin+1, 0], M[begin+1, 1], c='red', s=200, alpha=0.5)
+        plt.scatter(M[begin + 1, 0], M[begin + 1, 1], c='red', s=200, alpha=0.5)
         # plot the rest of the data
         plt.scatter(M[begin:end, 0],
                     M[begin:end, 1],
@@ -32,20 +32,25 @@ def calculate_plot_Kmeans(M, iteration_size):
         lst_labels.append(labels)
         lst_kmeans.append(kmeans)
 
-        plt.show()
+        plt.show(block=False)
 
     return lst_labels, lst_kmeans
 
 
-def silhouette(M, labels, kmeans, iteration_size):
-
-    for i in range(int(len(M)/iteration_size)):
-        score = silhouette_score(M[i*iteration_size:(i+1)*iteration_size],
+def silhouette(M, labels, kmeans, iteration_size, silhouette_threshold):
+    for i in range(int(len(M) / iteration_size)):
+        score = silhouette_score(M[i * iteration_size:(i + 1) * iteration_size],
                                  labels=labels[i], metric='euclidean')
+        if score < silhouette_threshold:
+            raise Exception("The silhouette accuracy is smaller than silhouette_threshold"
+                            "silhouette score is ={0}, but silhouette_threshold ={1}".format(
+                score, silhouette_threshold
+            ))
+
         print("The Silhouette score is :" + str(score))
 
         visualizer = SilhouetteVisualizer(kmeans[i], colors='yellowbrick')
-        visualizer.fit(M[i*iteration_size:(i+1)*iteration_size])
+        visualizer.fit(M[i * iteration_size:(i + 1) * iteration_size])
         visualizer.show()
 
-    return score# the last score
+    return score  # the last score

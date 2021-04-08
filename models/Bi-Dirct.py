@@ -1,15 +1,25 @@
 import numpy as np
 import traceback
+import matplotlib.pyplot as plt
+from time import sleep
 
 import models.LSTM.Bi_Direct_LSTM as BD_lstm
 import models.LoadingBalancingData.DataManagement as DM
 import models.K_means_Siluete.K_means_Siluete as KMS
 import models.LSTM.Save_results as SR
 
+import Tests.send_mail as SM
+
 # to run on the GPU and solve a bug
 # gpu_devices = tf.config.experimental.list_physical_devices('GPU')
 # for device in gpu_devices:
 #     tf.config.experimental.set_memory_growth(device, True)
+
+change_your_mail_address = True
+receiver = "iamme0ssa@gmail.com"
+if change_your_mail_address:
+    print("Hello my freind, please change the email address, so the messages will be"
+          "sent to you, have a nice day")
 
 
 # parameters
@@ -22,32 +32,61 @@ epoch = 15
 batch_size = 100
 iterations = 2
 fully_connected_layer = 30
+silhouette_threshold = 0.6
+accuracy_thresh_hold = 0.75
+loss_func = 'binary_crossentropy'
+load_saved_model = False
+model_name = "book_classification_dim_{0}_sil_{1}".format(300, 0.83)
 
-lstm = BD_lstm.Bi_Direct_LSTM(bi_lstm_hidden_state_size=bi_lstm_hidden_state_size,
-                              tweet_length=tweet_length,
-                              embedding_size=embedding_size,
-                              drop_out=drop_out,
-                              fully_connected_layer=fully_connected_layer,
-                              learning_rate=learning_rate,
-                              loss_func='binary_crossentropy')
+finished = False
+first_time = True
 
-c1, c2, c3, anchor_c1, anchor_c2 = DM.DataManagement.load_data(tweet_length, embedding_size, 7, 2)
+while not finished:
+    lstm = BD_lstm.Bi_Direct_LSTM(bi_lstm_hidden_state_size=bi_lstm_hidden_state_size,
+                                  tweet_length=tweet_length,
+                                  embedding_size=embedding_size,
+                                  drop_out=drop_out,
+                                  fully_connected_layer=fully_connected_layer,
+                                  learning_rate=learning_rate,
+                                  loss_func=loss_func)
+    if first_time:
+        c1, c2, c3, anchor_c1, anchor_c2 = DM.DataManagement.load_data(tweet_length, embedding_size, 7, 2)
+        first_time = False
 
-history, M = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(model=lstm.model, c1=c1, c2=c2,
-                                                             anchor_c1=anchor_c1, anchor_c2=anchor_c2,
-                                                             c3=c3, epoch=epoch, batch_size=batch_size,
-                                                             iterations=iterations, accuracy_thresh_hold=0.75)
+    history, M, model = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(model=lstm.model, c1=c1, c2=c2,
+                                                                 anchor_c1=anchor_c1, anchor_c2=anchor_c2,
+                                                                 c3=c3, epoch=epoch, batch_size=batch_size,
+                                                                 iterations=iterations,
+                                                                 accuracy_thresh_hold=accuracy_thresh_hold)
 
-M = np.concatenate(M, axis=0)
+    lstm.model = model
+    M = np.concatenate(M, axis=0)
 
-iteration_size = 1 + 1 + len(anchor_c1) - 1 + len(anchor_c2) - 1 + len(c3)
-BD_lstm.Bi_Direct_LSTM.show_results_of_tests(M=M, len_anchor_c1=1, len_anchor_c2=1, len_c1=len(anchor_c1) - 1,
-                                             len_c2=len(anchor_c2) - 1, len_c3=len(c3))
+    iteration_size = 1 + 1 + len(anchor_c1) - 1 + len(anchor_c2) - 1 + len(c3)
+    BD_lstm.Bi_Direct_LSTM.show_results_of_tests(M=M, len_anchor_c1=1, len_anchor_c2=1, len_c1=len(anchor_c1) - 1,
+                                                 len_c2=len(anchor_c2) - 1, len_c3=len(c3))
 
-try:
-    labels, kmeans = KMS.calculate_plot_Kmeans(M, iteration_size)
-    score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans, iteration_size=iteration_size)
-    SR.save_history_data(tweet_length, epoch, batch_size, drop_out, bi_lstm_hidden_state_size,
-                         history, learning_rate, embedding_size, score)
-except Exception as e:
-    print(str(e)+'\n'+traceback.format_exc())
+    try:
+        labels, kmeans = KMS.calculate_plot_Kmeans(M, iteration_size)
+        score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans,
+                               iteration_size=iteration_size, silhouette_threshold=silhouette_threshold)
+
+        print("Every thing is fine i will save the model")
+        # save the model
+        lstm.model.save("book_classification_dim_{0}_sil_{1}".format(embedding_size, round(score, 2)))
+
+        SR.save_history_data(tweet_length, epoch, batch_size, drop_out, bi_lstm_hidden_state_size,
+                             history, learning_rate, embedding_size, score)
+        finished = True
+        print("finnish the loop")
+
+
+
+    except Exception as e:
+        SM.send_mail(receiver, "Al-Ghazali project", str(e))
+        plt.close('all')
+        sleep(60)
+        print("Running Again")
+        print(str(e) + '\n' + traceback.format_exc())
+
+SM.send_mail(receiver, "Al-Ghazali project","Saleem it had finished calculation")

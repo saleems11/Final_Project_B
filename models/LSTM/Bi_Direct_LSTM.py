@@ -82,9 +82,9 @@ class Bi_Direct_LSTM:
         for result in results:
             result.plot()
 
-        plt.show()
+        plt.show(block=False)
 
-        return history, M
+        return history, M, model
 
     @staticmethod
     def test_model(model, anchor_c1, anchor_c2, c1, c2, c3):
