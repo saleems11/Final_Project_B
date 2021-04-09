@@ -14,7 +14,12 @@ import numpy as np
 
 lst = []
 
-for i in range(5):
-    lst.append(np.zeros((2,4), dtype='f'))
+lst.append(np.zeros((2,4), dtype='f'))
+lst.append(np.zeros((3,4), dtype='f'))
 
-np.save('a.npy', np.array(lst, dtype='f'))
+np.save('a.npy', lst, allow_pickle=True)
+b = np.load('a.npy', allow_pickle=True)
+
+for x in b:
+    print(x.shape)
+print("hero")

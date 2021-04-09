@@ -4,7 +4,6 @@ import Algs.Balancing_Routine as BR
 import random as rnd
 import numpy as np
 import os.path
-import scipy.io
 
 
 class DataManagement:
@@ -36,15 +35,16 @@ class DataManagement:
         else:
             c2 = Documents_utils.get_list_of_books(Documents_utils.c2)
             c2 = c2[:min(1000, len(c2))]
-        if files_status[2] and random_load_c3:
+        if files_status[2] and not random_load_c3:
             # to create new c3 for testing
-            embedded_data_c3 = np.load(files_names[2])
+            embedded_data_c3 = np.load(files_names[2], allow_pickle=True)
         else:
+            print("New data set for c3 for testing")
             c3 = Documents_utils.get_list_of_books(Documents_utils.c3)
             c3 = [c3[rnd.randint(0, len(c3) - 1)]]
         if files_status[3] or files_status[4]:
-            embedded_anchor_c1 = np.load(files_names[3])
-            embedded_anchor_c2 = np.load(files_names[4])
+            embedded_anchor_c1 = np.load(files_names[3], allow_pickle=True)
+            embedded_anchor_c2 = np.load(files_names[4], allow_pickle=True)
         else:
             c1 = Documents_utils.get_list_of_books(Documents_utils.c1)
             c1 = c1[:min(1000, len(c1))]
@@ -52,9 +52,13 @@ class DataManagement:
             c2 = c2[:min(1000, len(c2))]
             c1, c2, anchor_c1, anchor_c2 = DataManagement.manage_anchor_data(c1, c2, c1_anchor_size, c2_anchor_size)
 
-        embedded_anchor_c1 = []
-        embedded_anchor_c2 = []
-        embedded_data_c3 = []
+
+        if not files_status[3] or not files_status[4]:
+            embedded_anchor_c1 = []
+            embedded_anchor_c2 = []
+        if not files_status[2] or random_load_c3:
+            embedded_data_c3 = []
+
 
         if embedding_size == 1024:
             if not files_status[0]:
@@ -62,7 +66,8 @@ class DataManagement:
             if not files_status[1]:
                 embedded_data_c2 = Emb_D.Embedd_DataSet.embedd_Elmo(books=c2, tweet_size=tweet_size)
 
-            if not files_status[2] or not random_load_c3:
+            if not files_status[2] or random_load_c3:
+                print("Embedding c3")
                 for i in range(0, len(c3)):
                     embedded_data_c3.append(
                         Emb_D.Embedd_DataSet.embedd_Elmo(books=np.array([c3[i], ]), tweet_size=tweet_size))
@@ -86,7 +91,7 @@ class DataManagement:
             if not files_status[1]:
                 embedded_data_c2 = Emb_D.Embedd_DataSet.embedd_Aravec(books=c2, tweet_size=tweet_size,
                                                                     embedding_dimension=embedding_size)
-            if not files_status[2] or not random_load_c3:
+            if not files_status[2] or random_load_c3:
                 for i in range(0, len(c3)):
                     embedded_data_c3.append(
                         Emb_D.Embedd_DataSet.embedd_Aravec(books=np.array([c3[i], ]), tweet_size=tweet_size,
@@ -113,14 +118,14 @@ class DataManagement:
             np.save(files_names[0], embedded_data_c1)
         if not files_status[1]:
             np.save(files_names[1], embedded_data_c2)
-        if not files_status[2] or not random_load_c3:
-            np.save(files_names[2], np.array(embedded_data_c3, dtype='f'))
+        if not files_status[2] or random_load_c3:
+            np.save(files_names[2], embedded_data_c3, allow_pickle=True)
         if not files_status[3] or not files_status[4]:
             np.save(files_names[0], embedded_data_c1)
             np.save(files_names[1], embedded_data_c2)
 
-            np.save(files_names[3], np.array(embedded_anchor_c1, dtype='f'))
-            np.save(files_names[4], np.array(embedded_anchor_c2, dtype='f'))
+            np.save(files_names[3], embedded_anchor_c1, allow_pickle=True)
+            np.save(files_names[4], embedded_anchor_c2, allow_pickle=True)
 
         return embedded_data_c1, embedded_data_c2, embedded_data_c3, embedded_anchor_c1, embedded_anchor_c2
 

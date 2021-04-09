@@ -6,7 +6,7 @@ class TestingData:
     def __init__(self, c1, c2, c3):
         self.c1 = c1[1:]
         self.c2 = c2[1:]
-        self.c3 = c3[1:]
+        self.c3 = c3
         self.c1_anchor = [c1[0]]
         self.c2_anchor = [c2[0]]
         self.iteration_size = len(self.c1)+\
