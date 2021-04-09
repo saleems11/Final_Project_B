@@ -9,6 +9,7 @@ import models.K_means_Siluete.K_means_Siluete as KMS
 import models.LSTM.Save_results as SR
 
 import Tests.send_mail as SM
+import Objects.TestingData as TD
 
 
 change_your_mail_address = False
@@ -27,9 +28,9 @@ drop_out = 0.4
 learning_rate = 0.001
 epoch = 15
 batch_size = 100
-iterations = 1
+iterations = 2
 fully_connected_layer = 30
-silhouette_threshold = 0.8
+silhouette_threshold = 0.85
 accuracy_thresh_hold = 0.75
 loss_func = 'binary_crossentropy'
 load_saved_model = False
@@ -39,6 +40,11 @@ finished = False
 first_time = True
 
 while not finished:
+
+    if first_time:
+        c1, c2, c3, anchor_c1, anchor_c2 = DM.DataManagement.load_data(tweet_length, embedding_size, 7, 2)
+        first_time = False
+
     lstm = BD_lstm.Bi_Direct_LSTM(bi_lstm_hidden_state_size=bi_lstm_hidden_state_size,
                                   tweet_length=tweet_length,
                                   embedding_size=embedding_size,
@@ -46,9 +52,6 @@ while not finished:
                                   fully_connected_layer=fully_connected_layer,
                                   learning_rate=learning_rate,
                                   loss_func=loss_func)
-    if first_time:
-        c1, c2, c3, anchor_c1, anchor_c2 = DM.DataManagement.load_data(tweet_length, embedding_size, 7, 2)
-        first_time = False
 
     history, M, model = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(model=lstm.model, c1=c1, c2=c2,
                                                                  anchor_c1=anchor_c1, anchor_c2=anchor_c2,
@@ -58,15 +61,14 @@ while not finished:
 
     lstm.model = model
     M = np.concatenate(M, axis=0)
+    testing_data = TD.TestingData(anchor_c1, anchor_c2, c3)
 
-    iteration_size = 1 + 1 + len(anchor_c1) - 1 + len(anchor_c2) - 1 + len(c3)
-    BD_lstm.Bi_Direct_LSTM.show_results_of_tests(M=M, len_anchor_c1=1, len_anchor_c2=1, len_c1=len(anchor_c1) - 1,
-                                                 len_c2=len(anchor_c2) - 1, len_c3=len(c3))
+    testing_data.show_results_of_tests(M=M)
 
     try:
-        labels, kmeans = KMS.calculate_plot_Kmeans(M, iteration_size)
+        labels, kmeans = KMS.calculate_plot_Kmeans(M, testing_data.iteration_size)
         score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans,
-                               iteration_size=iteration_size, silhouette_threshold=silhouette_threshold)
+                               iteration_size=testing_data.iteration_size, silhouette_threshold=silhouette_threshold)
 
         # save the model
         lstm.model.save("book_classification_dim_{0}_sil_{1}".format(embedding_size, score))

@@ -9,7 +9,12 @@
 #
 # print("hello {0}".format(round(0.8199999928474426, 2)))
 
-import torch, gc
 
-gc.collect()
-torch.cuda.empty_cache()
+import numpy as np
+
+lst = []
+
+for i in range(5):
+    lst.append(np.zeros((2,4), dtype='f'))
+
+np.save('a.npy', np.array(lst, dtype='f'))

@@ -1,6 +1,7 @@
 
 import Algs.Embedding as Embedding
 import numpy as np
+import torch
 
 class Embedd_DataSet:
 
@@ -91,5 +92,7 @@ class Embedd_DataSet:
         #         # embedded_DataSet[i][j] += add
         #         norm = np.linalg.norm(embedded_DataSet[i][j])
         #         embedded_DataSet[i][j] = embedded_DataSet[i][j] / norm
+
+        torch.cuda.empty_cache()
 
         return embedded_DataSet

@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import models.LoadingBalancingData.DataManagement as DM
+import Objects.TestingData as TD
 
 
 class Bi_Direct_LSTM:
@@ -67,6 +68,7 @@ class Bi_Direct_LSTM:
         results = []
         M = []
         data_names = ['accuracy', 'val_accuracy', 'loss', 'val_loss']
+        testing_data = TD.TestingData(anchor_c1, anchor_c2, c3)
 
         for _ in range(iterations):
             x_train, y_train = DM.DataManagement.create_new_batch(c1, c2)
@@ -74,8 +76,8 @@ class Bi_Direct_LSTM:
 
             if history.history['accuracy'][-1] >= accuracy_thresh_hold:
                 # test the model if the wanted accuracy is achieved
-                M.append(Bi_Direct_LSTM.test_model(model, [anchor_c1[0]], [anchor_c2[0]], anchor_c1[1:],
-                                                   anchor_c2[1:], c3))
+                M.append(Bi_Direct_LSTM.test_model(model, testing_data.c1_anchor, testing_data.c2_anchor,
+                                                   testing_data.c1, testing_data.c2, testing_data.c3))
 
                 result = DataFrame()
                 for data_name in data_names:
@@ -123,33 +125,4 @@ class Bi_Direct_LSTM:
             predictions_list.append(prediction_res / len(data))
 
         return np.array(predictions_list, dtype='f')
-
-    @staticmethod
-    def show_results_of_tests(M, len_anchor_c1, len_anchor_c2, len_c1, len_c2, len_c3):
-        # show the results of the model by each iteration
-        iteration_size = len_anchor_c1 + len_anchor_c2 + len_c1 + len_c2 + len_c3
-        for i in range(int(len(M) / iteration_size)):
-            print("Iteration Num:{}".format(int(i)))
-
-            # -------------------------------   header   ------------------------------------
-            # anchor_c1
-            for k in range(len_anchor_c1): print("%-8s%2d|" % ("anc_CL1:", k), end="")
-            # anchor_c2
-            for k in range(len_anchor_c2): print("%-8s%2d|" % ("anc_CL2:", k), end="")
-            # c1
-            for k in range(len_c1): print("%-8s%2d|" % ("CL1:", k), end="")
-            # c2
-            for k in range(len_c2): print("%-8s%2d|" % ("CL2:", k), end="")
-            # c3
-            for k in range(len_c3): print("%-8s%2d|" % ("CL3:", k), end="")
-
-            separator = "-" * 100
-            print("\n" + separator)
-
-            for j in range(iteration_size):
-                print("%3.2f, %3.2f|" % (M[i * iteration_size + j][0],
-                                        M[i * iteration_size + j][1]), end="")
-
-            # new line
-            print()
 
