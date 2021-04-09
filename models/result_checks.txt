@@ -197,3 +197,9 @@ The Silhouette score: 0.6024128198623657
 -- tweet len:200, epochs:15, batch_size=100, drop_out=0.4, bi_lstm_hidden_state_size:50
 accuracy:0.9681288758913676, validation accuracy: 0.9403812845547994, learning rate: 0.001, embedding_size: 300
 The Silhouette score: 0.8070802688598633
+-- tweet len:200, epochs:15, batch_size=100, drop_out=0.4, bi_lstm_hidden_state_size:50
+accuracy:0.9568845113118489, validation accuracy: 0.9329501907030742, learning rate: 0.001, embedding_size: 300
+The Silhouette score: 0.7611881494522095
+-- tweet len:200, epochs:15, batch_size=100, drop_out=0.4, bi_lstm_hidden_state_size:50
+accuracy:0.9529887278874715, validation accuracy: 0.932440475622813, learning rate: 0.001, embedding_size: 300
+The Silhouette score: 0.8199999928474426

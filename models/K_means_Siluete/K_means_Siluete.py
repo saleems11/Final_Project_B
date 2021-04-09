@@ -53,4 +53,4 @@ def silhouette(M, labels, kmeans, iteration_size, silhouette_threshold):
         visualizer.fit(M[i * iteration_size:(i + 1) * iteration_size])
         visualizer.show()
 
-    return score  # the last score
+    return round(score, 2)  # the last score

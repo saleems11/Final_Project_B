@@ -10,29 +10,26 @@ import models.LSTM.Save_results as SR
 
 import Tests.send_mail as SM
 
-# to run on the GPU and solve a bug
-# gpu_devices = tf.config.experimental.list_physical_devices('GPU')
-# for device in gpu_devices:
-#     tf.config.experimental.set_memory_growth(device, True)
 
-change_your_mail_address = True
+change_your_mail_address = False
 receiver = "iamme0ssa@gmail.com"
 if change_your_mail_address:
     print("Hello my freind, please change the email address, so the messages will be"
           "sent to you, have a nice day")
+    exit()
 
 
 # parameters
-embedding_size = 300
+embedding_size = 1024
 tweet_length = 200
 bi_lstm_hidden_state_size = 50
 drop_out = 0.4
 learning_rate = 0.001
 epoch = 15
 batch_size = 100
-iterations = 2
+iterations = 1
 fully_connected_layer = 30
-silhouette_threshold = 0.6
+silhouette_threshold = 0.8
 accuracy_thresh_hold = 0.75
 loss_func = 'binary_crossentropy'
 load_saved_model = False
@@ -71,21 +68,19 @@ while not finished:
         score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans,
                                iteration_size=iteration_size, silhouette_threshold=silhouette_threshold)
 
-        print("Every thing is fine i will save the model")
         # save the model
-        lstm.model.save("book_classification_dim_{0}_sil_{1}".format(embedding_size, round(score, 2)))
+        lstm.model.save("book_classification_dim_{0}_sil_{1}".format(embedding_size, score))
 
         SR.save_history_data(tweet_length, epoch, batch_size, drop_out, bi_lstm_hidden_state_size,
                              history, learning_rate, embedding_size, score)
         finished = True
-        print("finnish the loop")
 
 
 
     except Exception as e:
         SM.send_mail(receiver, "Al-Ghazali project", str(e))
         plt.close('all')
-        sleep(60)
+        sleep(10)
         print("Running Again")
         print(str(e) + '\n' + traceback.format_exc())
 

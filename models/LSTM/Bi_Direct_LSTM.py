@@ -16,6 +16,11 @@ class Bi_Direct_LSTM:
 
     def __init__(self, bi_lstm_hidden_state_size, tweet_length, embedding_size, drop_out, fully_connected_layer,
                  learning_rate, loss_func):
+        # to run on the GPU and solve a bug
+        gpu_devices = tf.config.experimental.list_physical_devices('GPU')
+        for device in gpu_devices:
+            tf.config.experimental.set_memory_growth(device, True)
+
         self.bi_lstm_hidden_state_size = bi_lstm_hidden_state_size
         self.tweet_length = tweet_length
         self.embedding_size = embedding_size
