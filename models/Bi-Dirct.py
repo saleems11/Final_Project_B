@@ -11,6 +11,7 @@ import models.LSTM.Save_results as SR
 import Tests.send_mail as SM
 import Objects.TestingData as TD
 
+""" To make the code better embed each book and save it"""
 
 change_your_mail_address = False
 receiver = "iamme0ssa@gmail.com"
@@ -28,7 +29,7 @@ drop_out = 0.4
 learning_rate = 0.001
 epoch = 15
 batch_size = 100
-iterations = 2
+iterations = 6
 fully_connected_layer = 30
 silhouette_threshold = 0.85
 accuracy_thresh_hold = 0.75
@@ -71,7 +72,7 @@ while not finished:
                                iteration_size=testing_data.iteration_size, silhouette_threshold=silhouette_threshold)
 
         # save the model
-        lstm.model.save("book_classification_dim_{0}_sil_{1}".format(embedding_size, score))
+        lstm.model.save("book_classification_dim_%d_sil_%.2f" % (embedding_size, score))
 
         SR.save_history_data(tweet_length, epoch, batch_size, drop_out, bi_lstm_hidden_state_size,
                              history, learning_rate, embedding_size, score)
