@@ -39,7 +39,7 @@ class Embed_book:
 
         elif embedding_size == 300 or embedding_size == 100:
             # embed using AraVec
-            return Embedd_DataSet.Embedd_DataSet.embedd_Aravec(books=[Documents_utils.read_doc_file(curr_book_path)],
+            return Embedd_DataSet.embedd_Aravec(books=[Documents_utils.read_doc_file(curr_book_path)],
                                                                tweet_size=tweet_size,
                                                                embedding_dimension=embedding_size)
 

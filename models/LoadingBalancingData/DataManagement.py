@@ -25,8 +25,8 @@ class DataManagement:
 
         embedded_data_c3 = [embedded_data_c3[rnd.randint(0, len(embedded_data_c3) - 1)]]
 
-        embedded_data_c1, embedded_data_c2, embedded_anchor_c1, embedded_anchor_c2 = \
-            DataManagement.manage_anchor_data(embedded_data_c1, embedded_data_c2, c1_anchor_size, c2_anchor_size)
+        embedded_data_c1, embedded_data_c2, embedded_test_c1, embedded_test_c2 = \
+            DataManagement.manage_test_data(embedded_data_c1, embedded_data_c2, c1_anchor_size, c2_anchor_size)
 
         # merge each list of (c1, c2) into one numpy list
         embedded_data_c1 = np.concatenate(embedded_data_c1, axis=0)
@@ -61,8 +61,8 @@ class DataManagement:
         #     c3 = Documents_utils.get_list_of_books(Documents_utils.c3)
         #     c3 = [c3[rnd.randint(0, len(c3) - 1)]]
         # if files_status[3] or files_status[4]:
-        #     embedded_anchor_c1 = np.load(files_names[3], allow_pickle=True)
-        #     embedded_anchor_c2 = np.load(files_names[4], allow_pickle=True)
+        #     embedded_test_c1 = np.load(files_names[3], allow_pickle=True)
+        #     embedded_test_c2 = np.load(files_names[4], allow_pickle=True)
         # else:
         #     c1 = Documents_utils.get_list_of_books(Documents_utils.c1)
         #     c1 = c1[:min(1000, len(c1))]
@@ -71,8 +71,8 @@ class DataManagement:
         #     c1, c2, anchor_c1, anchor_c2 = DataManagement.manage_anchor_data(c1, c2, c1_anchor_size, c2_anchor_size)
         #
         # if not files_status[3] or not files_status[4]:
-        #     embedded_anchor_c1 = []
-        #     embedded_anchor_c2 = []
+        #     embedded_test_c1 = []
+        #     embedded_test_c2 = []
         # if not files_status[2] or random_load_c3:
         #     embedded_data_c3 = []
         #
@@ -93,11 +93,11 @@ class DataManagement:
         #         embedded_data_c2 = Emb_D.Embedd_DataSet.embedd_Elmo(books=c2, tweet_size=tweet_size)
         #
         #         for i in range(len(anchor_c1)):
-        #             embedded_anchor_c1.append(
+        #             embedded_test_c1.append(
         #                 Emb_D.Embedd_DataSet.embedd_Elmo(books=np.array([anchor_c1[i], ]), tweet_size=tweet_size))
         #
         #         for i in range(len(anchor_c2)):
-        #             embedded_anchor_c2.append(
+        #             embedded_test_c2.append(
         #                 Emb_D.Embedd_DataSet.embedd_Elmo(books=np.array([anchor_c2[i], ]), tweet_size=tweet_size))
         #
         # if embedding_size == 300 or embedding_size == 100:
@@ -120,12 +120,12 @@ class DataManagement:
         #                                                               embedding_dimension=embedding_size)
         #
         #         for i in range(len(anchor_c1)):
-        #             embedded_anchor_c1.append(
+        #             embedded_test_c1.append(
         #                 Emb_D.Embedd_DataSet.embedd_Aravec(books=np.array([anchor_c1[i], ]), tweet_size=tweet_size,
         #                                                    embedding_dimension=embedding_size))
         #
         #         for i in range(len(anchor_c2)):
-        #             embedded_anchor_c2.append(
+        #             embedded_test_c2.append(
         #                 Emb_D.Embedd_DataSet.embedd_Aravec(books=np.array([anchor_c2[i], ]), tweet_size=tweet_size,
         #                                                    embedding_dimension=embedding_size))
         #
@@ -140,36 +140,36 @@ class DataManagement:
         #     np.save(files_names[0], embedded_data_c1)
         #     np.save(files_names[1], embedded_data_c2)
         #
-        #     np.save(files_names[3], embedded_anchor_c1, allow_pickle=True)
-        #     np.save(files_names[4], embedded_anchor_c2, allow_pickle=True)
+        #     np.save(files_names[3], embedded_test_c1, allow_pickle=True)
+        #     np.save(files_names[4], embedded_test_c2, allow_pickle=True)
 
-        return embedded_data_c1, embedded_data_c2, embedded_data_c3, embedded_anchor_c1, embedded_anchor_c2
+        return embedded_data_c1, embedded_data_c2, embedded_data_c3, embedded_test_c1, embedded_test_c2
 
     @staticmethod
-    def manage_anchor_data(c1, c2, c1_anchor_size, c2_anchor_size):
+    def manage_test_data(c1, c2, c1_anchor_size, c2_anchor_size):
         # the anchor data set
-        anchor_index_c1 = rnd.sample(range(len(c1)), c1_anchor_size)
-        anchor_index_c2 = rnd.sample(range(len(c2)), c2_anchor_size)
-        anchor_index_c1.sort()
-        anchor_index_c2.sort()
+        test_index_c1 = rnd.sample(range(len(c1)), c1_anchor_size)
+        test_index_c2 = rnd.sample(range(len(c2)), c2_anchor_size)
+        test_index_c1.sort()
+        test_index_c2.sort()
 
-        anchor_c1 = []
-        anchor_c2 = []
+        test_c1 = []
+        test_c2 = []
 
         # remove from c1, c2 the anchor books, and create anchor books list
-        for i in range(0, len(anchor_index_c1)):
-            anchor_c1.append(c1[anchor_index_c1[i]])
+        for i in range(0, len(test_index_c1)):
+            test_c1.append(c1[test_index_c1[i]])
 
-        for i in range(0, len(anchor_index_c2)):
-            anchor_c2.append(c2[anchor_index_c2[i]])
+        for i in range(0, len(test_index_c2)):
+            test_c2.append(c2[test_index_c2[i]])
 
-        for i in range(0, len(anchor_index_c1)):
-            c1.pop(anchor_index_c1[i] - i)
+        for i in range(0, len(test_index_c1)):
+            c1.pop(test_index_c1[i] - i)
 
-        for i in range(0, len(anchor_index_c2)):
-            c2.pop(anchor_index_c2[i] - i)
+        for i in range(0, len(test_index_c2)):
+            c2.pop(test_index_c2[i] - i)
 
-        return c1, c2, anchor_c1, anchor_c2
+        return c1, c2, test_c1, test_c2
 
     @staticmethod
     def create_new_batch(embedded_data_c1, embedded_data_c2):

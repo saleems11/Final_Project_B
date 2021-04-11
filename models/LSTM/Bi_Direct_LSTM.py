@@ -59,7 +59,7 @@ class Bi_Direct_LSTM:
         return model
 
     @staticmethod
-    def train_test_for_iteration(model, c1, c2, anchor_c1, anchor_c2, c3, epoch, batch_size, iterations,
+    def train_test_for_iteration(model, c1, c2, test_c1, test_c2, c3, epoch, batch_size, iterations,
                                  accuracy_thresh_hold):
         """Train the model for n epochs and then check it with 0.3 of the data (validation), the model accuracy
         is checked if it achieve the wanted accuracy test will run and saved in M.\n
@@ -68,7 +68,7 @@ class Bi_Direct_LSTM:
         results = []
         M = []
         data_names = ['accuracy', 'val_accuracy', 'loss', 'val_loss']
-        testing_data = TD.TestingData(anchor_c1, anchor_c2, c3)
+        testing_data = TD.TestingData(test_c1, test_c2, c3)
 
         for _ in range(iterations):
             x_train, y_train = DM.DataManagement.create_new_batch(c1, c2)

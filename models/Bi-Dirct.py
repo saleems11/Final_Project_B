@@ -13,7 +13,7 @@ import Objects.TestingData as TD
 
 """ To make the code better embed each book and save it"""
 
-change_your_mail_address = False
+change_your_mail_address = True
 receiver = "iamme0ssa@gmail.com"
 if change_your_mail_address:
     print("Hello my freind, please change the email address, so the messages will be"
@@ -22,7 +22,7 @@ if change_your_mail_address:
 
 
 # parameters
-embedding_size = 1024
+embedding_size = 300
 tweet_length = 200
 bi_lstm_hidden_state_size = 50
 drop_out = 0.4
@@ -43,7 +43,8 @@ first_time = True
 while not finished:
 
     if first_time:
-        c1, c2, c3, anchor_c1, anchor_c2 = DM.DataManagement.load_data(tweet_length, embedding_size, 7, 2)
+        c1, c2, c3, test_c1, test_c2 = DM.DataManagement.load_data(tweet_length, embedding_size, 7, 2)
+        testing_data = TD.TestingData(test_c1, test_c2, c3)
         first_time = False
 
     lstm = BD_lstm.Bi_Direct_LSTM(bi_lstm_hidden_state_size=bi_lstm_hidden_state_size,
@@ -55,14 +56,13 @@ while not finished:
                                   loss_func=loss_func)
 
     history, M, model = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(model=lstm.model, c1=c1, c2=c2,
-                                                                 anchor_c1=anchor_c1, anchor_c2=anchor_c2,
-                                                                 c3=c3, epoch=epoch, batch_size=batch_size,
-                                                                 iterations=iterations,
-                                                                 accuracy_thresh_hold=accuracy_thresh_hold)
+                                                                        test_c1=test_c1, test_c2=test_c2,
+                                                                        c3=c3, epoch=epoch, batch_size=batch_size,
+                                                                        iterations=iterations,
+                                                                        accuracy_thresh_hold=accuracy_thresh_hold)
 
     lstm.model = model
     M = np.concatenate(M, axis=0)
-    testing_data = TD.TestingData(anchor_c1, anchor_c2, c3)
 
     testing_data.show_results_of_tests(M=M)
 
