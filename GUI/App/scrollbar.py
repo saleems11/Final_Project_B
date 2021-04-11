@@ -5,7 +5,7 @@ ScrollOnItemsList = []
 
 class ScrollBar(Frame):
     def __init__(self, parent):
-        self.height = 518
+        self.height = 800
         self.width = 200
 
         Frame.__init__(self, parent, width=self.width, height=self.height, bg="grey")
