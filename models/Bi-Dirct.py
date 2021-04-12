@@ -13,7 +13,7 @@ import Objects.TestingData as TD
 
 """ To make the code better embed each book and save it"""
 
-change_your_mail_address = True
+change_your_mail_address = False
 receiver = "iamme0ssa@gmail.com"
 if change_your_mail_address:
     print("Hello my freind, please change the email address, so the messages will be"
@@ -22,14 +22,14 @@ if change_your_mail_address:
 
 
 # parameters
-embedding_size = 300
+embedding_size = 1024
 tweet_length = 200
 bi_lstm_hidden_state_size = 50
 drop_out = 0.4
 learning_rate = 0.001
 epoch = 15
 batch_size = 100
-iterations = 6
+iterations = 10
 fully_connected_layer = 30
 silhouette_threshold = 0.85
 accuracy_thresh_hold = 0.75
@@ -43,7 +43,7 @@ first_time = True
 while not finished:
 
     if first_time:
-        c1, c2, c3, test_c1, test_c2 = DM.DataManagement.load_data(tweet_length, embedding_size, 7, 2)
+        c1, c2, c3, test_c1, test_c2 = DM.DataManagement.load_data(tweet_length, embedding_size, 7, 2, 1)
         testing_data = TD.TestingData(test_c1, test_c2, c3)
         first_time = False
 
@@ -67,7 +67,7 @@ while not finished:
     testing_data.show_results_of_tests(M=M)
 
     try:
-        labels, kmeans = KMS.calculate_plot_Kmeans(M, testing_data.iteration_size)
+        labels, kmeans = KMS.calculate_plot_Kmeans(M, testing_data.iteration_size, testing_data)
         score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans,
                                iteration_size=testing_data.iteration_size, silhouette_threshold=silhouette_threshold)
 

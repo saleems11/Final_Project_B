@@ -4,15 +4,25 @@ from yellowbrick.cluster import SilhouetteVisualizer
 import matplotlib.pyplot as plt
 
 
-def calculate_plot_Kmeans(M, iteration_size):
+def calculate_plot_Kmeans(M, iteration_size, testing_data):
     kmeans = KMeans(n_clusters=2)
 
     labels = kmeans.fit_predict(M)
     centers = kmeans.cluster_centers_
 
     # check if the anchors are in the same cluster
-    # if labels[0] == labels[1]:
-    #     raise Exception('The anchors are in the same cluster')
+    for i in range(int(len(M) / iteration_size)):
+        # check if all c1 anchors are in the same cluster
+        for j in range(1, len(testing_data.c1_anchor)):
+            if labels[j - 1] != labels[j]: raise Exception('The anchors are in the same cluster')
+        # check if all c2 anchors are in the same cluster
+        for j in range(len(testing_data.c1_anchor)+1, len(testing_data.c1_anchor) + len(testing_data.c2_anchor)):
+            if labels[j - 1] != labels[j]: raise Exception('The anchors are in the same cluster')
+        # check if all c1 and c2 are in different cluster
+        if labels[0] == labels[len(testing_data.c1_anchor)]: raise Exception('The anchors are in the same cluster')
+
+    # create new figure
+    plt.figure()
 
     # plot the anchors
     plt.scatter(M[0, 0], M[0, 1], c='green', s=200, alpha=0.5)
@@ -58,7 +68,6 @@ def calculate_plot_Kmeans(M, iteration_size):
 
 
 def silhouette(M, labels, kmeans, iteration_size, silhouette_threshold):
-
     score = silhouette_score(M, labels=labels, metric='euclidean')
     if score < silhouette_threshold:
         raise Exception("The silhouette accuracy is smaller than silhouette_threshold"
@@ -68,6 +77,8 @@ def silhouette(M, labels, kmeans, iteration_size, silhouette_threshold):
 
     print("The Silhouette score is :" + str(score))
 
+    # create new figures
+    plt.figure()
     visualizer = SilhouetteVisualizer(kmeans, colors='yellowbrick')
     visualizer.fit(M)
     visualizer.show()

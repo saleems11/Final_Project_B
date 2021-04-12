@@ -26,5 +26,5 @@
 # for x in b:
 #     print(x.shape)
 # print("hero")
-
-print("hello %s in %.2f" %("Saleem", 12.235))
+for i in range(1,1):
+    print("hello %s in %.2f" %("Saleem", 12.235))

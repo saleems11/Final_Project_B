@@ -10,7 +10,7 @@ from Embedded_books.Embed_dataSet import Embed_DataSet
 class DataManagement:
 
     @staticmethod
-    def load_data(tweet_size, embedding_size, c1_anchor_size, c2_anchor_size, random_load_c3=False):
+    def load_data(tweet_size, embedding_size, c1_anchor_size, c2_anchor_size, c3_len_test_to_load, random_load_c3=False):
         """Load the data for the 5 segments(Cl1, Cl2, Cl3, anchor_Cl1, anchor_Cl2)
         ,the anchor contain data for testing faz that contain(in the first place the anchor and the
         rest are for testing)"""
@@ -21,9 +21,8 @@ class DataManagement:
         Existing file that doesn't requires embedding them again"""
 
         embedded_data_c1, embedded_data_c2, embedded_data_c3 = \
-            Embed_DataSet.Embed_DataSet(embedding_size=embedding_size, tweet_size=tweet_size)
-
-        embedded_data_c3 = [embedded_data_c3[rnd.randint(0, len(embedded_data_c3) - 1)]]
+            Embed_DataSet.Embed_DataSet(embedding_size=embedding_size, tweet_size=tweet_size,
+                                        c3_len_test_to_load=c3_len_test_to_load)
 
         embedded_data_c1, embedded_data_c2, embedded_test_c1, embedded_test_c2 = \
             DataManagement.manage_test_data(embedded_data_c1, embedded_data_c2, c1_anchor_size, c2_anchor_size)
@@ -184,7 +183,7 @@ class DataManagement:
                                                          3,
                                                          2)
 
-        # the first value is gazali, the sec is psedo
+        # the first value is gazali(1, 0), the sec is psedo (0, 1)
         y1 = np.tile(np.array([1, 0], dtype='f'), (s1_len, 1))
         y2 = np.tile(np.array([0, 1], dtype='f'), (s2_len, 1))
 
