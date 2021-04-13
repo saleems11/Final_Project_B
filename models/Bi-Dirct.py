@@ -63,16 +63,17 @@ while not finished:
 
     lstm.model = model
     M = np.concatenate(M, axis=0)
-
-    testing_data.show_results_of_tests(M=M)
+    testing_data.show_results_of_tests(M=M, labels=[])
 
     try:
         labels, kmeans = KMS.calculate_plot_Kmeans(M, testing_data.iteration_size, testing_data)
+        testing_data.show_results_of_tests(M=M, labels=labels)
+
         score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans,
                                iteration_size=testing_data.iteration_size, silhouette_threshold=silhouette_threshold)
 
         # save the model
-        lstm.model.save("book_classification_dim_%d_sil_%.2f" % (embedding_size, score))
+        lstm.model.save("book_classification_dim_%d_sil_%.2f_%d_itter" % (embedding_size, score, iterations))
 
         SR.save_history_data(tweet_length, epoch, batch_size, drop_out, bi_lstm_hidden_state_size,
                              history, learning_rate, embedding_size, score)

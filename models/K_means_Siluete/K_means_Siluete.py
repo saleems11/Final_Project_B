@@ -25,8 +25,9 @@ def calculate_plot_Kmeans(M, iteration_size, testing_data):
     plt.figure()
 
     # plot the anchors
-    plt.scatter(M[0, 0], M[0, 1], c='green', s=200, alpha=0.5)
-    plt.scatter(M[1, 0], M[1, 1], c='red', s=200, alpha=0.5)
+    for i in range(int(len(M) / iteration_size)):
+        plt.scatter(M[i*iteration_size, 0], M[i*iteration_size, 1], c='green', s=200, alpha=0.5)
+        plt.scatter(M[i*iteration_size+1, 0], M[i*iteration_size+1, 1], c='red', s=200, alpha=0.5)
     # plot the rest of the data
     plt.scatter(M[:, 0], M[:, 1], c=labels[:], s=50, cmap='viridis')
     # plot the center of the data

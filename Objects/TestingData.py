@@ -17,7 +17,7 @@ class TestingData:
 
 
 
-    def show_results_of_tests(self, M):
+    def show_results_of_tests(self, M, labels):
         for i in range(int(len(M) / self.iteration_size)):
             print("Iteration Num:{}".format(int(i)))
 
@@ -39,6 +39,12 @@ class TestingData:
             for j in range(self.iteration_size):
                 print("%3.2f, %3.2f|" % (M[i * self.iteration_size + j][0],
                                         M[i * self.iteration_size + j][1]), end="")
+
+            # new line
+            print()
+            if len(labels)>0:
+                for j in range(self.iteration_size):
+                    print("%-10d|" % (labels[i * self.iteration_size + j]), end="")
 
             # new line
             print()
