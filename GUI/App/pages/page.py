@@ -5,7 +5,7 @@ active_page = []
 
 class Page(Frame):
     def __init__(self, parent):
-        self.width = 600
+        self.width = 1200
         self.height = 600
         # remove old page
         try:

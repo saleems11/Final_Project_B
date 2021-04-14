@@ -5,7 +5,7 @@ ScrollOnItemsList = []
 
 class ScrollBar(Frame):
     def __init__(self, parent):
-        self.height = 800
+        self.height = 1200
         self.width = 200
 
         Frame.__init__(self, parent, width=self.width, height=self.height, bg="grey")
@@ -18,8 +18,8 @@ class ScrollBar(Frame):
         print("scrollframe init")
         self.c_frame = Frame(self, width=self.width, height=self.height, bg="grey")
         self.c_frame.place(x=0, y=0)
-        self.c_Canvas = Canvas(self.c_frame, width=self.width, height=self.height, bd=-2, bg="red")
-        scrollbar = Scrollbar(self.c_frame, orient="vertical", command=self.c_Canvas.yview, bg="grey")
+        self.c_Canvas = Canvas(self.c_frame, width=self.width, height=self.height, bd=-2, bg="#232323")
+        scrollbar = Scrollbar(self.c_frame, orient="vertical", command=self.c_Canvas.yview, bg="#232323")
         self.scrollframe = Frame(self.c_Canvas)
         self.scrollframe.place(x=0, y=0)
 

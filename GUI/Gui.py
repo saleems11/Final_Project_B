@@ -3,8 +3,8 @@ from GUI.App.sidebar import *
 
 root = Tk()
 root.resizable(False, False)
-root.geometry("1200x800")
-main_frame = Frame(root, bg="grey", width=1000, height=800)
+root.geometry('1200x600')
+main_frame = Frame(root, bg="grey", width=1200, height=600)
 main_frame.place(x=200, y=0)
 
 
