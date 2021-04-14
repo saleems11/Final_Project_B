@@ -13,7 +13,7 @@ import Objects.TestingData as TD
 
 """ To make the code better embed each book and save it"""
 
-change_your_mail_address = False
+change_your_mail_address = True
 receiver = "iamme0ssa@gmail.com"
 if change_your_mail_address:
     print("Hello my freind, please change the email address, so the messages will be"
