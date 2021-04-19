@@ -23,14 +23,14 @@ if change_your_mail_address:
 
 
 # parameters
-embedding_size = 1024
-tweet_size = 150
+embedding_size = 300
+tweet_size = 400
 bi_lstm_hidden_state_size = 50
 drop_out = 0.3
 learning_rate = 0.001
-epoch = 10
+epoch = 15
 batch_size = 100
-iterations = 3
+iterations = 1
 fully_connected_layer = 30
 silhouette_threshold = 0.75
 accuracy_thresh_hold = 0.96
@@ -123,6 +123,8 @@ history, M, model = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(model=lstm.m
                                                                     accuracy_thresh_hold=accuracy_thresh_hold)
 
 lstm.model = model
+if len(M) == 0:
+    print("M len is zero")
 M = np.concatenate(M, axis=0)
 testing_data.show_results_of_tests(M=M, labels=[])
 

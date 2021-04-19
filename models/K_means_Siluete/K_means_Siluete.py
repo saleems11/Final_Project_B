@@ -33,7 +33,7 @@ def calculate_plot_Kmeans(M, iteration_size, testing_data):
     # plot the center of the data
     plt.scatter(centers[:, 0], centers[:, 1], c='black', s=200, alpha=0.3)
 
-    plt.show(block=False)
+    plt.show()
 
     return labels, kmeans
 

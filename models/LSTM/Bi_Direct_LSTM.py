@@ -88,7 +88,7 @@ class Bi_Direct_LSTM:
         for result in results:
             result.plot()
 
-        plt.show(block=False)
+        plt.show()
 
         return history, M, model
 
