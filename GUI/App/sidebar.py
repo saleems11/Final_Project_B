@@ -1,8 +1,7 @@
+from typing import List
+
 from GUI.App.ImageProcessor import *
 from GUI.App.scrollbar import *
-
-side_bar_tab_list = []
-
 
 class SideBar(ScrollBar):
     def __init__(self, parent, *args, **kwargs):
@@ -118,3 +117,6 @@ class SideBarButton(Canvas):
         self.selected = False
         self.config(bg=self.hover_color)
         self.text.config(bg=self.hover_color)
+
+
+side_bar_tab_list: List[SideBarButton] = []

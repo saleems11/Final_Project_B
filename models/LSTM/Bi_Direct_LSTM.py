@@ -23,7 +23,7 @@ class Bi_Direct_LSTM:
         self.fully_connected_layer = fully_connected_layer
         self.learning_rate = learning_rate
         self.loss_func = loss_func
-
+        self.status = 'Un Initialized'
         self.model = Bi_Direct_LSTM.create_model(bi_lstm_hidden_state_size, tweet_length, embedding_size, drop_out,
                                                  fully_connected_layer, learning_rate, loss_func)
 
@@ -65,10 +65,12 @@ class Bi_Direct_LSTM:
 
         for _ in range(iterations):
             x_train, y_train = DM.DataManagement.create_new_batch(c1, c2)
+            # status = 'Training'
             history = model.fit(x_train, y_train, validation_split=.30, epochs=epoch, batch_size=batch_size, verbose=1)
 
             if history.history['accuracy'][-1] >= accuracy_thresh_hold:
                 # test the model if the wanted accuracy is achieved
+                # status = 'Testing'
                 M.append(Bi_Direct_LSTM.test_model(model, [anchor_c1[0]], [anchor_c2[0]], anchor_c1[1:],
                                                    anchor_c2[1:], c3))
 
