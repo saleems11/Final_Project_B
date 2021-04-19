@@ -26,5 +26,5 @@
 # for x in b:
 #     print(x.shape)
 # print("hero")
-for i in range(1,1):
-    print("hello %s in %.2f" %("Saleem", 12.235))
+x = "hello.tct"
+print(x[:-4])

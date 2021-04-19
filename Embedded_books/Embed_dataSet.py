@@ -6,7 +6,7 @@ import random as rnd
 class Embed_DataSet:
 
     @staticmethod
-    def Embed_DataSet(embedding_size, tweet_size, c3_len_test_to_load):
+    def Embed_DataSet(embedding_size, tweet_size):
         c1_books_names = Documents_utils.get_list_of_docs_files(Documents_utils.c1)
         c2_books_names = Documents_utils.get_list_of_docs_files(Documents_utils.c2)
         c3_books_names = Documents_utils.get_list_of_docs_files(Documents_utils.c3)
@@ -23,20 +23,13 @@ class Embed_DataSet:
                                                      tweet_size=tweet_size,
                                                      cluster_dir=Documents_utils.c2)
 
-        # choose random testing data from c3 to embed/load
-        selected_c3_tests_index = rnd.sample(range(len(c3_books_names)), c3_len_test_to_load)
-        selected_c3_tests = []
-        for i in range(len(selected_c3_tests_index)):
-            selected_c3_tests.append(c3_books_names[selected_c3_tests_index[i]])
-        c3_books_names = selected_c3_tests
-
         c3_cluster = Embed_DataSet._embed_books_list(books_names_list=c3_books_names,
                                                      cluster_name='c3',
                                                      embedding_size=embedding_size,
                                                      tweet_size=tweet_size,
                                                      cluster_dir=Documents_utils.c3)
 
-        return c1_cluster, c2_cluster, c3_cluster
+        return c1_cluster,c2_cluster, c3_cluster, c3_books_names
 
     @staticmethod
     def _embed_books_list(books_names_list, cluster_name, embedding_size, tweet_size, cluster_dir):

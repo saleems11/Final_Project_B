@@ -1,7 +1,6 @@
 import Algs.Embedding as Emb
 import Algs.Embedd_DataSet as Emb_D
 from utils.doc_utils import Documents_utils
-import Objects.Book as Book
 import numpy as np
 
 # test for embedding class

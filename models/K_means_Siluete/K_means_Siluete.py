@@ -13,13 +13,13 @@ def calculate_plot_Kmeans(M, iteration_size, testing_data):
     # check if the anchors are in the same cluster
     for i in range(int(len(M) / iteration_size)):
         # check if all c1 anchors are in the same cluster
-        for j in range(1, len(testing_data.c1_anchor)):
+        for j in range(1, len(testing_data.anchor_c1)):
             if labels[j - 1] != labels[j]: raise Exception('The anchors are in the same cluster')
         # check if all c2 anchors are in the same cluster
-        for j in range(len(testing_data.c1_anchor)+1, len(testing_data.c1_anchor) + len(testing_data.c2_anchor)):
+        for j in range(len(testing_data.anchor_c1)+1, len(testing_data.anchor_c1) + len(testing_data.anchor_c2)):
             if labels[j - 1] != labels[j]: raise Exception('The anchors are in the same cluster')
         # check if all c1 and c2 are in different cluster
-        if labels[0] == labels[len(testing_data.c1_anchor)]: raise Exception('The anchors are in the same cluster')
+        if labels[0] == labels[len(testing_data.anchor_c1)]: raise Exception('The anchors are in the same cluster')
 
     # create new figure
     plt.figure()
