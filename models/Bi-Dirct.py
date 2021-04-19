@@ -23,17 +23,17 @@ if change_your_mail_address:
 
 
 # parameters
-embedding_size = 300
-tweet_size = 400
-bi_lstm_hidden_state_size = 50
+embedding_size = 1024
+tweet_size = 300
+bi_lstm_hidden_state_size = 30
 drop_out = 0.3
 learning_rate = 0.001
 epoch = 15
 batch_size = 100
-iterations = 1
+iterations = 3
 fully_connected_layer = 30
 silhouette_threshold = 0.75
-accuracy_thresh_hold = 0.96
+accuracy_thresh_hold = 0.90
 loss_func = 'binary_crossentropy'
 # losses.
 # binary_crossentropy, categorical_crossentropy

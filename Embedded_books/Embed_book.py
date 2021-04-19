@@ -15,7 +15,7 @@ class Embed_book:
         if embedding_size == 1024:
             # embed using Elmo
 
-            embedded_file_name = '{0}_{1}.npy'.format(file_name[:-4], embedding_size)
+            embedded_file_name = '{0}_{1}_{2}.npy'.format(file_name[:-4], embedding_size, tweet_size)
             books_cluster_dir = "\\".join(
                 [Documents_utils.project_working_dir, "Embedded_books", cluster_name])
             book_embedding_path = books_cluster_dir + "\\" + embedded_file_name

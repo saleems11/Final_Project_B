@@ -99,7 +99,7 @@ class Embedding:
         return embedded_book_array[0:words_index]
 
     @staticmethod
-    def Elmo(sentences: [str], batch_size=6, output_layer=-1) -> [[int]]:
+    def Elmo(sentences: [str], batch_size=3, output_layer=-1) -> [[int]]:
         """Embedding each word in a sentence according to it's position, each sentence is splitted\n
         The func return the avg of the three layers of the model.\n
         Embeding size is 1024 for each word.\n
