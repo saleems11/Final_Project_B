@@ -1,5 +1,6 @@
 import random as rnd
 import numpy as np
+import gc
 
 class Balancing_DataSet:
 
@@ -36,6 +37,7 @@ class Balancing_DataSet:
         #     s1[i] = d1[index]
 
         # free d1
-        d1 = None
+        del d1
+        gc.collect()
 
         return np.concatenate((s1, np.repeat(d2, f2, axis=0))), len(s1), size_of_d2*f2

@@ -1,3 +1,5 @@
+import gc
+
 import Algs.Balancing_Routine as BR
 import numpy as np
 from Embedded_books.Embed_dataSet import Embed_DataSet
@@ -53,8 +55,13 @@ class DataManagement:
         # x_train = np.concatenate((x_train, s2))
 
         y_train = y1
-        y1 = None
+        del y1
+        del embedded_data_c1
+        del embedded_data_c2
         y_train = np.concatenate((y_train, y2))
+        del y2
+        # free the garbage
+        gc.collect()
 
         # Random permutation shuffling
         p = np.random.permutation(len(x_train))

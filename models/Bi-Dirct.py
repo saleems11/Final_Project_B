@@ -24,13 +24,13 @@ if change_your_mail_address:
 
 # parameters
 embedding_size = 1024
-tweet_size = 300
-bi_lstm_hidden_state_size = 30
+tweet_size = 400
+bi_lstm_hidden_state_size = 160
 drop_out = 0.3
-learning_rate = 0.005
-epoch = 10
+learning_rate = 0.01
+epoch = 15
 batch_size = 200
-iterations = 3
+iterations = 10
 fully_connected_layer = 30
 silhouette_threshold = 0.75
 accuracy_thresh_hold = 0.96
