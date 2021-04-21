@@ -53,7 +53,8 @@ class Bi_Direct_LSTM:
         model.add(Dense(2, activation='softmax'))
 
         print(model.summary())
-        opt = tf.keras.optimizers.Adam(learning_rate=learning_rate, )
+        # opt = tf.keras.optimizers.SGD(learning_rate=learning_rate, momentum= 0.95, decay=0.01)
+        opt = tf.keras.optimizers.Adam(learning_rate=learning_rate)
         model.compile(loss=loss_func, optimizer=opt, metrics=['accuracy'])
 
         return model
@@ -69,12 +70,14 @@ class Bi_Direct_LSTM:
         M = []
         data_names = ['accuracy', 'val_accuracy', 'loss', 'val_loss']
 
-        for _ in range(iterations):
+        while iterations>0:
             x_train, y_train = DM.DataManagement.create_new_batch(c1, c2)
             history = model.fit(x_train, y_train, validation_split=.30, epochs=epoch, batch_size=batch_size, verbose=1)
 
             if history.history['accuracy'][-1] >= accuracy_thresh_hold:
                 # test the model if the wanted accuracy is achieved
+                iterations-=1
+
                 M.append(Bi_Direct_LSTM.test_model(model, testing_data.anchor_c1, testing_data.anchor_c2,
                                                    testing_data.c1_test, testing_data.c2_test, testing_data.c3_test))
 
@@ -83,6 +86,21 @@ class Bi_Direct_LSTM:
                     result[data_name] = history.history[data_name][:]
 
                 results.append(result)
+
+        # for _ in range(iterations):
+        #     x_train, y_train = DM.DataManagement.create_new_batch(c1, c2)
+        #     history = model.fit(x_train, y_train, validation_split=.30, epochs=epoch, batch_size=batch_size, verbose=1)
+        #
+        #     if history.history['accuracy'][-1] >= accuracy_thresh_hold:
+        #         # test the model if the wanted accuracy is achieved
+        #         M.append(Bi_Direct_LSTM.test_model(model, testing_data.anchor_c1, testing_data.anchor_c2,
+        #                                            testing_data.c1_test, testing_data.c2_test, testing_data.c3_test))
+        #
+        #         result = DataFrame()
+        #         for data_name in data_names:
+        #             result[data_name] = history.history[data_name][:]
+        #
+        #         results.append(result)
 
         # plot the results
         for result in results:
