@@ -63,6 +63,8 @@ while not finished:
     epoch = parameters[5]
     drop_out = parameters[6]
 
+    score = 0
+
     c1, c2, testing_data = DM.DataManagement.load_data(tweet_size=tweet_size, embedding_size=embedding_size,
                                                        c1_anchor_name=c1_anchor_name, c2_anchor_name=c2_anchor_name,
                                                        c1_test_names=c1_test_names, c2_test_names=c2_test_names,

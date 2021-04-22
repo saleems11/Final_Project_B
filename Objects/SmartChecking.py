@@ -1,13 +1,13 @@
 class SmartChecking:
 
     def __init__(self):
-        self.tweet_size_options = [200, 300, 400]
+        self.tweet_size_options = [200, 300]
         self.bi_lstm_hidden_state_size_min = 32
-        self.bi_lstm_hidden_state_size_max = 256
+        self.bi_lstm_hidden_state_size_max = 32+3*64
         self.bi_lstm_hidden_state_size_jump = 64
-        self.learning_rate_max = 0.01
+        self.learning_rate_max = 0.006
         self.learning_rate_min = 0.001
-        self.learning_rate_jump = 0.002
+        self.learning_rate_jump = 0.0015
         self.fully_connected_layer_min = 20
         self.fully_connected_layer_max = 60
         self.fully_connected_layer_jump = 20
@@ -17,7 +17,7 @@ class SmartChecking:
         self.epoch_min = 10
         self.epoch_max = 25
         self.epoch_jump = 5
-        self.drop_out_min = 0.1
+        self.drop_out_min = 0.3
         self.drop_out_max = 0.6
         self.drop_out_jump = 0.1
         """
@@ -29,7 +29,7 @@ class SmartChecking:
         5 epoch
         6 drop_out"""
         self.num_of_param = 7
-        self.options_state = [0, 2, 0, 0, 0, 0, 0]
+        self.options_state = [1, 3, 2, 1, 0, 0, 0]
         self.each_parameter_numof_options = [0] * self.num_of_param
 
         self.set_parameters_options_number()
