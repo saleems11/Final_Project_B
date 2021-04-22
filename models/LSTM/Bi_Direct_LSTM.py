@@ -69,6 +69,7 @@ class Bi_Direct_LSTM:
         results = []
         M = []
         data_names = ['accuracy', 'val_accuracy', 'loss', 'val_loss']
+        result = DataFrame()
 
         while iterations > 0:
             x_train, y_train = DM.DataManagement.create_new_batch(c1, c2)
@@ -81,34 +82,16 @@ class Bi_Direct_LSTM:
                 M.append(Bi_Direct_LSTM.test_model(model, testing_data.anchor_c1, testing_data.anchor_c2,
                                                    testing_data.c1_test, testing_data.c2_test, testing_data.c3_test))
 
-                result = DataFrame()
+                temp = DataFrame()
                 for data_name in data_names:
-                    result[data_name] = history.history[data_name][:]
+                    temp[data_name] = history.history[data_name]
+                result = result.append(temp, ignore_index=True)
 
-                # results.append(result)
+            # model.reset_states()
 
-            model.reset_states()
-
-        # for _ in range(iterations):
-        #     x_train, y_train = DM.DataManagement.create_new_batch(c1, c2)
-        #     history = model.fit(x_train, y_train, validation_split=.30, epochs=epoch, batch_size=batch_size, verbose=1)
-        #
-        #     if history.history['accuracy'][-1] >= accuracy_thresh_hold:
-        #         # test the model if the wanted accuracy is achieved
-        #         M.append(Bi_Direct_LSTM.test_model(model, testing_data.anchor_c1, testing_data.anchor_c2,
-        #                                            testing_data.c1_test, testing_data.c2_test, testing_data.c3_test))
-        #
-        #         result = DataFrame()
-        #         for data_name in data_names:
-        #             result[data_name] = history.history[data_name][:]
-        #
-        #         results.append(result)
-
-        # plot the results
-        for result in results:
-            result.plot()
-
-        plt.show()
+        # plot the result
+        result.plot()
+        plt.show(block=False)
 
         return history, M, model
 
@@ -144,4 +127,3 @@ class Bi_Direct_LSTM:
             predictions_list.append(prediction_res / len(data))
 
         return np.array(predictions_list, dtype='f')
-

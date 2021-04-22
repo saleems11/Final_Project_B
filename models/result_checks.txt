@@ -221,3 +221,114 @@ The Silhouette score: 0.8799999952316284
 -- tweet len:200, epochs:15, batch_size=100, drop_out=0.4, bi_lstm_hidden_state_size:50
 accuracy:0.9990940888722738, validation accuracy: 0.9991354386011759, learning rate: 0.001, embedding_size: 1024
 The Silhouette score: 0.8899999856948853
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:192
+accuracy:0.9537336468696594, validation accuracy: 0.9779174208641053, learning rate: 0.01, embedding_size: 1024
+The Silhouette score: 0.61
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:90
+accuracy:0.8535026967525482, validation accuracy: 0.7938958764076233, learning rate: 0.01, embedding_size: 1024
+The Silhouette score: 0.607
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:90
+accuracy:0.8369515001773834, validation accuracy: 0.8287253141403198, learning rate: 0.01, embedding_size: 1024
+The Silhouette score: 0.64
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:90
+accuracy:0.8858352601528168, validation accuracy: 0.8542190253734588, learning rate: 0.01, embedding_size: 1024
+The Silhouette score: 0.51
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:90
+accuracy:0.861431872844696, validation accuracy: 0.8429084360599518, learning rate: 0.01, embedding_size: 1024
+The Silhouette score: 0.72
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:90
+accuracy:0.8788298666477203, validation accuracy: 0.867145425081253, learning rate: 0.01, embedding_size: 1024
+The Silhouette score: 0.6
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.3, bi_lstm_hidden_state_size:90
+accuracy:0.8610469579696656, validation accuracy: 0.8240574479103089, learning rate: 0.01, embedding_size: 1024
+The Silhouette score: 0.66
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.35, bi_lstm_hidden_state_size:192
+accuracy:0.9693610489368438, validation accuracy: 0.9402154386043549, learning rate: 0.01, embedding_size: 1024
+The Silhouette score: 0.7599999904632568
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.35, bi_lstm_hidden_state_size:192
+accuracy:0.9693610489368438, validation accuracy: 0.9402154386043549, learning rate: 0.01, embedding_size: 1024
+The Silhouette score: 0.7599999904632568
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.35, bi_lstm_hidden_state_size:192
+accuracy:0.9932255685329437, validation accuracy: 0.9937163412570953, learning rate: 0.01, embedding_size: 1024
+The Silhouette score: 0.58
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.35, bi_lstm_hidden_state_size:192
+accuracy:0.9714395761489868, validation accuracy: 0.9403949737548828, learning rate: 0.01, embedding_size: 1024
+The Silhouette score: 0.6878374814987183
+-- tweet len:300, epochs:10, batch_size=50, drop_out=0.1, bi_lstm_hidden_state_size:32
+accuracy:0.9873749136924743, validation accuracy: 0.9597845613956452, learning rate: 0.001, embedding_size: 1024
+The Silhouette score: 0.6430865526199341
+-- tweet len:300, epochs:15, batch_size=100, drop_out=0.2, bi_lstm_hidden_state_size:64
+accuracy:0.9930202762285868, validation accuracy: 0.9658886909484863, learning rate: 0.002, embedding_size: 1024
+The Silhouette score: 0.6008637547492981
+-- tweet len:300, epochs:15, batch_size=100, drop_out=0.2, bi_lstm_hidden_state_size:64
+accuracy:0.9922504504521688, validation accuracy: 0.9694793581962585, learning rate: 0.002, embedding_size: 1024
+The Silhouette score: 0.6507490277290344
+-- tweet len:300, epochs:10, batch_size=50, drop_out=0.1, bi_lstm_hidden_state_size:32
+accuracy:0.9916089355945588, validation accuracy: 0.9773788273334503, learning rate: 0.001, embedding_size: 1024
+The Silhouette score: 0.6282861232757568
+-- tweet len:300, epochs:10, batch_size=50, drop_out=0.1, bi_lstm_hidden_state_size:32
+accuracy:0.9896843671798706, validation accuracy: 0.9755834877490998, learning rate: 0.001, embedding_size: 1024
+The Silhouette score: 0.585532546043396
+-- tweet len:300, epochs:10, batch_size=50, drop_out=0.1, bi_lstm_hidden_state_size:32
+accuracy:0.9825250267982483, validation accuracy: 0.953500896692276, learning rate: 0.001, embedding_size: 1024
+The Silhouette score: 0.5959068536758423
+-- tweet len:300, epochs:10, batch_size=50, drop_out=0.1, bi_lstm_hidden_state_size:64
+accuracy:0.9899153232574462, validation accuracy: 0.957989227771759, learning rate: 0.001, embedding_size: 1024
+The Silhouette score: 0.6430102586746216
+-- tweet len:300, epochs:10, batch_size=50, drop_out=0.1, bi_lstm_hidden_state_size:64
+accuracy:0.992609703540802, validation accuracy: 0.9813285410404206, learning rate: 0.002, embedding_size: 1024
+The Silhouette score: 0.6417462825775146
+-- tweet len:300, epochs:10, batch_size=50, drop_out=0.1, bi_lstm_hidden_state_size:64
+accuracy:0.9929176390171051, validation accuracy: 0.9675044894218445, learning rate: 0.002, embedding_size: 1024
+The Silhouette score: 0.6690249443054199
+-- tweet len:300, epochs:10, batch_size=100, drop_out=0.1, bi_lstm_hidden_state_size:64
+accuracy:0.9908391118049622, validation accuracy: 0.9542190253734588, learning rate: 0.002, embedding_size: 1024
+The Silhouette score: 0.574704647064209
+-- tweet len:300, epochs:15, batch_size=100, drop_out=0.1, bi_lstm_hidden_state_size:64
+accuracy:0.9931742350260416, validation accuracy: 0.9681627909342448, learning rate: 0.002, embedding_size: 1024
+The Silhouette score: 0.6033977270126343
+-- tweet len:300, epochs:15, batch_size=100, drop_out=0.2, bi_lstm_hidden_state_size:64
+accuracy:0.9886579513549805, validation accuracy: 0.962776776154836, learning rate: 0.002, embedding_size: 1024
+The Silhouette score: 0.6284688115119934
+-- tweet len:300, epochs:15, batch_size=100, drop_out=0.2, bi_lstm_hidden_state_size:64
+accuracy:0.9952271064122518, validation accuracy: 0.9571514010429383, learning rate: 0.002, embedding_size: 1024
+The Silhouette score: 0.6107946038246155
+-- tweet len:300, epochs:15, batch_size=100, drop_out=0.2, bi_lstm_hidden_state_size:96
+accuracy:0.9925583918889364, validation accuracy: 0.9676840265591939, learning rate: 0.002, embedding_size: 1024
+The Silhouette score: 0.6014848947525024
+-- tweet len:300, epochs:15, batch_size=100, drop_out=0.2, bi_lstm_hidden_state_size:96
+accuracy:0.992096487681071, validation accuracy: 0.9663674473762512, learning rate: 0.003, embedding_size: 1024
+The Silhouette score: 0.5930448174476624
+-- tweet len:300, epochs:15, batch_size=100, drop_out=0.2, bi_lstm_hidden_state_size:96
+accuracy:0.990146271387736, validation accuracy: 0.9534410436948141, learning rate: 0.003, embedding_size: 1024
+The Silhouette score: 0.6491581797599792
+-- tweet len:300, epochs:15, batch_size=128, drop_out=0.2, bi_lstm_hidden_state_size:96
+accuracy:0.9932255585988362, validation accuracy: 0.9780969460805257, learning rate: 0.003, embedding_size: 1024
+The Silhouette score: 0.6635047197341919
+-- tweet len:300, epochs:15, batch_size=128, drop_out=0.2, bi_lstm_hidden_state_size:96
+accuracy:0.9960995634396871, validation accuracy: 0.9753441095352173, learning rate: 0.003, embedding_size: 1024
+The Silhouette score: 0.616140604019165
+-- tweet len:300, epochs:15, batch_size=128, drop_out=0.2, bi_lstm_hidden_state_size:128
+accuracy:0.9929176330566406, validation accuracy: 0.9662477652231852, learning rate: 0.003, embedding_size: 1024
+The Silhouette score: 0.616140604019165
+-- tweet len:300, epochs:15, batch_size=128, drop_out=0.2, bi_lstm_hidden_state_size:128
+accuracy:0.9942006707191468, validation accuracy: 0.9754637956619263, learning rate: 0.004, embedding_size: 1024
+The Silhouette score: 0.6271334886550903
+-- tweet len:300, epochs:15, batch_size=128, drop_out=0.2, bi_lstm_hidden_state_size:128
+accuracy:0.9936874508857727, validation accuracy: 0.9742669224739074, learning rate: 0.004, embedding_size: 1024
+The Silhouette score: 0.5978819727897644
+-- tweet len:300, epochs:15, batch_size=192, drop_out=0.2, bi_lstm_hidden_state_size:128
+accuracy:0.9929176370302836, validation accuracy: 0.9682824730873107, learning rate: 0.004, embedding_size: 1024
+The Silhouette score: 0.5812039971351624
+-- tweet len:300, epochs:20, batch_size=192, drop_out=0.2, bi_lstm_hidden_state_size:128
+accuracy:0.9943418055772781, validation accuracy: 0.9579892218112945, learning rate: 0.004, embedding_size: 1024
+The Silhouette score: 0.6487854719161987
+-- tweet len:300, epochs:20, batch_size=192, drop_out=0.30000000000000004, bi_lstm_hidden_state_size:128
+accuracy:0.9945342600345611, validation accuracy: 0.9696588963270187, learning rate: 0.004, embedding_size: 1024
+The Silhouette score: 0.6309604048728943
+-- tweet len:300, epochs:20, batch_size=192, drop_out=0.30000000000000004, bi_lstm_hidden_state_size:128
+accuracy:0.9927251756191253, validation accuracy: 0.9695691257715225, learning rate: 0.004, embedding_size: 1024
+The Silhouette score: 0.6033158302307129
+-- tweet len:300, epochs:20, batch_size=192, drop_out=0.30000000000000004, bi_lstm_hidden_state_size:160
+accuracy:0.9876443415880203, validation accuracy: 0.9535906493663788, learning rate: 0.004, embedding_size: 1024
+The Silhouette score: 0.6329771280288696
