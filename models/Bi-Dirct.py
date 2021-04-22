@@ -9,8 +9,8 @@ import models.K_means_Siluete.K_means_Siluete as KMS
 import models.LSTM.Save_results as SR
 from Exceptions.Exceptions import SilhouetteBellowThreshold, AnchorsInSameCluster
 import keras.losses as losses
-
 import Tests.send_mail as SM
+from Objects.SmartChecking import SmartChecking
 
 """ To make the code better embed each book and save it"""
 
@@ -29,7 +29,7 @@ drop_out = 0.35
 learning_rate = 0.01
 epoch = 10
 batch_size = 100
-iterations = 2
+iterations = 5
 fully_connected_layer = 30
 silhouette_threshold = 0.75
 accuracy_thresh_hold = 0.96
@@ -50,114 +50,12 @@ c3_test_names = ["Mishakat_al_Anwar"]
 finished = False
 first_time = True
 
-
-class SmartChecking:
-    tweet_size_options = [200, 300, 400]
-    bi_lstm_hidden_state_size_min = 32
-    bi_lstm_hidden_state_size_max = 256
-    bi_lstm_hidden_state_size_jump = 32
-    learning_rate_max = 0.01
-    learning_rate_min = 0.001
-    learning_rate_jump = 0.001
-    fully_connected_layer_min = 20
-    fully_connected_layer_max = 60
-    fully_connected_layer_jump = 10
-    batch_size_min = 64
-    batch_size_max = 320
-    batch_size_jump = 64
-    epoch_min = 10
-    epoch_max = 25
-    epoch_jump = 5
-    drop_out_min = 0.1
-    drop_out_max = 0.6
-    drop_out_jump = 0.1
-    """
-    0 tweet_size_options
-    1 bi_lstm_hidden_state_size
-    2 learning_rate
-    3 fully_connected_layer
-    4 batch_size
-    5 epoch
-    6 drop_out"""
-    parameter_idx = 0
-    num_of_param = 7
-    options_state = [2, 2, 2, 2, 1, 1, 1]
-    parameters_options = [0] * 7
-
-    @staticmethod
-    def set_parameters_options_number():
-        SmartChecking.parameters_options[0] = len(SmartChecking.tweet_size_options)
-        SmartChecking.parameters_options[1] = int((SmartChecking.bi_lstm_hidden_state_size_max -
-                                                   SmartChecking.bi_lstm_hidden_state_size_min) /
-                                                  SmartChecking.bi_lstm_hidden_state_size_jump) + 1
-
-        SmartChecking.parameters_options[2] = int((SmartChecking.learning_rate_max -
-                                                   SmartChecking.learning_rate_min) /
-                                                  SmartChecking.learning_rate_jump) + 1
-
-        SmartChecking.parameters_options[3] = int((SmartChecking.fully_connected_layer_max -
-                                                   SmartChecking.fully_connected_layer_min) /
-                                                  SmartChecking.fully_connected_layer_jump) + 1
-
-        SmartChecking.parameters_options[4] = int((SmartChecking.batch_size_max -
-                                                   SmartChecking.batch_size_min) /
-                                                  SmartChecking.batch_size_jump) + 1
-
-        SmartChecking.parameters_options[5] = int((SmartChecking.epoch_max -
-                                                   SmartChecking.epoch_min) /
-                                                  SmartChecking.epoch_jump) + 1
-
-        SmartChecking.parameters_options[6] = int((SmartChecking.drop_out_max -
-                                                   SmartChecking.drop_out_min) /
-                                                  SmartChecking.drop_out_jump) + 1
-
-    @staticmethod
-    def new_parameters_values():
-        print(SmartChecking.options_state)
-
-        res = [SmartChecking.tweet_size_options[SmartChecking.options_state[0]],
-
-                SmartChecking.bi_lstm_hidden_state_size_min +
-                (SmartChecking.bi_lstm_hidden_state_size_jump *
-                 SmartChecking.options_state[1]),
-
-                SmartChecking.learning_rate_min +
-                (SmartChecking.learning_rate_jump *
-                 SmartChecking.options_state[2]),
-
-                SmartChecking.fully_connected_layer_min +
-                (SmartChecking.fully_connected_layer_jump *
-                 SmartChecking.options_state[3]),
-
-                SmartChecking.batch_size_min +
-                (SmartChecking.batch_size_jump *
-                 SmartChecking.options_state[4]),
-
-                SmartChecking.epoch_min +
-                (SmartChecking.epoch_jump *
-                 SmartChecking.options_state[5]),
-
-                SmartChecking.drop_out_min +
-                (SmartChecking.drop_out_jump *
-                 SmartChecking.options_state[6])
-                ]
-
-        SmartChecking.options_state[SmartChecking.parameter_idx] = \
-            (SmartChecking.options_state[SmartChecking.parameter_idx] + 1) % \
-            SmartChecking.parameters_options[SmartChecking.parameter_idx]
-
-        SmartChecking.parameter_idx = (SmartChecking.parameter_idx + 1) % SmartChecking.num_of_param
-
-        print(res)
-        return res
-
-
-SmartChecking.set_parameters_options_number()
+smartChecking = SmartChecking()
 
 
 while not finished:
-    parameters = SmartChecking.new_parameters_values()
-    tweet_size_options = parameters[0]
+    parameters = smartChecking.new_parameters_values()
+    tweet_size = parameters[0]
     bi_lstm_hidden_state_size = parameters[1]
     learning_rate = parameters[2]
     fully_connected_layer = parameters[3]
@@ -220,7 +118,7 @@ while not finished:
         print("Running Again")
 
     SR.save_history_data(tweet_size, epoch, batch_size, drop_out, bi_lstm_hidden_state_size,
-                         history, learning_rate, embedding_size, score)
+                         history, learning_rate, embedding_size, score, iterations)
 
 
 SM.send_mail(receiver, "Al-Ghazali project", "Saleem it had finished calculation")

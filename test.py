@@ -32,13 +32,21 @@
 from pandas import DataFrame
 import pandas as pd
 
-lst = [[1, 2], [2, 2]]
-names = ['accuracy', 'loss']
-new_lst = DataFrame()
-temp = DataFrame()
-for i in range(len(lst)):
-    new_lst[names[i]] = lst[i]
-    temp[names[i]] = lst[i]
+# lst = [[1, 2], [2, 2]]
+# names = ['accuracy', 'loss']
+# new_lst = DataFrame()
+# temp = DataFrame()
+# for i in range(len(lst)):
+#     new_lst[names[i]] = lst[i]
+#     temp[names[i]] = lst[i]
+#
+# new_lst = new_lst.append(temp, ignore_index=True)
+# print(new_lst.head(10))
 
-new_lst = new_lst.append(temp, ignore_index=True)
-print(new_lst.head(10))
+
+from Objects.SmartChecking import SmartChecking
+
+smartChecking = SmartChecking()
+
+for i in range(100):
+    smartChecking.new_parameters_values()
