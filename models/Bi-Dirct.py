@@ -63,12 +63,11 @@ while not finished:
     epoch = parameters[5]
     drop_out = parameters[6]
 
-    if first_time:
-        c1, c2, testing_data = DM.DataManagement.load_data(tweet_size=tweet_size, embedding_size=embedding_size,
-                                                           c1_anchor_name=c1_anchor_name, c2_anchor_name=c2_anchor_name,
-                                                           c1_test_names=c1_test_names, c2_test_names=c2_test_names,
-                                                           c3_test_names=c3_test_names)
-        first_time = False
+    c1, c2, testing_data = DM.DataManagement.load_data(tweet_size=tweet_size, embedding_size=embedding_size,
+                                                       c1_anchor_name=c1_anchor_name, c2_anchor_name=c2_anchor_name,
+                                                       c1_test_names=c1_test_names, c2_test_names=c2_test_names,
+                                                       c3_test_names=c3_test_names)
+
 
     lstm = BD_lstm.Bi_Direct_LSTM(bi_lstm_hidden_state_size=bi_lstm_hidden_state_size,
                                   tweet_length=tweet_size,
@@ -106,11 +105,11 @@ while not finished:
 
 
     except SilhouetteBellowThreshold as e:
-        SM.send_mail(receiver, "Al-Ghazali project", str(e))
+        # SM.send_mail(receiver, "Al-Ghazali project", str(e))
         score = e.silhouette_val
         print(str(e) + '\n' + traceback.format_exc())
     except AnchorsInSameCluster as e:
-        SM.send_mail(receiver, "Al-Ghazali project", str(e))
+        # SM.send_mail(receiver, "Al-Ghazali project", str(e))
         print(str(e) + '\n' + traceback.format_exc())
     finally:
         plt.close('all')

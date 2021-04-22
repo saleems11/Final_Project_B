@@ -359,6 +359,35 @@ The Silhouette score: 0.6573942303657532
 -- tweet len:300, epochs:25, batch_size=256, drop_out=0.4, bi_lstm_hidden_state_size:192
 accuracy:0.9875596714019775, validation accuracy: 0.9610771918296814, learning rate: 0.006, embedding_size: 1024
 The Silhouette score: 0.7227557897567749
+
+
+
+
+
+
+
+
+
+
+
 -- tweet len:200, epochs:10, batch_size=64, drop_out=0.1, bi_lstm_hidden_state_size:32
 accuracy:0.9972680449485779, validation accuracy: 0.9897836744785309, learning rate: 0.001, embedding_size: 1024
 The Silhouette score: 0.6181049346923828, iteration number: 5
+-- tweet len:300, epochs:10, batch_size=64, drop_out=0.1, bi_lstm_hidden_state_size:32
+accuracy:0.9971649527549744, validation accuracy: 0.9901442170143128, learning rate: 0.001, embedding_size: 1024
+The Silhouette score: 0.5855265855789185, iteration number: 5
+-- tweet len:400, epochs:10, batch_size=64, drop_out=0.1, bi_lstm_hidden_state_size:32
+accuracy:0.9989690721035004, validation accuracy: 0.9935095965862274, learning rate: 0.001, embedding_size: 1024
+The Silhouette score: 0.6296204328536987, iteration number: 5
+-- tweet len:200, epochs:10, batch_size=64, drop_out=0.1, bi_lstm_hidden_state_size:64
+accuracy:0.9977835059165955, validation accuracy: 0.9887019336223603, learning rate: 0.001, embedding_size: 1024
+The Silhouette score: 0.5739952325820923, iteration number: 5
+-- tweet len:300, epochs:10, batch_size=64, drop_out=0.1, bi_lstm_hidden_state_size:64
+accuracy:0.9970746755599975, validation accuracy: 0.9926391482353211, learning rate: 0.001, embedding_size: 1024
+The Silhouette score: 0.6039917469024658, iteration number: 5
+-- tweet len:400, epochs:10, batch_size=64, drop_out=0.1, bi_lstm_hidden_state_size:64
+accuracy:0.9989992320537567, validation accuracy: 0.9974865198135376, learning rate: 0.001, embedding_size: 1024
+The Silhouette score: 0.6462786197662354, iteration number: 5
+-- tweet len:200, epochs:10, batch_size=128, drop_out=0.1, bi_lstm_hidden_state_size:160
+accuracy:0.9960824728012085, validation accuracy: 0.9838942229747772, learning rate: 0.001, embedding_size: 1024
+The Silhouette score: 0.6062530875205994, iteration number: 5
