@@ -31,9 +31,10 @@ class DataManagement:
                                    c2_anchor_name=c2_anchor_name, c1_test_names=c1_test_names,
                                    c2_test_names=c2_test_names, c3_test_names=c3_test_names)
 
-        # merge each list of (c1, c2) into one numpy list
-        embedded_data_c1 = np.concatenate(embedded_data_c1, axis=0)
-        embedded_data_c2 = np.concatenate(embedded_data_c2, axis=0)
+        if embedding_size != 1024:
+            # merge each list of (c1, c2) into one numpy list
+            embedded_data_c1 = np.concatenate(embedded_data_c1, axis=0)
+            embedded_data_c2 = np.concatenate(embedded_data_c2, axis=0)
 
         return embedded_data_c1, embedded_data_c2, testing_data
 
@@ -48,8 +49,8 @@ class DataManagement:
 
         x_train, s1_len, s2_len = BR.Balancing_DataSet.Balancing_Routine(embedded_data_c1,
                                                          embedded_data_c2,
-                                                         3,
-                                                         3)
+                                                         4,
+                                                         2)
 
         # the first value is gazali(1, 0), the sec is psedo (0, 1)
         y1 = np.tile(np.array([1, 0], dtype='f'), (s1_len, 1))

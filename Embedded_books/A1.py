@@ -63,11 +63,12 @@ class Embed_data_set:
                                                                                       c1_embedded_books_cluster_dir)
             c2_size, c2_embedded_books_array_length = Embed_data_set.get_cluster_size(c2_books_files_names_npy,
                                                                                       c2_embedded_books_cluster_dir)
-            c3_size, c3_embedded_books_array_length = Embed_data_set.get_cluster_size(c3_books_files_names_npy,
-                                                                                      c3_embedded_books_cluster_dir)
+            # c3_size, c3_embedded_books_array_length = Embed_data_set.get_cluster_size(c3_books_files_names_npy,
+            #                                                                           c3_embedded_books_cluster_dir)
 
             # create the main memory array
-            main_array = np.zeros((c1_size + c2_size + c3_size, tweet_size, embedding_size))
+            # main_array = np.zeros((c1_size + c2_size + c3_size, tweet_size, embedding_size))
+            main_array = np.zeros((c1_size + c2_size, tweet_size, embedding_size))
 
             # append the saved files to the main array
             # repeating code for c1, c2, c3
@@ -89,13 +90,16 @@ class Embed_data_set:
             c2_cluster = main_array[begin_idx: start_idx]
             begin_idx = start_idx
 
-            start_idx = Embed_data_set.load_cluster_to_main_array(books_files_names_npy=c3_books_files_names_npy,
-                                                                  embedded_cluster_dir=c3_embedded_books_cluster_dir,
-                                                                  main_array=main_array,
-                                                                  start_idx=start_idx,
-                                                                  embedded_books_array_length=c3_embedded_books_array_length)
-            c3_cluster = main_array[begin_idx: start_idx]
-            begin_idx = start_idx
+            # start_idx = Embed_data_set.load_cluster_to_main_array(books_files_names_npy=c3_books_files_names_npy,
+            #                                                       embedded_cluster_dir=c3_embedded_books_cluster_dir,
+            #                                                       main_array=main_array,
+            #                                                       start_idx=start_idx,
+            #                                                       embedded_books_array_length=c3_embedded_books_array_length)
+            # c3_cluster = main_array[begin_idx: start_idx]
+            # begin_idx = start_idx
+
+            c3_cluster = []
+            Embed_data_set.load_cluster(c3_cluster, c3_books_files_names_npy, c3_embedded_books_cluster_dir)
 
             return c1_cluster, c2_cluster, c3_cluster, c3_books_files_names_txt
 
@@ -170,6 +174,12 @@ class Embed_data_set:
                 length=embedded_books_array_length[idx])
 
         return start_idx
+
+    @staticmethod
+    def load_cluster(c3_cluster, books_files_names_npy, embedded_cluster_dir):
+        for book_name in books_files_names_npy:
+            file_path = embedded_cluster_dir + "\\" + book_name
+            c3_cluster.append(np.load(file_path))
 
     @staticmethod
     def load_npy_file_append_to_main_matrix(file_path, main_array, start_idx, length):
