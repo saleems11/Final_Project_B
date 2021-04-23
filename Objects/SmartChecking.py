@@ -1,25 +1,32 @@
 class SmartChecking:
 
     def __init__(self):
-        self.tweet_size_options = [200, 300]
-        self.bi_lstm_hidden_state_size_min = 32
-        self.bi_lstm_hidden_state_size_max = 32+3*64
+        self.tweet_size_options = [200]
+        # total number of options
+        # 1*2*2*2*2*2*3 =
+        self.bi_lstm_hidden_state_size_min = 2*64
+        self.bi_lstm_hidden_state_size_max = 3*64
         self.bi_lstm_hidden_state_size_jump = 64
+
         self.learning_rate_max = 0.006
-        self.learning_rate_min = 0.001
-        self.learning_rate_jump = 0.0015
-        self.fully_connected_layer_min = 20
+        self.learning_rate_min = 0.004
+        self.learning_rate_jump = 0.002
+
+        self.fully_connected_layer_min = 30
         self.fully_connected_layer_max = 60
-        self.fully_connected_layer_jump = 20
-        self.batch_size_min = 128
-        self.batch_size_max = 320
-        self.batch_size_jump = 64
-        self.epoch_min = 10
-        self.epoch_max = 25
+        self.fully_connected_layer_jump = 30
+
+        self.batch_size_min = 128*1
+        self.batch_size_max = 128*2
+        self.batch_size_jump = 128
+
+        self.epoch_min = 5*2
+        self.epoch_max = 5*3
         self.epoch_jump = 5
+
         self.drop_out_min = 0.3
-        self.drop_out_max = 0.6
-        self.drop_out_jump = 0.1
+        self.drop_out_max = 0.7
+        self.drop_out_jump = 0.2
         """
         0 tweet_size_options
         1 bi_lstm_hidden_state_size

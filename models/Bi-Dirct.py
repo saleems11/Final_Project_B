@@ -23,14 +23,14 @@ if change_your_mail_address:
 
 # parameters
 embedding_size = 1024
-tweet_size = 300
-bi_lstm_hidden_state_size = 192
-drop_out = 0.35
-learning_rate = 0.01
-epoch = 10
-batch_size = 100
-iterations = 5
-fully_connected_layer = 30
+tweet_size = 200
+bi_lstm_hidden_state_size = 160
+drop_out = 0.45
+learning_rate = 0.004
+epoch = 40
+batch_size = 128
+iterations = 1
+fully_connected_layer = 45
 silhouette_threshold = 0.75
 accuracy_thresh_hold = 0.96
 loss_func = 'binary_crossentropy'
@@ -48,27 +48,32 @@ c2_test_names = ["al_Madnun_bihi_ala_ghayri"]
 c3_test_names = ["Mishakat_al_Anwar"]
 
 finished = False
-first_time = True
+prev_tweet_length = -1
 
 smartChecking = SmartChecking()
 
 
 while not finished:
-    parameters = smartChecking.new_parameters_values()
-    tweet_size = parameters[0]
-    bi_lstm_hidden_state_size = parameters[1]
-    learning_rate = parameters[2]
-    fully_connected_layer = parameters[3]
-    batch_size = parameters[4]
-    epoch = parameters[5]
-    drop_out = parameters[6]
+
+    # parameters = smartChecking.new_parameters_values()
+    # tweet_size = parameters[0]
+    # bi_lstm_hidden_state_size = parameters[1]
+    # learning_rate = parameters[2]
+    # fully_connected_layer = parameters[3]
+    # batch_size = parameters[4]
+    # epoch = parameters[5]
+    # drop_out = parameters[6]
 
     score = 0
 
-    c1, c2, testing_data = DM.DataManagement.load_data(tweet_size=tweet_size, embedding_size=embedding_size,
-                                                       c1_anchor_name=c1_anchor_name, c2_anchor_name=c2_anchor_name,
-                                                       c1_test_names=c1_test_names, c2_test_names=c2_test_names,
-                                                       c3_test_names=c3_test_names)
+    if prev_tweet_length == -1 or prev_tweet_length == tweet_size:
+        c1, c2, testing_data = DM.DataManagement.load_data(tweet_size=tweet_size, embedding_size=embedding_size,
+                                                           c1_anchor_name=c1_anchor_name, c2_anchor_name=c2_anchor_name,
+                                                           c1_test_names=c1_test_names, c2_test_names=c2_test_names,
+                                                           c3_test_names=c3_test_names)
+
+    # save the prev tweet size
+    prev_tweet_length = tweet_size
 
 
     lstm = BD_lstm.Bi_Direct_LSTM(bi_lstm_hidden_state_size=bi_lstm_hidden_state_size,
@@ -119,7 +124,7 @@ while not finished:
         print("Running Again")
 
     SR.save_history_data(tweet_size, epoch, batch_size, drop_out, bi_lstm_hidden_state_size,
-                         history, learning_rate, embedding_size, score, iterations)
+                         history, learning_rate, embedding_size, score, iterations, fully_connected_layer)
 
 
 SM.send_mail(receiver, "Al-Ghazali project", "Saleem it had finished calculation")
