@@ -25,11 +25,11 @@ if change_your_mail_address:
 embedding_size = 1024
 tweet_size = 200
 bi_lstm_hidden_state_size = 160
-drop_out = 0.45
+drop_out = 0.4
 learning_rate = 0.004
-epoch = 40
+epoch = 10
 batch_size = 128
-iterations = 1
+iterations = 10
 fully_connected_layer = 45
 silhouette_threshold = 0.75
 accuracy_thresh_hold = 0.96

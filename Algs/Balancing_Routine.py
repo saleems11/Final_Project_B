@@ -2,10 +2,11 @@ import random as rnd
 import numpy as np
 import gc
 
+
 class Balancing_DataSet:
 
     @staticmethod
-    def Balancing_Routine(d1: [ [[int]]], d2: [ [[int]]], f1: int, f2: int):
+    def Balancing_Routine(d1: [[[int]]], d2: [[[int]]], f1: int, f2: int, d1_reduction_factor=0.8):
         """ balance the data set according to f1, f2 randomly\n
         !!!!    clould use numpy for better effeciency  !!!!\n
         d1 and d2 are data set containing the representation of each tweet word
@@ -13,11 +14,11 @@ class Balancing_DataSet:
         multisampling:parameter\n
         random parts of d1, d2 as x_train(s1,s2):returns"""
 
-        if len(d2)>len(d1):
+        if len(d2) > len(d1):
             raise Exception('|d1| must be bigger than |d2|, '
                             '|d1| = {0}, |d2|={1}'.format(len(d1), len(d2)))
 
-        if f1*f2*len(d2)>len(d1):
+        if int(d1_reduction_factor * f1 * f2 * len(d2)) > len(d1):
             raise Exception('f1*f2*|d2|< |d1|'
                             ' The value of f1 was: {0}, The value of f1 was: {1}\n'
                             '|d1| = {2}, |d2|={3}'.format(
@@ -25,7 +26,7 @@ class Balancing_DataSet:
 
         size_of_d1 = len(d1)
         size_of_d2 = len(d2)
-        size_of_s1 = int(size_of_d1/f1)
+        size_of_s1 = int(size_of_d1 / f1)
         d1_rand_indexes = np.random.choice(size_of_d1, size_of_s1, replace=False)
         s1 = d1[d1_rand_indexes]
 
@@ -40,4 +41,4 @@ class Balancing_DataSet:
         del d1
         gc.collect()
 
-        return np.concatenate((s1, np.repeat(d2, f2, axis=0))), len(s1), size_of_d2*f2
+        return np.concatenate((s1, np.repeat(d2, f2, axis=0))), len(s1), size_of_d2 * f2

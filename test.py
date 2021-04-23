@@ -44,9 +44,23 @@ import pandas as pd
 # print(new_lst.head(10))
 
 
-from Objects.SmartChecking import SmartChecking
+# from Objects.SmartChecking import SmartChecking
+#
+# smartChecking = SmartChecking()
+#
+# for i in range(100):
+#     smartChecking.new_parameters_values()
 
-smartChecking = SmartChecking()
 
-for i in range(100):
-    smartChecking.new_parameters_values()
+# import numpy as np
+#
+# ar = np.array([[1, 2], [2, 1]])
+# fill = np.zeros((10, 2))
+# fill[0:0+ar.shape[0]] = ar
+# print(fill)
+
+lst = [1, 2]
+dst = [4, 5]
+
+for x,y in zip(lst, dst):
+    print(str(x) + ", " + str(y))

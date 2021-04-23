@@ -25,7 +25,7 @@ print(embedded_data_c2.shape)
 s1,s2 = BR.Balancing_DataSet.Balancing_Routine(embedded_data_c1,
                                        embedded_data_c2,
                                        3,
-                                       2)
+                                       3)
 
 
 print("C1 -shape after balancing ={0}, before balancing ={1}".format(str(s1.shape),

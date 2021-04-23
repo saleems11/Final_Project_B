@@ -3,6 +3,7 @@ import gc
 import Algs.Balancing_Routine as BR
 import numpy as np
 from Embedded_books.Embed_dataSet import Embed_DataSet
+from Embedded_books.A1 import Embed_data_set
 from Objects.TestingData import TestingData
 
 
@@ -19,8 +20,12 @@ class DataManagement:
         """ The code here is better optimized for loading random dataSet for each different time, and better for
         Existing file that doesn't requires embedding them again"""
 
+        # embedded_data_c1, embedded_data_c2, embedded_data_c3, c3_books_names = \
+        #     Embed_DataSet.Embed_DataSet(embedding_size=embedding_size, tweet_size=tweet_size)
+
+        # more memory efficient
         embedded_data_c1, embedded_data_c2, embedded_data_c3, c3_books_names = \
-            Embed_DataSet.Embed_DataSet(embedding_size=embedding_size, tweet_size=tweet_size)
+            Embed_data_set.embed_data_set(embedding_size=embedding_size, tweet_size=tweet_size)
 
         testing_data = TestingData(c3=embedded_data_c3, c3_books_names=c3_books_names, c1_anchor_name=c1_anchor_name,
                                    c2_anchor_name=c2_anchor_name, c1_test_names=c1_test_names,
@@ -44,7 +49,7 @@ class DataManagement:
         x_train, s1_len, s2_len = BR.Balancing_DataSet.Balancing_Routine(embedded_data_c1,
                                                          embedded_data_c2,
                                                          3,
-                                                         2)
+                                                         3)
 
         # the first value is gazali(1, 0), the sec is psedo (0, 1)
         y1 = np.tile(np.array([1, 0], dtype='f'), (s1_len, 1))
@@ -55,11 +60,11 @@ class DataManagement:
         # x_train = np.concatenate((x_train, s2))
 
         y_train = y1
-        del y1
+        # del y1
         del embedded_data_c1
         del embedded_data_c2
         y_train = np.concatenate((y_train, y2))
-        del y2
+        # del y2
         # free the garbage
         gc.collect()
 
