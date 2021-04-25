@@ -22,7 +22,7 @@ if change_your_mail_address:
     exit()
 
 # parameters
-embedding_size = 300
+embedding_size = 1024
 tweet_size = 200
 bi_lstm_hidden_state_size = 160
 drop_out = 0.4

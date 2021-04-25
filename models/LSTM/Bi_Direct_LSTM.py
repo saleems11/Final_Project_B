@@ -1,6 +1,7 @@
 import tensorflow as tf
 from keras.models import Sequential
-from keras.layers import LSTM
+from keras.layers import LSTM, Conv1D
+from keras.layers import MaxPooling1D
 from keras.layers import Dense
 from keras.layers import Dropout
 from keras.layers import Bidirectional
@@ -41,10 +42,20 @@ class Bi_Direct_LSTM:
         softMax).\n
         (for the LSTM model there is a need to reset the hidden and cell state after
         each epoch and that is done when creating the model with the parameter stateful=False)"""
+        pool_size = 4
+        filters = 256
+        strides = 1
         model = Sequential()
+
+        model.add(Conv1D(filters=filters, kernel_size=5, padding='same', activation='relu',
+                         input_shape=(None, embedding_size)))
+        model.add(MaxPooling1D(pool_size=pool_size, strides=strides))
+
+        max_pool_output_shape = ((filters - pool_size + 1) / strides)
+
         model.add(Bidirectional(
             LSTM(units=bi_lstm_hidden_state_size, return_sequences=False, stateful=False),
-            input_shape=(tweet_length, embedding_size),
+            input_shape=(tweet_length, max_pool_output_shape),
             merge_mode="concat"))
 
         model.add(Dropout(drop_out))
