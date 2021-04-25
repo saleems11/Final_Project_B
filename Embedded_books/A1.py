@@ -106,7 +106,9 @@ class Embed_data_set:
 
         elif embedding_size == 300 or embedding_size == 100:
             # just embed and save
-            c1_cluster, c2_cluster, c3_cluster = []
+            c1_cluster = []
+            c2_cluster = []
+            c3_cluster = []
 
             # c1
             un_embedded_book_cluster_path = Documents_utils.c1
