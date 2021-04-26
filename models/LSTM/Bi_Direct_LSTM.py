@@ -1,9 +1,9 @@
 import tensorflow as tf
 from keras.models import Sequential
-from keras.layers import LSTM, Conv1D
-from keras.layers import MaxPooling1D
+from keras.layers import LSTM, Conv2D
 from keras.layers import Dense
 from keras.layers import Dropout
+from keras.layers import GlobalMaxPooling2D, Reshape, Permute, Concatenate
 from keras.layers import Bidirectional
 
 from pandas import DataFrame
@@ -42,38 +42,52 @@ class Bi_Direct_LSTM:
         softMax).\n
         (for the LSTM model there is a need to reset the hidden and cell state after
         each epoch and that is done when creating the model with the parameter stateful=False)"""
-        pool_size = 2
-        filters = 256
-        strides = 1
-        model = Sequential()
 
-        model.add(Conv1D(filters=1, kernel_size=7, strides=1, padding='valid', activation='relu',
-                         input_shape=(tweet_length, embedding_size)))
-        model.add(MaxPooling1D(pool_size=pool_size))
+        words_combination_len = 5
+        filters = 64
 
-        # (out_size - pool_size +1)/strides
+        """ Multi kernel sizes"""
+        submodels = []
+        for kw in (3, 4, 5):  # kernel sizes
+            submodel = Sequential()
+            submodel.add(Conv2D(filters=filters, kernel_size=(kw, embedding_size), padding="valid",
+                                activation="relu", input_shape=(tweet_length, embedding_size, 1)))
+            # submodel.add(GlobalMaxPooling2D())
+            # submodel.add(Reshape((model.output_shape[1], model.output_shape[3])))
+            # submodel.add(Permute((2, 1)))
+            submodels.append(submodel)
 
-        # without input shape
-        model.add(Bidirectional(
+        big_model = Sequential()
+        big_model.add(Concatenate(submodels))
+
+        # input is None tweets, the model will be applied to each tweet of shape tweet_len, embedding_size => 200, 1024
+        # then the CNN will be applied to to multiple words together
+        # model.add(
+        #     Conv2D(filters=filters, kernel_size=(words_combination_len, embedding_size), padding="valid",
+        #            activation="relu", input_shape=(tweet_length, embedding_size, 1)))
+        #
+        big_model.add(Reshape((big_model.output_shape[1], big_model.output_shape[3])))
+        big_model.add(Permute((2, 1)))
+        # result shape (tweet_length - 10 + 1)/stride, filters=32
+
+        # model.add(MaxPooling2D(pool_size=(10, embedding_size)))
+
+        big_model.add(Bidirectional(
             LSTM(units=bi_lstm_hidden_state_size, return_sequences=False, stateful=False),
+            input_shape=(tweet_length, embedding_size),
             merge_mode="concat"))
 
-        # model.add(Bidirectional(
-        #     LSTM(units=bi_lstm_hidden_state_size, return_sequences=False, stateful=False),
-        #     input_shape=(tweet_length, max_pool_output_shape),
-        #     merge_mode="concat"))
+        big_model.add(Dropout(drop_out))
+        big_model.add(Dense(fully_connected_layer, activation='relu'))
+        big_model.add(Dropout(drop_out))
+        big_model.add(Dense(2, activation='softmax'))
 
-        model.add(Dropout(drop_out))
-        model.add(Dense(fully_connected_layer, activation='relu'))
-        model.add(Dropout(drop_out))
-        model.add(Dense(2, activation='softmax'))
-
-        print(model.summary())
+        print(big_model.summary())
         # opt = tf.keras.optimizers.SGD(learning_rate=learning_rate, momentum=0.95, decay=0.01)
         opt = tf.keras.optimizers.Adam(learning_rate=learning_rate)
-        model.compile(loss=loss_func, optimizer=opt, metrics=['accuracy'])
+        big_model.compile(loss=loss_func, optimizer=opt, metrics=['accuracy'])
 
-        return model
+        return big_model
 
     @staticmethod
     def train_test_for_iteration(model, c1, c2, testing_data, epoch, batch_size, iterations,
@@ -89,6 +103,10 @@ class Bi_Direct_LSTM:
 
         while iterations > 0:
             x_train, y_train = DM.DataManagement.create_new_batch(c1, c2)
+
+            # for the CNN
+            x_train = np.reshape(x_train, np.append(x_train.shape, 1))
+
             history = model.fit(x_train, y_train, validation_split=.30, epochs=epoch, batch_size=batch_size, verbose=1)
 
             if history.history['accuracy'][-1] >= accuracy_thresh_hold:
@@ -136,6 +154,11 @@ class Bi_Direct_LSTM:
         predictions_list = []
         for data in data_list:
             prediction_res = np.zeros(shape=(2,))
+
+            # for the CNN
+            # add chanel dim
+            data = np.reshape(data, np.append(data.shape, 1))
+
             predictions = model.predict(data)
             for prediction in predictions:
                 prediction_res = np.add(prediction_res, prediction)
