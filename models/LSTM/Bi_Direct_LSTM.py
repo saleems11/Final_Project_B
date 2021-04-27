@@ -41,20 +41,33 @@ class Bi_Direct_LSTM:
         softMax).\n
         (for the LSTM model there is a need to reset the hidden and cell state after
         each epoch and that is done when creating the model with the parameter stateful=False)"""
+
         model = Sequential()
+
+        # model.add(Bidirectional(
+        #     LSTM(units=bi_lstm_hidden_state_size, return_sequences=False, stateful=False),
+        #     input_shape=(tweet_length, embedding_size),
+        #     merge_mode="concat"))
+
         model.add(Bidirectional(
-            LSTM(units=bi_lstm_hidden_state_size, return_sequences=False, stateful=False),
+            LSTM(units=bi_lstm_hidden_state_size, return_sequences=True, stateful=False),
             input_shape=(tweet_length, embedding_size),
             merge_mode="concat"))
 
         model.add(Dropout(drop_out))
-        model.add(Dense(fully_connected_layer, activation='relu'))
+
+        model.add(Bidirectional(
+            LSTM(units=bi_lstm_hidden_state_size, return_sequences=False, stateful=False),
+            merge_mode="concat"))
+
+        model.add(Dropout(drop_out))
+        model.add(Dense(fully_connected_layer, activation='tanh'))
         model.add(Dropout(drop_out))
         model.add(Dense(2, activation='softmax'))
 
         print(model.summary())
-        # opt = tf.keras.optimizers.SGD(learning_rate=learning_rate, momentum=0.95, decay=0.01)
-        opt = tf.keras.optimizers.Adam(learning_rate=learning_rate)
+        opt = tf.keras.optimizers.SGD(learning_rate=learning_rate, momentum=0.95, decay=0.01)
+        # opt = tf.keras.optimizers.Adam(learning_rate=learning_rate)
         model.compile(loss=loss_func, optimizer=opt, metrics=['accuracy'])
 
         return model
@@ -73,12 +86,13 @@ class Bi_Direct_LSTM:
 
         while iterations > 0:
             x_train, y_train = DM.DataManagement.create_new_batch(c1, c2)
-            history = model.fit(x_train, y_train, validation_split=.30, epochs=epoch, batch_size=batch_size, verbose=1)
+            history = model.fit(x_train, y_train, validation_split=.15, epochs=epoch, batch_size=batch_size,
+                                verbose=1, shuffle=True)
 
             if history.history['accuracy'][-1] >= accuracy_thresh_hold:
                 # test the model if the wanted accuracy is achieved
                 iterations -= 1
-
+                print("remaining number of iterations {0}".format(iterations))
                 M.append(Bi_Direct_LSTM.test_model(model, testing_data.anchor_c1, testing_data.anchor_c2,
                                                    testing_data.c1_test, testing_data.c2_test, testing_data.c3_test))
 

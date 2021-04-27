@@ -49,7 +49,7 @@ class DataManagement:
 
         x_train, s1_len, s2_len = BR.Balancing_DataSet.Balancing_Routine(embedded_data_c1,
                                                          embedded_data_c2,
-                                                         4,
+                                                         3,
                                                          2)
 
         # the first value is gazali(1, 0), the sec is psedo (0, 1)
@@ -70,8 +70,8 @@ class DataManagement:
         gc.collect()
 
         # Random permutation shuffling
-        p = np.random.permutation(len(x_train))
-        x_train = x_train[p]
-        y_train = y_train[p]
+        # p = np.random.permutation(len(x_train))
+        # x_train = x_train[p]
+        # y_train = y_train[p]
 
         return x_train, y_train

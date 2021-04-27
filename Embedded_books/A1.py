@@ -68,7 +68,7 @@ class Embed_data_set:
 
             # create the main memory array
             # main_array = np.zeros((c1_size + c2_size + c3_size, tweet_size, embedding_size))
-            main_array = np.zeros((c1_size + c2_size, tweet_size, embedding_size))
+            main_array = np.zeros((c1_size + c2_size, tweet_size, embedding_size), dtype='f')
 
             # append the saved files to the main array
             # repeating code for c1, c2, c3

@@ -22,16 +22,16 @@ if change_your_mail_address:
     exit()
 
 # parameters
-embedding_size = 300
+embedding_size = 1024
 tweet_size = 200
-bi_lstm_hidden_state_size = 160
-drop_out = 0.4
-learning_rate = 0.004
-epoch = 10
-batch_size = 128
+bi_lstm_hidden_state_size = 128
+drop_out = 0.35
+learning_rate = 0.01
+epoch = 8
+batch_size = 100
 iterations = 10
-fully_connected_layer = 45
-silhouette_threshold = 0.75
+fully_connected_layer = 32
+silhouette_threshold = 0.45
 accuracy_thresh_hold = 0.96
 loss_func = 'binary_crossentropy'
 # losses.
