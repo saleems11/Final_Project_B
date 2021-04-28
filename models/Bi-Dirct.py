@@ -52,7 +52,6 @@ prev_tweet_length = -1
 
 smartChecking = SmartChecking()
 
-
 while not finished:
 
     # parameters = smartChecking.new_parameters_values()
@@ -75,7 +74,6 @@ while not finished:
     # save the prev tweet size
     prev_tweet_length = tweet_size
 
-
     lstm = BD_lstm.Bi_Direct_LSTM(bi_lstm_hidden_state_size=bi_lstm_hidden_state_size,
                                   tweet_length=tweet_size,
                                   embedding_size=embedding_size,
@@ -87,7 +85,8 @@ while not finished:
     history, M, model = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(model=lstm.model, c1=c1, c2=c2,
                                                                         testing_data=testing_data, epoch=epoch,
                                                                         batch_size=batch_size, iterations=iterations,
-                                                                        accuracy_thresh_hold=accuracy_thresh_hold)
+                                                                        accuracy_thresh_hold=accuracy_thresh_hold,
+                                                                        f1=3, f2=2)
 
     lstm.model = model
     if len(M) == 0:
@@ -125,6 +124,5 @@ while not finished:
 
     SR.save_history_data(tweet_size, epoch, batch_size, drop_out, bi_lstm_hidden_state_size,
                          history, learning_rate, embedding_size, score, iterations, fully_connected_layer)
-
 
 SM.send_mail(receiver, "Al-Ghazali project", "Saleem it had finished calculation")

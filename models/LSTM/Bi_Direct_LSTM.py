@@ -61,7 +61,7 @@ class Bi_Direct_LSTM:
 
     @staticmethod
     def train_test_for_iteration(model, c1, c2, testing_data, epoch, batch_size, iterations,
-                                 accuracy_thresh_hold):
+                                 accuracy_thresh_hold, f1, f2):
         """Train the model for n epochs and then check it with 0.3 of the data (validation), the model accuracy
         is checked if it achieve the wanted accuracy test will run and saved in M.\n
         The data for testing the anchor is divided that they contain in the first place
@@ -72,7 +72,7 @@ class Bi_Direct_LSTM:
         result = DataFrame()
 
         while iterations > 0:
-            x_train, y_train = DM.DataManagement.create_new_batch(c1, c2)
+            x_train, y_train = DM.DataManagement.create_new_batch(c1, c2, f1, f2)
             history = model.fit(x_train, y_train, validation_split=.30, epochs=epoch, batch_size=batch_size, verbose=1)
 
             if history.history['accuracy'][-1] >= accuracy_thresh_hold:

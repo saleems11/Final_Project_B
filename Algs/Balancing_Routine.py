@@ -6,7 +6,7 @@ import gc
 class Balancing_DataSet:
 
     @staticmethod
-    def Balancing_Routine(d1: [[[int]]], d2: [[[int]]], f1: int, f2: int, d1_reduction_factor=0.8):
+    def Balancing_Routine(d1: [[[int]]], d2: [[[int]]], f1: int, f2: int, reduction_factor=0.8):
         """ balance the data set according to f1, f2 randomly\n
         !!!!    clould use numpy for better effeciency  !!!!\n
         d1 and d2 are data set containing the representation of each tweet word
@@ -18,7 +18,7 @@ class Balancing_DataSet:
             raise Exception('|d1| must be bigger than |d2|, '
                             '|d1| = {0}, |d2|={1}'.format(len(d1), len(d2)))
 
-        if int(d1_reduction_factor * f1 * f2 * len(d2)) > len(d1):
+        if int(f1 * f2 * len(d2)) > len(d1):
             raise Exception('f1*f2*|d2|< |d1|'
                             ' The value of f1 was: {0}, The value of f1 was: {1}\n'
                             '|d1| = {2}, |d2|={3}'.format(
@@ -26,9 +26,18 @@ class Balancing_DataSet:
 
         size_of_d1 = len(d1)
         size_of_d2 = len(d2)
-        size_of_s1 = int(size_of_d1 / f1)
-        d1_rand_indexes = np.random.choice(size_of_d1, size_of_s1, replace=False)
+
+        s2 = np.repeat(d2, f2 * f1, axis=0)
+        size_of_s2 = len(s2)
+
+        # free d2
+        del d2
+
+        d1_rand_indexes = np.random.choice(size_of_d1, size_of_s2, replace=False)
         s1 = d1[d1_rand_indexes]
+
+        # free d1
+        del d1
 
         # d1_rand_indexes = rnd.sample(range(0,size_of_d1), size_of_s1)
         # s1 = np.empty(shape=(size_of_s1, len(d1[0]), len(d1[0][0])), dtype='f')
@@ -37,8 +46,7 @@ class Balancing_DataSet:
         # for i, index in enumerate(d1_rand_indexes):
         #     s1[i] = d1[index]
 
-        # free d1
-        del d1
+        # free the memory by calling garbage collector
         gc.collect()
 
-        return np.concatenate((s1, np.repeat(d2, f2, axis=0))), len(s1), size_of_d2 * f2
+        return np.concatenate((s1, s2)), len(s1), len(s2)

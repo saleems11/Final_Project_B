@@ -101,7 +101,7 @@ class Embed_data_set:
             c3_cluster = []
             Embed_data_set.load_cluster(c3_cluster, c3_books_files_names_npy, c3_embedded_books_cluster_dir)
 
-            return c1_cluster, c2_cluster, c3_cluster, c3_books_files_names_txt
+            return c1_cluster, c2_cluster, c3_cluster, c3_books_files_names_txt, c1_size, c2_size
 
 
         elif embedding_size == 300 or embedding_size == 100:

@@ -24,7 +24,8 @@ class DataManagement:
         #     Embed_DataSet.Embed_DataSet(embedding_size=embedding_size, tweet_size=tweet_size)
 
         # more memory efficient
-        embedded_data_c1, embedded_data_c2, embedded_data_c3, c3_books_names = \
+        # the sizes for c1 and c2 for checking if the input of f1, f2 are valid
+        embedded_data_c1, embedded_data_c2, embedded_data_c3, c3_books_names, c1_size, c2_size = \
             Embed_data_set.embed_data_set(embedding_size=embedding_size, tweet_size=tweet_size)
 
         testing_data = TestingData(c3=embedded_data_c3, c3_books_names=c3_books_names, c1_anchor_name=c1_anchor_name,
@@ -40,7 +41,7 @@ class DataManagement:
 
 
     @staticmethod
-    def create_new_batch(embedded_data_c1, embedded_data_c2):
+    def create_new_batch(embedded_data_c1, embedded_data_c2, f1=3, f2=2):
         # Now lets balance the data
         # s1, s2 = BR.Balancing_DataSet.Balancing_Routine(embedded_data_c1,
         #                                                 embedded_data_c2,
@@ -49,8 +50,8 @@ class DataManagement:
 
         x_train, s1_len, s2_len = BR.Balancing_DataSet.Balancing_Routine(embedded_data_c1,
                                                          embedded_data_c2,
-                                                         4,
-                                                         2)
+                                                         f1=f1,
+                                                         f2=f2)
 
         # the first value is gazali(1, 0), the sec is psedo (0, 1)
         y1 = np.tile(np.array([1, 0], dtype='f'), (s1_len, 1))
