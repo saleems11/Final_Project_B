@@ -7,6 +7,8 @@ import models.LSTM.Bi_Direct_LSTM as BD_lstm
 import models.LoadingBalancingData.DataManagement as DM
 import models.K_means_Siluete.K_means_Siluete as KMS
 import models.LSTM.Save_results as SR
+
+from Show_results import Heat_map, Book_chunks_labels, Error_bar, Histograms
 from Exceptions.Exceptions import SilhouetteBellowThreshold, AnchorsInSameCluster
 import keras.losses as losses
 import Tests.send_mail as SM
@@ -24,15 +26,15 @@ if change_your_mail_address:
 # parameters
 embedding_size = 1024
 tweet_size = 200
-bi_lstm_hidden_state_size = 200
-drop_out = 0.4
+bi_lstm_hidden_state_size = 160
+drop_out = 0.3
 learning_rate = 0.001
 epoch = 10
 batch_size = 100
-iterations = 1
+iterations = 10
 fully_connected_layer = 30
 silhouette_threshold = 0.45
-accuracy_thresh_hold = 0.96
+accuracy_thresh_hold = 0.46
 loss_func = 'binary_crossentropy'
 # losses.
 # binary_crossentropy, categorical_crossentropy
@@ -82,13 +84,13 @@ while not finished:
                                   learning_rate=learning_rate,
                                   loss_func=loss_func)
 
-    history, M, model = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(model=lstm.model, c1=c1, c2=c2,
-                                                                        testing_data=testing_data, epoch=epoch,
-                                                                        batch_size=batch_size, iterations=iterations,
-                                                                        accuracy_thresh_hold=accuracy_thresh_hold,
-                                                                        f1=3, f2=2)
+    history, M = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(model=lstm.model, c1=c1, c2=c2,
+                                                                 testing_data=testing_data, epoch=epoch,
+                                                                 batch_size=batch_size, iterations=iterations,
+                                                                 accuracy_thresh_hold=accuracy_thresh_hold,
+                                                                 f1=3, f2=2)
 
-    lstm.model = model
+    # lstm.model = model
     if len(M) == 0:
         print("M len is zero")
     M = np.concatenate(M, axis=0)
@@ -101,13 +103,30 @@ while not finished:
         score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans,
                                iteration_size=testing_data.iteration_size, silhouette_threshold=silhouette_threshold)
 
-        # save the model
-        lstm.model.save("book_classification_dim_%d_sil_%.2f_%d_itter" % (embedding_size, score, iterations))
-
         SR.save_history_data(tweet_size, epoch, batch_size, drop_out, bi_lstm_hidden_state_size,
-                             history, learning_rate, embedding_size, score)
+                             history, learning_rate, embedding_size, score, iterations, fully_connected_layer)
         finished = True
 
+        # # show the heat map
+        # Heat_map.create_heat_map(Heat_map.convert_M_to_heat_map(M=M, iteration_size=testing_data.iteration_size))
+        #
+        # # show Error_bar
+        # # Error_bar.create_error_bar(["hello", "how", "hi"], [10, 12, 13], 11, 12, 10, "Testing", [[1, 2, 3], [3, 1, 1]])
+        # books_names, books_mean_values_over_all_iter, books_error_down_values_over_all_iter, \
+        # books_error_up_values_over_all_iter, books_mean_values_over_all_iter, c1_mean_val, c2_mean_val, mean_val\
+        #     = testing_data.get_error_bar_data()
+        #
+        # Error_bar.Error_bar.create_error_bar(x=books_names,
+        #                                      y=books_mean_values_over_all_iter,
+        #                                      y_mean=mean_val,
+        #                                      y_mean_c1=c1_mean_val,
+        #                                      y_mean_c2=c2_mean_val,
+        #                                      label="Books Error Bar",
+        #                                      asymmetric_y_error=[books_error_down_values_over_all_iter,
+        #                                                          books_error_up_values_over_all_iter])
+
+        # save the model
+        # lstm.model.save("book_classification_dim_%d_sil_%.2f_%d_itter" % (embedding_size, score, iterations))
 
 
     except SilhouetteBellowThreshold as e:
@@ -118,7 +137,42 @@ while not finished:
         # SM.send_mail(receiver, "Al-Ghazali project", str(e))
         print(str(e) + '\n' + traceback.format_exc())
     finally:
-        plt.close('all')
+        # show the heat map
+        Heat_map.Heat_map.create_heat_map(
+            Heat_map.Heat_map.convert_M_to_heat_map(M=M, iteration_size=testing_data.iteration_size))
+
+        books_names, books_mean_values_over_all_iter, books_error_down_values_over_all_iter, \
+        books_error_up_values_over_all_iter, books_mean_values_over_all_iter, c1_mean_val, c2_mean_val, mean_val \
+            = testing_data.get_error_bar_data()
+
+        Error_bar.Error_bar.create_error_bar(x=books_names,
+                                             y=books_mean_values_over_all_iter,
+                                             y_mean=mean_val,
+                                             y_mean_c1=c1_mean_val,
+                                             y_mean_c2=c2_mean_val,
+                                             label="Books Error Bar",
+                                             asymmetric_y_error=[books_error_down_values_over_all_iter,
+                                                                 books_error_up_values_over_all_iter])
+
+
+        # this must return new array withou changing the sended array
+        testing_data.set_book_mean_prediction_val_over_iter(testing_data.books[0])
+
+        # book_chunks labels
+        Book_chunks_labels.Book_chunks_labels.create_book_over_iterations_chunks_labels(
+            testing_data.books[0].mean_of_mean_prediction_res_over_iter,
+            testing_data.books[0].book_name + ' prediction')
+
+        Book_chunks_labels.Book_chunks_labels.round_to_three_values(testing_data.books[0].mean_of_mean_prediction_res_over_iter, 0,
+                                                                    0.5, 1)
+        Book_chunks_labels.Book_chunks_labels.create_book_over_iterations_chunks_labels(
+            testing_data.books[0].mean_of_mean_prediction_res_over_iter,
+            testing_data.books[0].book_name + ' labels')
+
+        # hitogram
+        Histograms.Histograms.create_Histograms(M, "hello")
+
+        # plt.close('all')
         sleep(10)
         print("Running Again")
 

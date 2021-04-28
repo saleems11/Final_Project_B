@@ -9,10 +9,11 @@ class Error_bar:
         X: for book index or books names,
         y: is the y value for the specific book,
         label: is string for the name of the plot,
-        asymmetric_y_error: [+y, -y] the error for the y value,
-        from the top and the bottom, input structure [[y+,..], [y-,..]]"""
+        asymmetric_y_error: [-y, +y] the error for the y value,
+        from the top and the bottom, input structure [[y-,..], [y+,..]]"""
         # ax = plt.subplots()
 
+        plt.figure()
         plt.scatter(x, y, label=label)
         plt.errorbar(x, y, yerr=asymmetric_y_error)
 
@@ -29,4 +30,7 @@ class Error_bar:
 
 
 if __name__ == "__main__":
-    Error_bar.create_error_bar(["hello", "how", "hi"], [10, 12, 13], 11, 12, 10, "Testing", [[1, 2, 3], [3, 1, 1]])
+    c1_test_names = ["Al_Mustasfa_min_ilm_al_Usul", "Fada_ih_al_Batiniyya_wa_Fada_il_al_Mustazhiriyy",
+                     "Faysal_at_Tafriqa_Bayna_al_Islam_wa_al_Zandaqa", "al_iqtisad_fi_al_itiqad",
+                     "Iljam_Al_Awamm_an_Ilm_Al_Kalam"]
+    Error_bar.create_error_bar(c1_test_names, [10, 12, 13, 15, 16], 11, 12, 10, "Testing", [[1, 2, 3, 4, 5], [3, 1, 1, 2, 1]])

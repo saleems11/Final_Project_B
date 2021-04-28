@@ -78,6 +78,7 @@ class Bi_Direct_LSTM:
             if history.history['accuracy'][-1] >= accuracy_thresh_hold:
                 # test the model if the wanted accuracy is achieved
                 iterations -= 1
+                print("Remaining iterations to run %d"%iterations)
 
                 M.append(Bi_Direct_LSTM.test_model(model, testing_data.anchor_c1, testing_data.anchor_c2,
                                                    testing_data.c1_test, testing_data.c2_test, testing_data.c3_test))
@@ -89,11 +90,12 @@ class Bi_Direct_LSTM:
 
             # model.reset_states()
 
+
         # plot the result
         result.plot()
         plt.show(block=False)
 
-        return history, M, model
+        return history, M
 
     @staticmethod
     def test_model(model, anchor_c1, anchor_c2, c1, c2, c3):
@@ -114,16 +116,18 @@ class Bi_Direct_LSTM:
         return np.concatenate((prediction_t, c3_prediction), axis=0)
 
     @staticmethod
-    def make_prediction(model, data_list):
-        """The method receive a list of books data and run on each book and get the mean values
+    def make_prediction(model, books_list):
+        """The method receive a list of book object and run on each book and get the mean values
         for all the predictions, it return the result as numpy array"""
         predictions_list = []
-        for data in data_list:
-            prediction_res = np.zeros(shape=(2,))
-            predictions = model.predict(data)
+        for idx in range(len(books_list)):
+            prediction_res = 0
+            predictions = model.predict(books_list[idx].embedded_data)
             for prediction in predictions:
-                prediction_res = np.add(prediction_res, prediction)
+                prediction_res += prediction[0]
 
-            predictions_list.append(prediction_res / len(data))
+            mean_predictions = prediction_res / len(books_list[idx].embedded_data)
+            books_list[idx].add_prediction_res(predictions=predictions, mean_predictions=mean_predictions)
+            predictions_list.append(mean_predictions)
 
         return np.array(predictions_list, dtype='f')

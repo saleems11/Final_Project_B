@@ -59,8 +59,32 @@ import pandas as pd
 # fill[0:0+ar.shape[0]] = ar
 # print(fill)
 
-lst = [1, 2]
-dst = [4, 5]
+# lst = [1, 2]
+# dst = [4, 5]
+#
+# for x,y in zip(lst, dst):
+#     print(str(x) + ", " + str(y))
 
-for x,y in zip(lst, dst):
-    print(str(x) + ", " + str(y))
+# a = {'a':'abc', 'b':'xyz'}
+# print(a['a'])
+
+# import numpy as np
+#
+# a = np.array([1, 2, 5, 10])
+#
+# print(a.max())
+
+# from Objects.Book import Book
+#
+# a= []
+# a.append(Book(0,0,0))
+#
+# for book in a:
+#     book.add_label(0)
+#
+# print(a[0].label)
+
+import numpy as np
+
+a = np.array([1,2,3])
+print(np.divide(a, 2))

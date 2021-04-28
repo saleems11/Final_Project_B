@@ -16,7 +16,7 @@ class Book_chunks_labels:
         plt.title('labels of each chunk in %s book' % book_name)
         plt.ylabel("label")
         plt.xlabel("Chunks")
-        plt.show()
+        plt.show(block=False)
 
     @staticmethod
     def create_book_over_iterations_chunks_labels(y_data, book_name, interval_percent=0.7):
@@ -28,13 +28,13 @@ class Book_chunks_labels:
         book_name: is the book_name"""
         interval = int(len(y_data) * interval_percent)
 
-        plt.plot(y_data, label='Avg values')
+        plt.plot(y_data, label='Avg values', color='blue', alpha=0.5)
         plt.title('labels of each chunk in %s book' % book_name)
 
         a_BSpline = interpolate.make_interp_spline([i for i in range(len(y_data))], y_data)
         x_new = linspace(1, interval, len(y_data))
         y_smooth = a_BSpline(x_new)
-        plt.plot(y_smooth, label='Smoothed Avg values')
+        plt.plot(y_smooth, label='Smoothed Avg values', color='red', alpha=0.3)
 
         plt.legend()
         plt.show()
@@ -51,6 +51,8 @@ class Book_chunks_labels:
                 array[i] = mid_val
             else:
                 array[i] = max_val
+
+
 
 
 if __name__ == "__main__":
