@@ -34,7 +34,7 @@ batch_size = 100
 iterations = 10
 fully_connected_layer = 30
 silhouette_threshold = 0.45
-accuracy_thresh_hold = 0.46
+accuracy_thresh_hold = 0.96
 loss_func = 'binary_crossentropy'
 # losses.
 # binary_crossentropy, categorical_crossentropy
@@ -154,8 +154,6 @@ while not finished:
                                              asymmetric_y_error=[books_error_down_values_over_all_iter,
                                                                  books_error_up_values_over_all_iter])
 
-
-        # this must return new array withou changing the sended array
         testing_data.set_book_mean_prediction_val_over_iter(testing_data.books[0])
 
         # book_chunks labels
@@ -163,14 +161,16 @@ while not finished:
             testing_data.books[0].mean_of_mean_prediction_res_over_iter,
             testing_data.books[0].book_name + ' prediction')
 
-        Book_chunks_labels.Book_chunks_labels.round_to_three_values(testing_data.books[0].mean_of_mean_prediction_res_over_iter, 0,
-                                                                    0.5, 1)
+        rounded_array = Book_chunks_labels.Book_chunks_labels.round_to_three_values(
+            testing_data.books[0].mean_of_mean_prediction_res_over_iter, 0,
+            0.5, 1)
+
         Book_chunks_labels.Book_chunks_labels.create_book_over_iterations_chunks_labels(
-            testing_data.books[0].mean_of_mean_prediction_res_over_iter,
-            testing_data.books[0].book_name + ' labels')
+            rounded_array, testing_data.books[0].book_name + ' labels')
 
         # hitogram
-        Histograms.Histograms.create_Histograms(M, "hello")
+        Histograms.Histograms.create_Histograms(testing_data.books[0].mean_of_mean_prediction_res_over_iter,
+                                                testing_data.books[0].book_name)
 
         # plt.close('all')
         sleep(10)

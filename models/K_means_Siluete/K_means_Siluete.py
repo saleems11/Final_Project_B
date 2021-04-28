@@ -8,6 +8,7 @@ from Exceptions.Exceptions import AnchorsInSameCluster, SilhouetteBellowThreshol
 
 
 def calculate_plot_Kmeans(M, iteration_size, testing_data):
+    plt.figure()
     kmeans = KMeans(n_clusters=2)
 
     labels = kmeans.fit_predict(M.reshape(-1, 1))
@@ -38,7 +39,6 @@ def calculate_plot_Kmeans(M, iteration_size, testing_data):
     # plot the center of the data
     plt.scatter(centers[:], [0]*len(centers), c='black', s=200, alpha=0.3)
 
-    # plt.figure()
     plt.show(block=False)
     # create new figure
 

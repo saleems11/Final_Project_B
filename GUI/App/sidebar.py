@@ -6,7 +6,7 @@ side_bar_tab_list = []
 
 class SideBar(ScrollBar):
     def __init__(self, parent, *args, **kwargs):
-        ScrollBar.__init__(self, parent)
+        ScrollBar.__init__(self, parent, args[0], args[1])
         self.color = "#232323"
 
     def finish(self):

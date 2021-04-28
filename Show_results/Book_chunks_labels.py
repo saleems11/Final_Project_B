@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from scipy import interpolate
 from numpy import linspace
 from numpy.random import random
+import numpy as np
 
 
 class Book_chunks_labels:
@@ -44,13 +45,16 @@ class Book_chunks_labels:
         first_mid_val = (min_val + mid_val) / 2.0
         second_mid_val = (max_val + mid_val) / 2.0
 
+        res_array = np.zeros((len(array)))
         for i in range(len(array)):
             if array[i] < first_mid_val:
-                array[i] = min_val
+                res_array[i] = min_val
             elif array[i] < second_mid_val:
-                array[i] = mid_val
+                res_array[i] = mid_val
             else:
-                array[i] = max_val
+                res_array[i] = max_val
+
+        return res_array
 
 
 
