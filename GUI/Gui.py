@@ -4,13 +4,19 @@ from GUI.App.pages.ShowResultsPage import ShowResultsPage
 
 root = Tk()
 root.resizable(False, False)
-root.geometry("750x510")
-main_frame = Frame(root, bg="grey", width=1000, height=1000)
-main_frame.place(x=200, y=0)
+width = 750
+height = 510
+side_bar_width = 200
+root.geometry("%dx%d" % (width, height))
+main_frame = Frame(root, bg="grey", width=width*side_bar_width, height=height)
+main_frame.place(x=0+side_bar_width, y=0)
 
 
-
-
+# they will be updated after running the model and getting the results
+M = None
+iteration_size = None
+testing_data = None
+testing_books_names = None
 
 sidebar = SideBar(root, 200, 1000)
 sidebar.add_spacer("Al-Ghazali")

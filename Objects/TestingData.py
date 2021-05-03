@@ -193,3 +193,11 @@ class TestingData:
             mean_val = np.add(mean_val, predictions[:, 0])
 
         book.mean_of_mean_prediction_res_over_iter = np.divide(mean_val, len(book.predictions_res_over_iter))
+
+
+    def get_book(self, book_name):
+        for book in self.books:
+            if book.book_name == book_name:
+                return book
+        # or raise exception
+        return None
