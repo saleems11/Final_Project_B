@@ -7,16 +7,16 @@ import numpy as np
 class DataManagement:
 
     @staticmethod
-    def load_data(tweet_size, embedding_size, c1_anchor_size, c2_anchor_size):
+    def load_data(tweet_size, embedding_size, c1_anchor_size, c2_anchor_size, c1_folder: str, c2_folder: str, c3_folder: str):
         """Load the data for the 5 segments(Cl1, Cl2, Cl3, anchor_Cl1, anchor_Cl2)
         ,the anchor contain data for testing faz that contain(in the first place the anchor and the
         rest are for testing)"""
 
-        c1 = Documents_utils.get_list_of_books(Documents_utils.c1)
+        c1 = Documents_utils.get_list_of_books(c1_folder)
         c1 = c1[:min(1000, len(c1))]
-        c2 = Documents_utils.get_list_of_books(Documents_utils.c2)
+        c2 = Documents_utils.get_list_of_books(c2_folder)
         c2 = c2[:min(1000, len(c2))]
-        c3 = Documents_utils.get_list_of_books(Documents_utils.c3)
+        c3 = Documents_utils.get_list_of_books(c3_folder)
         c3 = [c3[rnd.randint(0, len(c3)-1)]]
 
         c1, c2, anchor_c1, anchor_c2 = DataManagement.manage_anchor_data(c1, c2, c1_anchor_size, c2_anchor_size)

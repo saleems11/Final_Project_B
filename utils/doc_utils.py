@@ -22,7 +22,7 @@ class Documents_utils():
             list_of_files = os.listdir(path=folder_path)
         except Exception as e:
             print(e)
-            return
+            return []
         doc_list: List[str] = []
         for file in list_of_files:
             if file.endswith('.txt'):

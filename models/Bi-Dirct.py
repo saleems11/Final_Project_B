@@ -13,6 +13,8 @@ import models.LSTM.Save_results as SR
 
 
 # parameters
+from utils.doc_utils import Documents_utils
+
 embedding_size = 300
 tweet_length = 200
 bi_lstm_hidden_state_size = 50
@@ -31,7 +33,7 @@ lstm = BD_lstm.Bi_Direct_LSTM(bi_lstm_hidden_state_size=bi_lstm_hidden_state_siz
                               learning_rate=learning_rate,
                               loss_func='binary_crossentropy')
 
-c1, c2, c3, anchor_c1, anchor_c2 = DM.DataManagement.load_data(tweet_length, embedding_size, 7, 2)
+c1, c2, c3, anchor_c1, anchor_c2 = DM.DataManagement.load_data(tweet_length, embedding_size, 7, 2,Documents_utils.c1, Documents_utils.c2, Documents_utils.c3)
 
 history, M = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(model=lstm.model, c1=c1, c2=c2,
                                                              anchor_c1=anchor_c1, anchor_c2=anchor_c2,

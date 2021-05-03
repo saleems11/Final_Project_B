@@ -1,11 +1,16 @@
+from time import sleep
 
 import Algs.Embedding as Embedding
 import numpy as np
 
-class Embedd_DataSet:
+from GUI.App.pages import LoadData
 
-    @staticmethod
-    def embedd_Aravec(books:[str], tweet_size: int, embedding_dimension = 100, epselon=0.001)->[[[[int]]]]:
+class Embedd_DataSet:
+    def __init__(self):
+        self.process = 0
+        self.finished: bool = False
+        self.index = 0
+    def embedd_Aravec(self,books:[str], tweet_size: int, embedding_dimension = 100, epselon=0.001)->[[[[int]]]]:
         """Take the data and return the embedded result using AraVec\n
         The collection of books as array of string array, embed_dim could be choosed
         (100[default], 300):parameter\n
@@ -31,8 +36,6 @@ class Embedd_DataSet:
             # max_val = np.max(emb_Data)
             # if max_val < 0.7:
             #     emb_Data *= (1/max_val)
-
-
             for i in range(0, len(emb_Data), tweet_size):
                 if i + tweet_size > len(emb_Data):
                     last = np.zeros(shape=((i + tweet_size)-len(emb_Data), embedding_dimension))
@@ -40,7 +43,6 @@ class Embedd_DataSet:
                     embedded_DataSet.append(last)
                 else:
                     embedded_DataSet.append(emb_Data[i:i+tweet_size])
-
 
 
         result = np.empty(shape=(len(embedded_DataSet),
@@ -53,9 +55,7 @@ class Embedd_DataSet:
         return result
 
 
-
-    @staticmethod
-    def embedd_Elmo(books: [str], tweet_size: int, epselon=0.001)->[[ [[int]]]]:
+    def embedd_Elmo(self,books: [str], tweet_size: int, epselon=0.001)->[[ [[int]]]]:
         """for Now each book is divided into tweets\n
         there is need to check if the model is trained on tweets or data batches
         and what the effect of l and l0\n
@@ -79,17 +79,10 @@ class Embedd_DataSet:
 
             embedded_DataSet.extend(Embedding.Embedding.Elmo(tweets))
             print("Book with index {0} had finished embedding".format(index))
-
+            self.process = index / len(books)
+            self.index = index
+            print(self.process)
         embedded_DataSet = np.array(embedded_DataSet, dtype= 'f')
-
-        # normalize the data
-        # for i in range(0, len(embedded_DataSet)):
-        #     for j in range(0, len(embedded_DataSet[i])):
-        #         # for each word
-        #         # add = min(0, min(embedded_DataSet[i][j])) * -1
-        #         # add += epselon
-        #         # embedded_DataSet[i][j] += add
-        #         norm = np.linalg.norm(embedded_DataSet[i][j])
-        #         embedded_DataSet[i][j] = embedded_DataSet[i][j] / norm
+        self.process = 0
 
         return embedded_DataSet
