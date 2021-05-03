@@ -51,13 +51,3 @@ class TestPage(Page):
         t = Button(self, text="Test", bg=def_bg, fg=def_fg)
         t.place(x=100, y=100)
 
-class ResultPage(Page):
-    def __init__(self, parent):
-        print("Showning test page")
-
-
-        # init page/ delete old page
-        Page.__init__(self, parent)
-
-        t = Button(self, text="Result", bg=def_bg, fg=def_fg)
-        t.place(x=100, y=100)
