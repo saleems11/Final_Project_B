@@ -88,7 +88,10 @@ class Book_chunks_labels(show_in_tkinter):
         bottom_frame = Frame(main_frame)
         bottom_frame.grid(row=1, column=0, sticky="nswe")
 
-        dpi = top_frame.winfo_fpixels('1i')*result_obj.main_data_window_size
+        window_size_reduction = None
+        if result_obj.main_data_window_size > 0.3:
+            window_size_reduction = result_obj.main_data_window_size - 0.25
+        dpi = top_frame.winfo_fpixels('1i') * window_size_reduction
         init_figure = Book_chunks_labels.create_figure(result_obj=result_obj, dpi=dpi)
         canvas = FigureCanvasTkAgg(init_figure, master=top_frame)
         canvas.draw()
