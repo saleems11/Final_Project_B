@@ -1,5 +1,4 @@
 
-import matplotlib.pylab as plt
 from matplotlib.figure import Figure
 from matplotlib.backends._backend_tk import NavigationToolbar2Tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -41,6 +40,8 @@ class Error_bar(show_in_tkinter):
     def create_error_bar(self, ax):
         ax.scatter(self.x, self.y, label=self.label)
         ax.errorbar(self.x, self.y, yerr=self.asymmetric_y_error)
+
+        ax.set_title('Error bar of all the book mean values over each iteration')
 
         # the mean line
         mean_line = ax.axhline(y=self.y_mean, color='r', linestyle='-', alpha=0.3, label='mean value')

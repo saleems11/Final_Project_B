@@ -4,41 +4,103 @@ from numpy import linspace
 from numpy.random import random
 import numpy as np
 
+from matplotlib.figure import Figure
+from matplotlib.backends._backend_tk import NavigationToolbar2Tk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-class Book_chunks_labels:
+import tkinter
 
-    @staticmethod
-    def create_book_chunks_labels(y_data, book_name):
+from tkinter import Frame
+
+from Show_results.Matplot_show_fig_tkintner import show_in_tkinter
+
+class Book_chunks_labels(show_in_tkinter):
+
+    def __init__(self, y_data, book_name, rounded, average_over_iter, testing=False):
+        if testing:
+            self.y_data = None
+            self.book_name = None
+            self.rounded = rounded
+            self.average_over_iter = average_over_iter
+            self._generate_sample_data()
+        else:
+            self.y_data = y_data
+            self.book_name = book_name
+            self.rounded = rounded
+            self.average_over_iter = average_over_iter
+
+
+    def create_book_chunks_labels(self, ax):
+        if self.rounded:
+            self.y_data = Book_chunks_labels.round_to_three_values(self.y_data, 0, 0.5, 1)
+        if self.average_over_iter:
+            self.create_book_over_iterations_chunks_labels(ax=ax)
+        else:
+            self.create_one_iteration_book_chunks_labels(ax=ax)
+
+
+    def create_one_iteration_book_chunks_labels(self, ax):
         """" create a graph containing a function that represent each book slice and her label\n
         :parameter\n
         y_data: is an array of 1d that contain the prediction of each chunk,
         book_name: is the book_name"""
-        plt.plot(y_data)
-        plt.title('labels of each chunk in %s book' % book_name)
-        plt.ylabel("label")
-        plt.xlabel("Chunks")
-        plt.show(block=False)
+        ax.plot(self.y_data)
+        ax.set_title('labels of each chunk in %s book' % self.book_name)
+        ax.set_ylabel("label")
+        ax.set_xlabel("Chunks")
 
-    @staticmethod
-    def create_book_over_iterations_chunks_labels(y_data, book_name, interval_percent=0.7):
+    def create_book_over_iterations_chunks_labels(self, ax, interval_percent=0.7):
         """" create a graph of containing two functions:\n
         First one: the y_data which containing the avg result of book labels over iterations,
         Second one: a smother graph(in default the the interval_percent is 0.7)\n
         :parameter\n
         y_data: is an array of 1d that contain the mean prediction of each chunk,
         book_name: is the book_name"""
-        interval = int(len(y_data) * interval_percent)
+        interval = int(len(self.y_data) * interval_percent)
 
-        plt.plot(y_data, label='Avg values', color='blue', alpha=0.5)
-        plt.title('labels of each chunk in %s book' % book_name)
+        ax.plot(self.y_data, label='Avg values', color='blue', alpha=0.5)
+        ax.set_title('labels of each chunk in %s book' % self.book_name)
 
-        a_BSpline = interpolate.make_interp_spline([i for i in range(len(y_data))], y_data)
-        x_new = linspace(1, interval, len(y_data))
+        a_BSpline = interpolate.make_interp_spline([i for i in range(len(self.y_data))], self.y_data)
+        x_new = linspace(1, interval, len(self.y_data))
         y_smooth = a_BSpline(x_new)
-        plt.plot(y_smooth, label='Smoothed Avg values', color='red', alpha=0.3)
+        ax.plot(y_smooth, label='Smoothed Avg values', color='red', alpha=0.3)
 
-        plt.legend()
-        plt.show()
+        ax.legend()
+
+
+
+
+    @staticmethod
+    def create_figure(result_obj, dpi) -> Figure:
+        # plot the data
+        figure = Figure(dpi=dpi)
+        ax = figure.subplots()
+        # call creating heat map
+        result_obj.create_book_chunks_labels(ax=ax)
+        return figure
+
+    @staticmethod
+    def create_GUI(result_obj, main_frame):
+        # create two frames
+        top_frame = Frame(main_frame)
+        top_frame.grid(row=0, column=0, sticky="nswe")
+        bottom_frame = Frame(main_frame)
+        bottom_frame.grid(row=1, column=0, sticky="nswe")
+
+        dpi = top_frame.winfo_fpixels('1i')*result_obj.main_data_window_size
+        init_figure = Book_chunks_labels.create_figure(result_obj=result_obj, dpi=dpi)
+        canvas = FigureCanvasTkAgg(init_figure, master=top_frame)
+        canvas.draw()
+
+        canvas.get_tk_widget().grid(sticky=tkinter.NSEW)
+
+        # add tool bar
+        toolbar = NavigationToolbar2Tk(canvas, bottom_frame)
+        canvas._tkcanvas.grid()
+        toolbar.update()
+
+
 
     @staticmethod
     def round_to_three_values(array, min_val, mid_val, max_val):
@@ -56,6 +118,10 @@ class Book_chunks_labels:
 
         return res_array
 
+
+    def _generate_sample_data(self):
+        self.y_data = [random() for i in range(40)]
+        self.book_name = "Testing"
 
 
 

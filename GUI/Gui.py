@@ -1,7 +1,10 @@
 from GUI.App.pages.display_pages import TestPage, TrainPage, HomePage
 from GUI.App.sidebar import *
 from GUI.App.pages.ShowResultsPage import ShowResultsPage
+from tkinter import messagebox
 
+
+# init the window
 root = Tk()
 root.resizable(False, False)
 width = 750
@@ -10,6 +13,13 @@ side_bar_width = 200
 root.geometry("%dx%d" % (width, height))
 main_frame = Frame(root, bg="grey", width=width*side_bar_width, height=height)
 main_frame.place(x=0+side_bar_width, y=0)
+
+
+
+def doSomething():
+    if messagebox.askokcancel("myapp", "Do you want to quit?"):
+        root.destroy()
+        sys.exit()
 
 
 # they will be updated after running the model and getting the results
@@ -26,6 +36,8 @@ sidebar.add_spacer("Other")
 sidebar.add_button("Test Model", lambda: TestPage(main_frame))
 sidebar.add_button("Results", lambda: ShowResultsPage(main_frame))
 sidebar.finish()
+
+root.protocol('WM_DELETE_WINDOW', doSomething)  # root is your root window
 
 
 root.mainloop()
