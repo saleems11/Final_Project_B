@@ -84,7 +84,16 @@ import pandas as pd
 #
 # print(a[0].label)
 
-import numpy as np
+# import numpy as np
+#
+# a = np.array([1,2,3])
+# print(np.divide(a, 2))
 
-a = np.array([1,2,3])
-print(np.divide(a, 2))
+def hel():
+    print("hello")
+
+def res(func):
+    func()
+    print("Done func")
+
+res(hel)
