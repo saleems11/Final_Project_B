@@ -57,6 +57,14 @@ class ShowResultsPage(Page):
         self.prev_selected_book_name_chunks_labels = None
         self.prev_selected_book_name_histogram = None
 
+        # books chunks labels sub frames
+        self.chunk_labels_frame_top_frame = None
+        self.chunk_labels_frame_bottom_frame = None
+
+        # histogram sub frames
+        self.histogram_frame_top_frame = None
+        self.histogram_frame_bottom_frame = None
+
         # add GUI parts
 
         # top frame parameters init
@@ -118,6 +126,7 @@ class ShowResultsPage(Page):
 
     def clicked_on_histogram_show_Btn(self):
         self.switch_top_frame_clicked_button(self.histogram_show_Btn)
+        self.create_histograms_frame()
         pass
 
     def clicked_on_finish_Btn(self):
@@ -126,13 +135,14 @@ class ShowResultsPage(Page):
         pass
 
     def clicked_on_load_book_chunks_frequency_graph(self):
-        if self.check_chunks_labels_inputs():
+        if self.check_book_and_chunks_selecting_inputs():
             book_name = self.chunk_labels_book_names_opt.get()
-            self.chunks_labels_selected_book_chunk_staring_idx_value = int(self.select_book_chunk_staring_idx_entry.get())
+            self.chunks_labels_selected_book_chunk_staring_idx_value = int(
+                self.select_book_chunk_staring_idx_entry.get())
             self.prev_selected_book_name_chunks_labels = book_name
 
-            smoothing_option = self.smooth_frequency_graph_check_box_val.get()
-            average_over_iter_option = self.over_iterations_chunks_labels_check_box_val.get()
+            smoothing_option = self.chunks_labels_smooth_frequency_graph_check_box_val.get()
+            average_over_iter_option = self.chunks_labels_over_iterations_check_box_val.get()
 
             """ Just for testing """
             self.chunk_labels = Book_chunks_labels(
@@ -143,19 +153,22 @@ class ShowResultsPage(Page):
                 testing=True)
 
             if self.select_book_chunk_ending_idx_entry.get() != '':
-                self.chunks_labels_selected_book_chunk_ending_idx_value = int(self.select_book_chunk_ending_idx_entry.get())
+                self.chunks_labels_selected_book_chunk_ending_idx_value = int(
+                    self.select_book_chunk_ending_idx_entry.get())
 
                 # check if the ending_idx smaller than book size
                 data_size = len(self.chunk_labels.y_data)
-                if data_size <= self.select_book_chunk_ending_idx_value:
+                if data_size <= self.chunks_labels_selected_book_chunk_ending_idx_value:
                     tk.messagebox.showinfo("Input miss mach", "Please input valid number smaller than data size"
                                                               "(ending index is bigger than data size: %d )" % data_size)
                     return
 
-                self.chunk_labels.y_data = self.chunk_labels.y_data[self.chunks_labels_selected_book_chunk_staring_idx_value:
-                                                                    self.chunks_labels_selected_book_chunk_ending_idx_value]
+                self.chunk_labels.y_data = self.chunk_labels.y_data[
+                                           self.chunks_labels_selected_book_chunk_staring_idx_value:
+                                           self.chunks_labels_selected_book_chunk_ending_idx_value]
             else:
-                self.chunk_labels.y_data = self.chunk_labels.y_data[self.chunks_labels_selected_book_chunk_staring_idx_value:]
+                self.chunk_labels.y_data = self.chunk_labels.y_data[
+                                           self.chunks_labels_selected_book_chunk_staring_idx_value:]
 
             # the finale code
             # book = Gui.testing_data.get_book(book_name=book_name)
@@ -187,9 +200,71 @@ class ShowResultsPage(Page):
 
             Book_chunks_labels.create_GUI(result_obj=self.chunk_labels, main_frame=self.chunk_labels_frame_bottom_frame)
 
+    def clicked_on_load_books_histogram_graph(self):
+        if self.check_book_and_chunks_selecting_inputs():
+            book_name = self.histogram_book_names_opt.get()
+            self.histogram_selected_book_chunk_staring_idx_value = int(
+                self.select_book_chunk_staring_idx_entry.get())
+            self.prev_selected_book_name_histogram = book_name
+
+            smoothing_option = self.histogram_smooth_frequency_graph_check_box_val.get()
+            average_over_iter_option = self.histogram_over_iterations_chunks_labels_check_box_val.get()
+
+            """ Just for testing """
+            self.histogram = Histograms(
+                book_prediction_res=None,
+                book_name=None,
+                smoothed=smoothing_option,
+                testing=True)
+
+            if self.select_book_chunk_ending_idx_entry.get() != '':
+                self.histogram_selected_book_chunk_ending_idx_value = int(
+                    self.select_book_chunk_ending_idx_entry.get())
+
+                # check if the ending_idx smaller than book size
+                data_size = len(self.histogram.book_prediction_res)
+                if data_size <= self.histogram_selected_book_chunk_ending_idx_value:
+                    tk.messagebox.showinfo("Input miss mach", "Please input valid number smaller than data size"
+                                                              "(ending index is bigger than data size: %d )" % data_size)
+                    return
+
+                self.histogram.book_prediction_res = self.histogram.book_prediction_res[
+                                                     self.histogram_selected_book_chunk_staring_idx_value:
+                                                     self.histogram_selected_book_chunk_ending_idx_value]
+            else:
+                self.histogram.book_prediction_res = self.histogram.book_prediction_res[
+                                                     self.histogram_selected_book_chunk_staring_idx_value:]
+
+            # # the finale code not 100% working
+            # book = Gui.testing_data.get_book(book_name=book_name)
+            #
+            # # check if the ending_idx smaller than book size
+            # if self.select_book_chunk_ending_idx_entry.get() != '':
+            #     data_size = len(book.mean_of_mean_prediction_res_over_iter)
+            #     if data_size <= self.histogram_selected_book_chunk_ending_idx_value:
+            #         tk.messagebox.showinfo("Input miss mach", "Please input valid number smaller than data size"
+            #                                                   "(ending index is bigger than data size: %d )" % data_size)
+            #         return
+            #
+            # # here must know if average_over_iter_option is used
+            # # to know witch data to give to the GUI creator
+            #
+            # self.histogram = Histograms(
+            #     book_prediction_res=mean_of_mean_prediction_res_over_iter,
+            #     book_name=book.book_name)
+            # # look at the hint above
+            # else:
+            # self.chunk_labels = Book_chunks_labels(
+            #     book.predictions_res_over_iter[-1][self.select_book_chunk_staring_idx_value:],
+            #     book_name=book.book_name,
+            #     rounded= smoothing_option,
+            #     average_over_iter= average_over_iter_option)
+
+        Histograms.create_GUI(result_obj=self.histogram, main_frame=self.histogram_frame_bottom_frame)
+
     """ Logic's Handling and input data checking """
 
-    def check_chunks_labels_inputs(self):
+    def check_book_and_chunks_selecting_inputs(self):
         all_rest_of_data_index = True
 
         if self.select_book_chunk_staring_idx_entry.get() == '':
@@ -236,9 +311,6 @@ class ShowResultsPage(Page):
 
     """ creating Sub-frames"""
 
-    def create_chunk_labels_graph_frame(self):
-        pass
-
     def create_heat_map_frame(self):
         if self.heat_map is None:
             """ for testing purposes"""
@@ -269,6 +341,8 @@ class ShowResultsPage(Page):
 
     def selecting_book_chunks_frame(self, main_frame, list_option_value, on_click_func, smoothing_check_box_val,
                                     average_check_box_val):
+        """ This GUI part is used in Histogram and chunk label graph """
+
         """ select the book """
         self.select_book_label = \
             tk.Label(main_frame, text="Select Book", fg=Pages_parameters.black)
@@ -319,6 +393,7 @@ class ShowResultsPage(Page):
         self.over_iterations_avg_check_box.grid(row=2, column=1, padx=x_padding, pady=10)
 
     def create_chunk_labels_frame(self):
+
         """  Split  the main frame """
         self.chunk_labels_frame_top_frame = Frame(self.mid_frame)
         self.chunk_labels_frame_top_frame.grid(row=0, column=0, sticky="nswe")
@@ -327,41 +402,12 @@ class ShowResultsPage(Page):
         self.chunk_labels_frame_bottom_frame.grid(row=1, column=0, sticky="nswe", padx=20, pady=10)
 
         """ Check Prev data stored and load and set the parameters"""
-
         self.chunk_labels_book_names_opt = tk.StringVar()
         # load the last val of the prev run
         if self.prev_selected_book_name_chunks_labels != None:
             self.chunk_labels_book_names_opt.set(self.prev_selected_book_name_chunks_labels)
         else:
             self.chunk_labels_book_names_opt.set(self.testing_books_names[0])  # default value
-
-        # load the values of prev run
-        if self.chunks_labels_selected_book_chunk_staring_idx_value != None:
-            self.select_book_chunk_staring_idx_entry.delete(0, tk.END)
-            self.select_book_chunk_staring_idx_entry.insert(0, str(self.chunks_labels_selected_book_chunk_staring_idx_value))
-        else:
-            self.select_book_chunk_staring_idx_entry.insert(0, '0')
-
-        # load the values of prev run
-        if self.chunks_labels_selected_book_chunk_ending_idx_value != None:
-            self.select_book_chunk_ending_idx_entry.delete(0, tk.END)
-            self.select_book_chunk_ending_idx_entry.insert(0, str(self.chunks_labels_selected_book_chunk_ending_idx_value))
-
-        ######################
-
-        self.histogram_selected_book_chunk_staring_idx_value = None
-        self.histogram_selected_book_chunk_ending_idx_value = None
-
-        self.chunks_labels_smooth_frequency_graph_check_box_val = tk.IntVar()
-        self.chunks_labels_over_iterations_check_box_val = tk.IntVar()
-
-        self.histogram_smooth_frequency_graph_check_box_val = tk.IntVar()
-        self.histogram_over_iterations_chunks_labels_check_box_val = tk.IntVar()
-
-        self.prev_selected_book_name_chunks_labels = None
-        self.prev_selected_book_name_histogram = None
-        ##################
-
 
         """ add GUI parts to the top frame """
         self.selecting_book_chunks_frame(main_frame=self.chunk_labels_frame_top_frame,
@@ -370,77 +416,69 @@ class ShowResultsPage(Page):
                                          smoothing_check_box_val=self.chunks_labels_smooth_frequency_graph_check_box_val,
                                          average_check_box_val=self.chunks_labels_over_iterations_check_box_val)
 
+        """ Check Prev data stored and load and set the parameters"""
+
+        # load the values of prev run
+        if self.chunks_labels_selected_book_chunk_staring_idx_value != None:
+            self.select_book_chunk_staring_idx_entry.delete(0, tk.END)
+            self.select_book_chunk_staring_idx_entry.insert(0, str(
+                self.chunks_labels_selected_book_chunk_staring_idx_value))
+        else:
+            self.select_book_chunk_staring_idx_entry.insert(0, '0')
+
+        # load the values of prev run
+        if self.chunks_labels_selected_book_chunk_ending_idx_value != None:
+            self.select_book_chunk_ending_idx_entry.delete(0, tk.END)
+            self.select_book_chunk_ending_idx_entry.insert(0,
+                                                           str(self.chunks_labels_selected_book_chunk_ending_idx_value))
+
+        """ load the prev graph"""
+        if self.chunk_labels is not None:
+            Book_chunks_labels.create_GUI(result_obj=self.chunk_labels, main_frame=self.chunk_labels_frame_bottom_frame)
 
     def create_histograms_frame(self):
+
+        """  Split  the main frame """
         self.histogram_frame_top_frame = Frame(self.mid_frame)
         self.histogram_frame_top_frame.grid(row=0, column=0, sticky="nswe")
 
         self.histogram_frame_bottom_frame = Frame(self.mid_frame)
         self.histogram_frame_bottom_frame.grid(row=1, column=0, sticky="nswe", padx=20, pady=10)
 
-        # add GUI parts to the top frame
-        """ Select the book """
-        self.select_book_histogram_label = \
-            tk.Label(self.histogram_frame_top_frame, text="Select Book", fg=Pages_parameters.black)
-
+        """ Check Prev data stored and load and set the parameters"""
         self.histogram_book_names_opt = tk.StringVar()
         # load the last val of the prev run
         if self.prev_selected_book_name_histogram != None:
             self.histogram_book_names_opt.set(self.prev_selected_book_name_histogram)
         else:
             self.histogram_book_names_opt.set(self.testing_books_names[0])  # default value
-        self.histogram_books_selecting_list_option = tk.OptionMenu(self.histogram_frame_top_frame,
-                                                                   self.histogram_book_names_opt,
-                                                                   *self.testing_books_names)
-        self.histogram_books_selecting_list_option.config(width=40)
 
-        """  Select the starting idx"""
-        self.histogram_select_book_chunk_staring_idx_label = \
-            tk.Label(self.histogram_frame_top_frame, text="Starting index", fg=Pages_parameters.black)
+        """ add GUI parts to the top frame """
+        self.selecting_book_chunks_frame(main_frame=self.histogram_frame_top_frame,
+                                         list_option_value=self.histogram_book_names_opt,
+                                         on_click_func=self.clicked_on_load_books_histogram_graph,
+                                         smoothing_check_box_val=self.histogram_smooth_frequency_graph_check_box_val,
+                                         average_check_box_val=self.histogram_over_iterations_chunks_labels_check_box_val)
 
-        self.select_book_chunk_staring_idx_entry = tk.Entry(self.histogram_frame_top_frame, width=10)
+        """ Check Prev data stored and load and set the parameters"""
+
         # load the values of prev run
-        if self.select_book_chunk_staring_idx_value != None:
+        if self.histogram_selected_book_chunk_staring_idx_value != None:
             self.select_book_chunk_staring_idx_entry.delete(0, tk.END)
-            self.select_book_chunk_staring_idx_entry.insert(0, str(self.select_book_chunk_staring_idx_value))
+            self.select_book_chunk_staring_idx_entry.insert(0, str(
+                self.histogram_selected_book_chunk_staring_idx_value))
         else:
             self.select_book_chunk_staring_idx_entry.insert(0, '0')
 
-        """ Select the end idx """
-        self.select_book_chunk_ending_idx_label = \
-            tk.Label(self.histogram_frame_top_frame, text="Final index", fg=Pages_parameters.black)
-
-        self.select_book_chunk_ending_idx_entry = tk.Entry(self.histogram_frame_top_frame, width=10)
         # load the values of prev run
-        if self.select_book_chunk_ending_idx_value != None:
+        if self.histogram_selected_book_chunk_ending_idx_value != None:
             self.select_book_chunk_ending_idx_entry.delete(0, tk.END)
-            self.select_book_chunk_ending_idx_entry.insert(0, str(self.select_book_chunk_ending_idx_value))
+            self.select_book_chunk_ending_idx_entry.insert(0, str(
+                self.histogram_selected_book_chunk_ending_idx_value))
 
-        # smoothing check box
-        self.smooth_frequency_graph_check_box = tk.Checkbutton(self.histogram_frame_top_frame, text="Smooth Graph",
-                                                               variable=self.smooth_frequency_graph_check_box_val)
-        # average data check box
-        self.over_iterations_chunks_labels_check_box = tk.Checkbutton(self.histogram_frame_top_frame,
-                                                                      text="Average over iterations",
-                                                                      variable=self.over_iterations_chunks_labels_check_box_val)
-
-        self.load_book_chunks_frequency_graph_Btn = tk.Button(self.histogram_frame_top_frame, text="Chunks Labels",
-                                                              bg=Pages_parameters.def_bg, fg=Pages_parameters.def_fg,
-                                                              command=self.clicked_on_load_book_chunks_frequency_graph)
-
-        # set the GUI parts
-        x_padding = 5
-        self.select_book_chunk_labels_label.grid(row=0, column=0, padx=x_padding, pady=10, sticky="W")
-        self.histogram_books_selecting_list_option.grid(row=0, column=1, padx=x_padding, pady=10, columnspan=3)
-
-        self.histogram_select_book_chunk_staring_idx_label.grid(row=1, column=0, padx=x_padding, pady=10, sticky="W")
-        self.select_book_chunk_staring_idx_entry.grid(row=1, column=1, padx=x_padding, pady=10)
-        self.select_book_chunk_ending_idx_label.grid(row=1, column=2, padx=x_padding, pady=10)
-        self.select_book_chunk_ending_idx_entry.grid(row=1, column=3, padx=x_padding, pady=10)
-        self.load_book_chunks_frequency_graph_Btn.grid(row=1, column=4, padx=x_padding * 2, pady=10)
-
-        self.smooth_frequency_graph_check_box.grid(row=2, column=0, padx=x_padding, pady=10)
-        self.over_iterations_chunks_labels_check_box.grid(row=2, column=1, padx=x_padding, pady=10)
+        """ load the prev graph"""
+        if self.histogram is not None:
+            Histograms.create_GUI(result_obj=self.histogram, main_frame=self.histogram_frame_bottom_frame)
 
     """ Threads Functions """
 
