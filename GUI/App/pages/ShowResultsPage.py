@@ -26,7 +26,7 @@ class ShowResultsPage(Page):
         self.top_frame.grid(row=0, column=0, sticky="nswe")
 
         self.mid_frame = Frame(parent_frame)
-        self.mid_frame.grid(row=1, column=0, sticky="nswe")
+        self.mid_frame.grid(row=1, column=0, sticky="nswe", columnspan=2)
 
         self.bottom_frame = Frame(parent_frame)
         self.bottom_frame.grid(row=2, column=0, sticky="nswe")
@@ -107,7 +107,7 @@ class ShowResultsPage(Page):
         self.finish_Btn = \
             Button(self.bottom_frame, text="Finish", bg=Pages_parameters.def_bg,
                    fg=Pages_parameters.def_fg, command=self.clicked_on_finish_Btn)
-        self.finish_Btn.pack(padx=10, pady=10, side=tk.RIGHT)
+        self.finish_Btn.pack(padx=5, pady=5, side=tk.RIGHT)
 
     ''' Click management '''
 
@@ -391,19 +391,20 @@ class ShowResultsPage(Page):
 
         """ Set the location of the GUI parts """
         x_padding = 5
-        self.select_book_label.grid(row=0, column=0, padx=x_padding, pady=10, sticky="W")
-        self.books_selecting_list_option.grid(row=0, column=1, padx=x_padding, pady=10, columnspan=3)
+        y_padding = 5
+        self.select_book_label.grid(row=0, column=0, padx=x_padding, pady=y_padding, sticky="W")
+        self.books_selecting_list_option.grid(row=0, column=1, padx=x_padding, pady=y_padding, columnspan=3)
 
-        self.select_book_chunk_staring_idx_label.grid(row=1, column=0, padx=x_padding, pady=10, sticky="W")
-        self.select_book_chunk_staring_idx_entry.grid(row=1, column=1, padx=x_padding, pady=10)
-        self.select_book_chunk_ending_idx_label.grid(row=1, column=2, padx=x_padding, pady=10)
-        self.select_book_chunk_ending_idx_entry.grid(row=1, column=3, padx=x_padding, pady=10)
-        self.load_graph_Btn.grid(row=1, column=4, padx=x_padding * 2, pady=10)
+        self.select_book_chunk_staring_idx_label.grid(row=1, column=0, padx=x_padding, pady=y_padding, sticky="W")
+        self.select_book_chunk_staring_idx_entry.grid(row=1, column=1, padx=x_padding, pady=y_padding)
+        self.select_book_chunk_ending_idx_label.grid(row=1, column=2, padx=x_padding, pady=y_padding)
+        self.select_book_chunk_ending_idx_entry.grid(row=1, column=3, padx=x_padding, pady=y_padding)
+        self.load_graph_Btn.grid(row=1, column=4, padx=x_padding * 2, pady=y_padding)
 
-        self.smooth_frequency_graph_check_box.grid(row=2, column=0, padx=x_padding, pady=10)
-        self.over_iterations_avg_check_box.grid(row=2, column=1, padx=x_padding, pady=10)
+        self.smooth_frequency_graph_check_box.grid(row=2, column=0, padx=x_padding, pady=y_padding)
+        self.over_iterations_avg_check_box.grid(row=2, column=1, padx=x_padding, pady=y_padding)
         if rounding_check_box_val is not None:
-            self.round_frequency_graph_check_box.grid(row=2, column=2, padx=x_padding, pady=10, columnspan=2)
+            self.round_frequency_graph_check_box.grid(row=2, column=2, padx=x_padding, pady=y_padding, columnspan=2)
 
     def create_chunk_labels_frame(self):
 
