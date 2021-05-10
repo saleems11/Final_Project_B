@@ -1,25 +1,24 @@
-from GUI.App.pages.display_pages import TestPage, TrainPage, HomePage
-from GUI.App.sidebar import *
-from GUI.App.pages.ShowResultsPage import ShowResultsPage
+import sys
+from tkinter import messagebox, Tk, Frame
+
+from GUI.App.pages.LoadData import HomePage
 
 root = Tk()
 root.resizable(False, False)
-root.geometry("750x510")
-main_frame = Frame(root, bg="grey", width=1000, height=1000)
-main_frame.place(x=200, y=0)
+root.geometry('1200x600')
+main_frame = Frame(root, bg="grey", width=1200, height=600)
+main_frame.place(x=0, y=0)
+HomePage(main_frame)
+
+def new_exit():
+    if messagebox.askokcancel("Warning", "Do you want to quit?"):
+        root.destroy()
+
+    sys.exit()
 
 
+root.protocol('WM_DELETE_WINDOW', new_exit)  # root is your root window
 
 
-
-sidebar = SideBar(root, 200, 1000)
-sidebar.add_spacer("Al-Ghazali")
-sidebar.add_button("Load Data", lambda: HomePage(main_frame))
-sidebar.add_button("Train Model", lambda: TrainPage(main_frame))
-sidebar.add_spacer("Other")
-sidebar.add_button("Test Model", lambda: TestPage(main_frame))
-sidebar.add_button("Results", lambda: ShowResultsPage(main_frame))
-sidebar.finish()
-
-
+root.update()
 root.mainloop()

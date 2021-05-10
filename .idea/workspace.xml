@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0b012406-2983-44b6-a433-d03dda92b89f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/Al_Mankhul_min_Taliqat_al_Usul_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/Al_Mustasfa_min_ilm_al_Usul_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/Fada_ih_al_Batiniyya_wa_Fada_il_al_Mustazhiriyy_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/Faysal_at_Tafriqa_Bayna_al_Islam_wa_al_Zandaqa_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/Iljam_Al_Awamm_an_Ilm_Al_Kalam_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/Kimiya_yi_Saadat_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/Mishakat_al_Anwar_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/Tahafut_al_Falasifa_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/al_Madnun_bihi_ala_ghayri_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/al_iqtisad_fi_al_itiqad_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/j1-k01_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/j1-k02_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/j1-k0_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c2/Al_Mankhul_min_Taliqat_al_Usul_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c2/al_Madnun_bihi_ala_ghayri_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Embedded_books/c2/al_iqtisad_fi_al_itiqad_1024_200.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/App/pages/LoadData.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/App/pages/Train.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/App/pages/parameters_page.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/App/pages/process_bar.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/LSTM/Parameters.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/FinalProjectB.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algs/Embedding.py" beforeDir="false" afterPath="$PROJECT_DIR$/Algs/Embedding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Embedded_books/A1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Embedded_books/A1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/App/pages/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Parameters.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/ArabicElmo/encoder.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/ArabicElmo/encoder.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/ArabicElmo/token_embedder.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/ArabicElmo/token_embedder.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Bi-Dirct.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Bi-Dirct.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/LoadingBalancingData/DataManagement.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LoadingBalancingData/DataManagement.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Controlers/controller.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Exceptions/Exceptions.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/GUI/App/pages/display_pages.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/GUI/App/pages/__init__.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Embedded_books/A1.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Embedded_books/rename.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Embedded_books/Embed_book.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Embedded_books/Embed_dataSet.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Algs/Embedding.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectId" id="1s8DlRsSe6aDZQam7BWnFPVKt8K" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/models/LSTM/Parameters.py" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Unlimited\Documents\GitHub\Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM\GUI" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.Gui">
+    <configuration name="Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\Unlimited\PycharmProjects\untitled5\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/.." />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Bi-Dirct" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/models" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/models/Bi-Dirct.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Gui" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\Unlimited\PycharmProjects\untitled5\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GUI" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI/Gui.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="LoadData" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GUI/App/pages" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI/App/pages/LoadData.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.Bi-Dirct" />
+      <item itemvalue="Python.Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM" />
+      <item itemvalue="Python.LoadData" />
+      <item itemvalue="Python.Gui" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Gui" />
+        <item itemvalue="Python.Bi-Dirct" />
+        <item itemvalue="Python.Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM" />
+        <item itemvalue="Python.LoadData" />
+        <item itemvalue="Python.Gui" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0b012406-2983-44b6-a433-d03dda92b89f" name="Default Changelist" comment="" />
+      <created>1620245473618</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1620245473618</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Embedded_books/A1.py</url>
+          <line>170</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Algs/Embedding.py</url>
+          <line>114</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

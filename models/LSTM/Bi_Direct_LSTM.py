@@ -10,32 +10,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import models.LoadingBalancingData.DataManagement as DM
-import Objects.TestingData as TD
-
+from Parameters import  Parameters
 
 class Bi_Direct_LSTM:
 
-    def __init__(self, bi_lstm_hidden_state_size, tweet_length, embedding_size, drop_out, fully_connected_layer,
-                 learning_rate, loss_func):
+    def __init__(self, parameters: Parameters):
         # to run on the GPU and solve a bug
         gpu_devices = tf.config.experimental.list_physical_devices('GPU')
         for device in gpu_devices:
             tf.config.experimental.set_memory_growth(device, True)
+        self.parameters = parameters
+        self.model = self.create_model()
 
-        self.bi_lstm_hidden_state_size = bi_lstm_hidden_state_size
-        self.tweet_length = tweet_length
-        self.embedding_size = embedding_size
-        self.drop_out = drop_out
-        self.fully_connected_layer = fully_connected_layer
-        self.learning_rate = learning_rate
-        self.loss_func = loss_func
-
-        self.model = Bi_Direct_LSTM.create_model(bi_lstm_hidden_state_size, tweet_length, embedding_size, drop_out,
-                                                 fully_connected_layer, learning_rate, loss_func)
-
-    @staticmethod
-    def create_model(bi_lstm_hidden_state_size, tweet_length, embedding_size, drop_out, fully_connected_layer,
-                     learning_rate, loss_func='binary_crossentropy'):
+    def create_model(self):
         """Create a Bi-Direct LSTM model that is specified according to the parameters, and return the model.\n
         The model have 5 layers(Bi-direct(LSTM)[the result are concat], DropOut, fully connected layer, DropOut,
         softMax).\n
@@ -43,19 +30,27 @@ class Bi_Direct_LSTM:
         each epoch and that is done when creating the model with the parameter stateful=False)"""
         model = Sequential()
         model.add(Bidirectional(
-            LSTM(units=bi_lstm_hidden_state_size, return_sequences=False, stateful=False),
-            input_shape=(tweet_length, embedding_size),
+            LSTM(units=self.parameters.lstm_hidden_state_size, return_sequences=False, stateful=False),
+            input_shape=(self.parameters.tweet_length, 1024),
             merge_mode="concat"))
 
-        model.add(Dropout(drop_out))
-        model.add(Dense(fully_connected_layer, activation='relu'))
-        model.add(Dropout(drop_out))
+        model.add(Dropout(self.parameters.drop_out))
+        model.add(Dense(self.parameters.fully_connect_layer, activation='relu'))
+        model.add(Dropout(self.parameters.drop_out))
         model.add(Dense(2, activation='softmax'))
 
         print(model.summary())
-        # opt = tf.keras.optimizers.SGD(learning_rate=learning_rate, momentum=0.95, decay=0.01)
-        opt = tf.keras.optimizers.Adam(learning_rate=learning_rate)
-        model.compile(loss=loss_func, optimizer=opt, metrics=['accuracy'])
+        if self.parameters.optimizer == 'Adam':
+            opt = tf.keras.optimizers.Adam(learning_rate=self.parameters.learning_rate)
+        elif self.parameters.optimizer == 'SGD':
+            opt = tf.keras.optimizers.SGD(learning_rate=self.parameters.learning_rate)
+        elif self.parameters.optimizer == 'Adagrad':
+            opt = tf.keras.optimizers.Adagrad(learning_rate=self.parameters.learning_rate)
+        elif self.parameters.optimizer == 'AdaDelta':
+            opt = tf.keras.optimizers.Adadelta(learning_rate=self.parameters.learning_rate)
+        else:
+            opt = tf.keras.optimizers.RMSprop(learning_rate=self.parameters.learning_rate)
+        model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
 
         return model
 
@@ -131,3 +126,5 @@ class Bi_Direct_LSTM:
             predictions_list.append(mean_predictions)
 
         return np.array(predictions_list, dtype='f')
+
+

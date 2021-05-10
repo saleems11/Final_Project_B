@@ -3,3 +3,16 @@
 .idea/misc.xml
 Algs/__pycache__/Balancing_Routine.cpython-37.pyc
 Algs/__pycache__/Embedd_DataSet.cpython-37.pyc
+*.pyd
+*.exe
+*.pyc
+*.csv
+/venv/
+Pipfile
+Pipfile.lock
+requirements.txt
+utils/__pycache__/doc_utils.cpython-37.pyc
+GUI/App/__pycache__/sidebar.cpython-37.pyc
+*.pyc
+*.pyc
+*.iml

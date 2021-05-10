@@ -1,16 +1,29 @@
 import gc
+from typing import List
 
 import Algs.Balancing_Routine as BR
 import numpy as np
-from Embedded_books.Embed_dataSet import Embed_DataSet
 from Embedded_books.A1 import Embed_data_set
+from GUI.App.pages.process_bar import ProcessBar
 from Objects.TestingData import TestingData
 
 
 class DataManagement:
+    def __init__(self, tweet_size: int, embedding_size: int, c1_anchor_name:str, c2_anchor_name: str, c1_test_names: List[str],
+                 c2_test_names: List[str], c3_test_names: List[str], c1_dir: str, c2_dir: str, c3_dir: str):
 
-    @staticmethod
-    def load_data(tweet_size, embedding_size, c1_anchor_name, c2_anchor_name, c1_test_names, c2_test_names, c3_test_names):
+        self.tweet_size: int = tweet_size
+        self.embedding_size: int = embedding_size
+        self.c1_anchor_name: str = c1_anchor_name
+        self.c2_anchor_name: str = c2_anchor_name
+        self.c1_test_names: List[str] = c1_test_names
+        self.c2_test_names: List[str] = c2_test_names
+        self.c3_test_names: List[str] = c3_test_names
+        self.c1_dir: str = c1_dir
+        self.c2_dir: str = c2_dir
+        self.c3_dir: str = c3_dir
+
+    def load_data(self, process_bar: ProcessBar):
         """Load the data for the 5 segments(Cl1, Cl2, Cl3, anchor_Cl1, anchor_Cl2)
         ,the anchor contain data for testing faz that contain(in the first place the anchor and the
         rest are for testing)"""
@@ -26,17 +39,18 @@ class DataManagement:
         # more memory efficient
         # the sizes for c1 and c2 for checking if the input of f1, f2 are valid
         embedded_data_c1, embedded_data_c2, embedded_data_c3, c3_books_names, c1_size, c2_size = \
-            Embed_data_set.embed_data_set(embedding_size=embedding_size, tweet_size=tweet_size)
+            Embed_data_set.embed_data_set(embedding_size=self.embedding_size, tweet_size=self.tweet_size, c1_dir=self.c1_dir,
+                                          c2_dir=self.c2_dir, c3_dir=self.c3_dir, process=process_bar)
 
-        testing_data = TestingData(c3=embedded_data_c3, c3_books_names=c3_books_names, c1_anchor_name=c1_anchor_name,
-                                   c2_anchor_name=c2_anchor_name, c1_test_names=c1_test_names,
-                                   c2_test_names=c2_test_names, c3_test_names=c3_test_names)
+        testing_data = TestingData(c3=embedded_data_c3, c3_books_names=c3_books_names, c1_anchor_name=self.c1_anchor_name,
+                                   c2_anchor_name=self.c2_anchor_name, c1_test_names=self.c1_test_names,
+                                   c2_test_names=self.c2_test_names, c3_test_names=self.c3_test_names)
 
-        if embedding_size != 1024:
+        if self.embedding_size != 1024:
             # merge each list of (c1, c2) into one numpy list
             embedded_data_c1 = np.concatenate(embedded_data_c1, axis=0)
             embedded_data_c2 = np.concatenate(embedded_data_c2, axis=0)
-
+        process_bar.finished = True
         return embedded_data_c1, embedded_data_c2, testing_data
 
 
