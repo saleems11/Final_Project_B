@@ -49,6 +49,7 @@ class ShowResultsPage(Page):
         self.histogram_selected_book_chunk_ending_idx_value = None
 
         self.chunks_labels_smooth_frequency_graph_check_box_val = tk.IntVar()
+        self.chunks_labels_round_frequency_graph_check_box_val = tk.IntVar()
         self.chunks_labels_over_iterations_check_box_val = tk.IntVar()
 
         self.histogram_smooth_frequency_graph_check_box_val = tk.IntVar()
@@ -142,14 +143,17 @@ class ShowResultsPage(Page):
             self.prev_selected_book_name_chunks_labels = book_name
 
             smoothing_option = self.chunks_labels_smooth_frequency_graph_check_box_val.get()
+            rounding_option = self.chunks_labels_round_frequency_graph_check_box_val.get()
+
+            """ load other Data"""
             average_over_iter_option = self.chunks_labels_over_iterations_check_box_val.get()
 
             """ Just for testing """
             self.chunk_labels = Book_chunks_labels(
                 None,
                 book_name=None,
-                rounded=smoothing_option,
-                average_over_iter=average_over_iter_option,
+                rounded=rounding_option,
+                smoothed=smoothing_option,
                 testing=True)
 
             if self.select_book_chunk_ending_idx_entry.get() != '':
@@ -208,6 +212,7 @@ class ShowResultsPage(Page):
             self.prev_selected_book_name_histogram = book_name
 
             smoothing_option = self.histogram_smooth_frequency_graph_check_box_val.get()
+            """ Used to load other data """
             average_over_iter_option = self.histogram_over_iterations_chunks_labels_check_box_val.get()
 
             """ Just for testing """
@@ -340,8 +345,9 @@ class ShowResultsPage(Page):
             self.error_bar.create_GUI(result_obj=self.error_bar, main_frame=self.mid_frame)
 
     def selecting_book_chunks_frame(self, main_frame, list_option_value, on_click_func, smoothing_check_box_val,
-                                    average_check_box_val):
-        """ This GUI part is used in Histogram and chunk label graph """
+                                    average_check_box_val, rounding_check_box_val=None):
+        """ This GUI part is used in Histogram and chunk label graph \n
+            There is Three options: round values,  smooth line, average over iterations. """
 
         """ select the book """
         self.select_book_label = \
@@ -364,6 +370,11 @@ class ShowResultsPage(Page):
             tk.Label(main_frame, text="Final index", fg=Pages_parameters.black)
 
         self.select_book_chunk_ending_idx_entry = tk.Entry(main_frame, width=10)
+
+        """ rounding check box """
+        if rounding_check_box_val is not None:
+            self.round_frequency_graph_check_box = tk.Checkbutton(main_frame, text="Round Values",
+                                                                  variable=rounding_check_box_val)
 
         """ smoothing check box """
         self.smooth_frequency_graph_check_box = tk.Checkbutton(main_frame, text="Smooth Graph",
@@ -391,6 +402,8 @@ class ShowResultsPage(Page):
 
         self.smooth_frequency_graph_check_box.grid(row=2, column=0, padx=x_padding, pady=10)
         self.over_iterations_avg_check_box.grid(row=2, column=1, padx=x_padding, pady=10)
+        if rounding_check_box_val is not None:
+            self.round_frequency_graph_check_box.grid(row=2, column=2, padx=x_padding, pady=10, columnspan=2)
 
     def create_chunk_labels_frame(self):
 
@@ -414,7 +427,8 @@ class ShowResultsPage(Page):
                                          list_option_value=self.chunk_labels_book_names_opt,
                                          on_click_func=self.clicked_on_load_book_chunks_frequency_graph,
                                          smoothing_check_box_val=self.chunks_labels_smooth_frequency_graph_check_box_val,
-                                         average_check_box_val=self.chunks_labels_over_iterations_check_box_val)
+                                         average_check_box_val=self.chunks_labels_over_iterations_check_box_val,
+                                         rounding_check_box_val=self.chunks_labels_round_frequency_graph_check_box_val)
 
         """ Check Prev data stored and load and set the parameters"""
 

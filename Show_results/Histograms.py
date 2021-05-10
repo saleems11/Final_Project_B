@@ -25,22 +25,29 @@ class Histograms(show_in_tkinter):
             self.book_name = book_name
             self.smoothed = smoothed
 
+    def create_Histograms(self, ax):
+        self.create_regulare_Histograms(ax)
+        if self.smoothed:
+            self.create_smoothed_histogram(ax)
 
-    def create_Histograms(self, ax, bins=10, interval_percent=0.5):
-        interval = int(len(self.book_prediction_res) * interval_percent)
-
+    def create_regulare_Histograms(self, ax, bins=10):
         ax.hist(self.book_prediction_res, bins=bins, color='b', alpha=0.6, label='predictions', edgecolor='black', linewidth=1.2)
-
-        a_BSpline = interpolate.make_interp_spline([i for i in range(len(self.book_prediction_res))], self.book_prediction_res)
-        x_new = linspace(1, interval, len(self.book_prediction_res))
-        book_prediction_smooth = a_BSpline(x_new)
-
-        ax.hist(book_prediction_smooth, bins=bins, color='r', alpha=0.5, label='Uniform', edgecolor='black', linewidth=1.2)
 
         ax.set_title("%s frequency histogram" % self.book_name)
         ax.set_xlabel("Value")
         ax.set_ylabel("Frequency")
         ax.grid(alpha=0.3)
+
+
+    def create_smoothed_histogram(self, ax, bins=10, interval_percent=0.5):
+        interval = int(len(self.book_prediction_res) * interval_percent)
+
+        a_BSpline = interpolate.make_interp_spline([i for i in range(len(self.book_prediction_res))], self.book_prediction_res)
+        x_new = linspace(1, interval, len(self.book_prediction_res))
+        book_prediction_smooth = a_BSpline(x_new)
+
+        ax.hist(book_prediction_smooth, bins=bins, color='r', alpha=0.5, label='Smoothed Value', edgecolor='black', linewidth=1.2)
+        ax.legend()
 
     @staticmethod
     def create_figure(result_obj, dpi) -> Figure:
