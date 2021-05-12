@@ -175,10 +175,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.Bi-Dirct" />
       <item itemvalue="Python.Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM" />
-      <item itemvalue="Python.LoadData" />
+      <item itemvalue="Python.Bi-Dirct" />
       <item itemvalue="Python.Gui" />
+      <item itemvalue="Python.LoadData" />
     </list>
     <recent_temporary>
       <list>

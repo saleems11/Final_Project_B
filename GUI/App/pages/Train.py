@@ -103,5 +103,5 @@ class TrainPage(Page):
             self.val_accuracy_text['text'] = self.lstm.model.history['val_accuracy']
             self.loss_text['text'] = self.lstm.model.history['loss']
             self.accuracy_text['text'] = self.lstm.model.history['accuracy']
-            sleep(2)
+            sleep(1)
         self.save_model.place(x=490, y=400)
