@@ -144,8 +144,6 @@ class Param(Page):
                               self.check_if_integer(value=self.hidden_state_size_text.get(), min_number=0,
                                                     max_number=ITERATION_MAX_NUMBER, msg='Hidden State Size'),
                              self.check_if_integer(value=self.batch_size_text.get(), min_number=0,
-                                                   max_number=ITERATION_MAX_NUMBER, msg='Batch Size'),
-                             self.check_if_integer(value=self.tweet_length_text.get(), min_number=0,
                                                    max_number=ITERATION_MAX_NUMBER, msg='Batch Size')
                              ]
         check_ = [not res for res in result]
@@ -170,7 +168,8 @@ class Param(Page):
                                     multiplying_rate=multiplying_rate, accuracy_threshold=accuracy_threshold,
                                     silhouette_threshold=silhouette_threshold, optimizer=optimizer, activation_function=activation_function,
                                     batch_size=batch_size,tweet_length=self.tweet_length)
-            TrainPage(self.parent, parameters, self.c1_embeded, self.c2_embeded, self.testing_data_embeded)
+            TrainPage(parent=self.parent, parameters=parameters, c1_embeded=self.c1_embeded,
+                      c2_embeded=self.c2_embeded, testing_data_embeded=self.testing_data_embeded)
         else:
             messagebox.showwarning(title='ERROR', message='\n'.join(result))
 

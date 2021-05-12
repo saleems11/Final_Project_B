@@ -79,7 +79,7 @@ class HomePage(Page):
         self.pseudo_al_ghazali_btn = Button(self, text="Select Pseudo Al Ghazali books", bg=def_bg, fg=def_fg,
                                             command=self.browse_pseudo)
         self.pseudo_al_ghazali_btn.place(x=130, y=420)
-        self.test_btn = Button(self, text="'Select Test Book'", bg=def_bg, fg=def_fg, command=self.browse_test)
+        self.test_btn = Button(self, text="Select Test Book", bg=def_bg, fg=def_fg, command=self.browse_test)
         self.test_btn.place(x=130, y=450)
 
         self.pseudo_al_ghazali_btn.place(x=130, y=420)
@@ -89,7 +89,7 @@ class HomePage(Page):
         self.pseudo_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_pseudo_btn)
         self.test_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_test_btn)
 
-        self.next_btn = Button(self, text="Next", bg='red', fg=def_fg, command=self.go_to)
+        self.next_btn = Button(self, text="Next - Training Page", bg='red', fg=def_fg, command=self.go_to)
         if anchor_c1_dir:
             self.anchor_c1_x_btn.place(x=110, y=330)
         if anchor_c2_dir:
@@ -104,12 +104,13 @@ class HomePage(Page):
         self.start_embedding = Button(self, text="Start Embedding", bg='green', fg=def_fg, command=self.embedding_files)
         self.check_dir()
         """Tweet_length"""
-        self.tweet_length = Label(self, text='Tweet Length', bg=def_bg, fg=def_fg)
-        self.tweet_length.place(x=830, y=450)
+        self.tweet_length = Label(self, text='Tweet Length', bg='RED', fg=def_fg)
+        self.tweet_length.place(x=830, y=515)
         self.tweet_length_text = Entry(self, width=15)
         self.tweet_length_text.place(x=830, y=550)
-        self.tweet_length_text.insert(0, '300')
-
+        self.tweet_length_text.insert(0, '200')
+        self.down_status = Label(self, text='Status', bg='RED', fg=def_fg)
+        self.down_status_text = Label(self, text='Loading...', bg='RED', fg=def_fg)
 
     def set_progress_bar(self, value: float):
         self.bar['value'] = value
@@ -200,7 +201,7 @@ class HomePage(Page):
     def check_dir(self):
         if c1_dir and c2_dir and anchor_c1_dir and anchor_c2_dir and original_dir and pseudo_dir and list_test and test_dir:
             self.bar.place(x=100, y=550)
-            self.start_embedding.place(x=70, y=550)
+            self.start_embedding.place(x=950, y=550)
         else:
             self.bar.place_forget()
             self.start_embedding.place_forget()
@@ -293,12 +294,16 @@ class HomePage(Page):
 
     def update_status(self):
         self.start_embedding.place_forget()
+        self.down_status.place(x=130, y=515)
+        self.down_status_text.place(x=230, y=515)
         while not self.process_bar.finished:
             print(f'updated progress bar : {self.process_bar.process}')
             self.set_progress_bar(value= self.process_bar.process*100)
+            self.down_status_text['text'] = self.process_bar.status
             sleep(2)
         self.next_btn.place(x=830, y=550)
-
+        self.tweet_length_text.place_forget()
+        self.tweet_length.place_forget()
     def start_embedding_process(self):
         print('Start embedding')
         global c1_dir, c2_dir, list_test, anchor_c2_dir, anchor_c1_dir
@@ -307,11 +312,11 @@ class HomePage(Page):
                                                    max_number=ITERATION_MAX_NUMBER, msg='Batch Size')
                              ]
         check_ = [not res for res in result]
-        if  not all(check_):
+        if not all(check_):
             messagebox.showwarning(title='ERROR', message='\n'.join(result))
             return
 
-        tweet_length = int(self.tweet_length_text.get())
+        self.tweet_length_parameter = int(self.tweet_length_text.get())
         self.test_x_btn['state'] = 'disabled'
         self.original_x_btn['state'] = 'disabled'
         self.anchor_c1_x_btn['state'] = 'disabled'
@@ -329,7 +334,7 @@ class HomePage(Page):
         self.load_data_btn2['state'] = 'disabled'
 
         c3_test_names = []
-        self.embed_data = DataManagement(tweet_size=tweet_length, embedding_size=1024,
+        self.embed_data = DataManagement(tweet_size=self.tweet_length_parameter, embedding_size=1024,
                                          c1_anchor_name=anchor_c1_dir[0], c2_anchor_name=anchor_c2_dir[0],
                                          c1_test_names=original_dir, c2_test_names=pseudo_dir,
                                          c3_test_names=c3_test_names, c1_dir=c1_dir, c2_dir=c2_dir, c3_dir=list_test)
@@ -341,7 +346,7 @@ class HomePage(Page):
         self.process_bar.finished = True
 
     def go_to(self):
-        Param(self.parent, self.c1_embeded, self.c2_embeded, self.testing_data_embeded)
+        Param(self.parent, self.c1_embeded, self.c2_embeded, self.testing_data_embeded, self.tweet_length_parameter)
 
     def check_if_integer(self, max_number: float, min_number: float, value, check: bool = True, msg: str='') -> str:
         try:

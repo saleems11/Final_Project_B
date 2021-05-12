@@ -24,19 +24,23 @@ class Embed_data_set:
                 embedding_size=embedding_size,
                 tweet_size=tweet_size)
             process.inc()
-            process.status = 'Finished embedding data set c1'
+            process.status = 'Converting File Names of c1'
             print(f'Process: {process.process}')
             c2_books_files_names_npy = Embed_data_set.convert_file_name_to_embedded_name(
                 files_names=c2_books_files_names_txt,
                 embedding_size=embedding_size,
                 tweet_size=tweet_size)
             process.inc()
+            process.status = 'Converting File Names of c2'
+
             print(f'Process: {process.process}')
             c3_books_files_names_npy = Embed_data_set.convert_file_name_to_embedded_name(
                 files_names=c3_books_files_names_txt,
                 embedding_size=embedding_size,
                 tweet_size=tweet_size)
             process.inc()
+            process.status = 'Converting File Names of c3'
+
             print(f'Process: {process.process}')
             # embed the data and save it
 
@@ -51,6 +55,8 @@ class Embed_data_set:
                                                         tweet_size=tweet_size)
             process.inc()
             print(f'Process: {process.process}')
+            process.status = 'Save c1.npy '
+
             # c2
             c2_embedded_books_cluster_dir = Embed_data_set.get_book_cluster_dir_path("c2")
             un_embedded_book_cluster_path = c2_dir
@@ -61,6 +67,9 @@ class Embed_data_set:
                                                         tweet_size=tweet_size)
             process.inc()
             print(f'Process: {process.process}')
+            process.status = 'Saving c2.npy'
+
+
             # c3
             c3_embedded_books_cluster_dir = Embed_data_set.get_book_cluster_dir_path("c3")
             for file_txt_name, file_npy_name in zip(c3_books_files_names_txt, c3_books_files_names_npy):
@@ -70,6 +79,8 @@ class Embed_data_set:
                                                         tweet_size=tweet_size)
             process.inc()
             print(f'Process: {process.process}')
+            process.status = 'Saving c3.npy'
+
             # repeating code for c1, c2, c3
             # get total clusters sizes
             c1_size, c1_embedded_books_array_length = Embed_data_set.get_cluster_size(c1_books_files_names_npy,
@@ -80,6 +91,7 @@ class Embed_data_set:
             #                                                                           c3_embedded_books_cluster_dir)
             process.inc()
             print(f'Process: {process.process}')
+            process.status = 'Calculating the main array'
 
             # create the main memory array
             # main_array = np.zeros((c1_size + c2_size + c3_size, tweet_size, embedding_size))
@@ -96,6 +108,8 @@ class Embed_data_set:
                                                                   embedded_books_array_length=c1_embedded_books_array_length)
             process.inc()
             print(f'Process: {process.process}')
+            process.status = 'Loading the cluster to main array of c1'
+
             c1_cluster = main_array[begin_idx: start_idx]
             begin_idx = start_idx
 
@@ -107,6 +121,8 @@ class Embed_data_set:
             c2_cluster = main_array[begin_idx: start_idx]
             begin_idx = start_idx
             process.inc()
+            process.status = 'Loading the cluster to main array of c2'
+
             print(f'Process: {process.process}')
 
             # start_idx = Embed_data_set.load_cluster_to_main_array(books_files_names_npy=c3_books_files_names_npy,
@@ -121,6 +137,8 @@ class Embed_data_set:
             Embed_data_set.load_cluster(c3_cluster, c3_books_files_names_npy, c3_embedded_books_cluster_dir)
             process.inc()
             print(f'Process: {process.process}')
+            process.status = 'Loading the cluster to main array of c3'
+
             return c1_cluster, c2_cluster, c3_cluster, c3_books_files_names_txt, c1_size, c2_size
 
 
@@ -163,7 +181,7 @@ class Embed_data_set:
 
         book_embedding_path = embedded_books_cluster_dir + "\\" + embedded_file_name
         # check if file exist
-        if os.path.isfile(book_embedding_path):
+        if os.path.exists(book_embedding_path):
             return
 
         # there is No prev embedded book

@@ -85,11 +85,7 @@ while not finished:
                                   learning_rate=learning_rate,
                                   loss_func=loss_func)
 
-    history, M = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(model=lstm.model, c1=c1, c2=c2,
-                                                                 testing_data=testing_data, epoch=epoch,
-                                                                 batch_size=batch_size, iterations=iterations,
-                                                                 accuracy_thresh_hold=accuracy_thresh_hold,
-                                                                 f1=3, f2=2)
+    history, M = BD_lstm.Bi_Direct_LSTM.train_test_for_iteration(c1=c1, c2=c2, testing_data=testing_data)
 
     # lstm.model = model
     if len(M) == 0:

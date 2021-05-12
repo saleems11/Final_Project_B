@@ -10,17 +10,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import models.LoadingBalancingData.DataManagement as DM
-from Parameters import  Parameters
+from GUI.App.pages.process_bar import ProcessBar
+from .Parameters import Parameters
 
 class Bi_Direct_LSTM:
 
-    def __init__(self, parameters: Parameters):
+    def __init__(self, parameters: Parameters, process_bar: ProcessBar):
         # to run on the GPU and solve a bug
         gpu_devices = tf.config.experimental.list_physical_devices('GPU')
         for device in gpu_devices:
             tf.config.experimental.set_memory_growth(device, True)
         self.parameters = parameters
         self.model = self.create_model()
+        self.process_bar: ProcessBar = process_bar
 
     def create_model(self):
         """Create a Bi-Direct LSTM model that is specified according to the parameters, and return the model.\n
@@ -54,9 +56,7 @@ class Bi_Direct_LSTM:
 
         return model
 
-    @staticmethod
-    def train_test_for_iteration(model, c1, c2, testing_data, epoch, batch_size, iterations,
-                                 accuracy_thresh_hold, f1, f2):
+    def train_test_for_iteration(self, c1, c2, testing_data):
         """Train the model for n epochs and then check it with 0.3 of the data (validation), the model accuracy
         is checked if it achieve the wanted accuracy test will run and saved in M.\n
         The data for testing the anchor is divided that they contain in the first place
@@ -65,17 +65,20 @@ class Bi_Direct_LSTM:
         M = []
         data_names = ['accuracy', 'val_accuracy', 'loss', 'val_loss']
         result = DataFrame()
-
+        iterations = self.parameters.number_of_iteration
         while iterations > 0:
-            x_train, y_train = DM.DataManagement.create_new_batch(c1, c2, f1, f2)
-            history = model.fit(x_train, y_train, validation_split=.30, epochs=epoch, batch_size=batch_size, verbose=1)
+            self.set_iteration(self.parameters.number_of_iteration-iterations+1)
+            self.process_bar.status = f'{iterations} / {self.parameters.number_of_iteration}'
+            x_train, y_train = DM.DataManagement.create_new_batch(c1, c2, self.parameters.multiplying_rate, self.parameters.undersampling_rate)
+            history = self.model.fit(x_train, y_train, validation_split=.30, epochs=self.parameters.number_of_epoch,
+                                batch_size=self.parameters.batch_size, verbose=1)
 
-            if history.history['accuracy'][-1] >= accuracy_thresh_hold:
+            if history.history['accuracy'][-1] >= self.parameters.accuracy_threshold:
                 # test the model if the wanted accuracy is achieved
                 iterations -= 1
                 print("Remaining iterations to run %d"%iterations)
 
-                M.append(Bi_Direct_LSTM.test_model(model, testing_data.anchor_c1, testing_data.anchor_c2,
+                M.append(Bi_Direct_LSTM.test_model(self.model, testing_data.anchor_c1, testing_data.anchor_c2,
                                                    testing_data.c1_test, testing_data.c2_test, testing_data.c3_test))
 
                 temp = DataFrame()
@@ -83,14 +86,18 @@ class Bi_Direct_LSTM:
                     temp[data_name] = history.history[data_name]
                 result = result.append(temp, ignore_index=True)
 
-            # model.reset_states()
+            # self.model.reset_states()
 
-
+        self.process_bar.finished = True
         # plot the result
         result.plot()
         plt.show(block=False)
 
         return history, M
+
+    def set_iteration(self, current_iteration: int):
+        self.process_bar.status = f'{current_iteration} / {self.parameters.number_of_iteration}'
+        self.process_bar.process = current_iteration/self.parameters.number_of_iteration
 
     @staticmethod
     def test_model(model, anchor_c1, anchor_c2, c1, c2, c3):
