@@ -2,33 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0b012406-2983-44b6-a433-d03dda92b89f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/j1-k03_1024_200.npy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/j1-k04_1024_200.npy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/j1-k05_1024_200.npy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/j1-k06_1024_200.npy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/j1-k07_1024_200.npy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Embedded_books/c1/j1-k08_1024_200.npy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Embedded_books/A1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Embedded_books/A1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c1/Al_Mankhul_min_Taliqat_al_Usul_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c1/Al_Mustasfa_min_ilm_al_Usul_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c1/Fada_ih_al_Batiniyya_wa_Fada_il_al_Mustazhiriyy_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c1/Faysal_at_Tafriqa_Bayna_al_Islam_wa_al_Zandaqa_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c1/Iljam_Al_Awamm_an_Ilm_Al_Kalam_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c1/Kimiya_yi_Saadat_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c1/Mishakat_al_Anwar_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c1/Tahafut_al_Falasifa_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c1/al_Madnun_bihi_ala_ghayri_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c1/al_iqtisad_fi_al_itiqad_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c1/j1-k0_1024_150.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c2/Al_Mankhul_min_Taliqat_al_Usul_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c2/al_Madnun_bihi_ala_ghayri_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/c2/al_iqtisad_fi_al_itiqad_1024_200.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/App/pages/LoadData.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/LoadData.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/App/pages/Train.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/Train.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/App/pages/parameters_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/parameters_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Bi-Dirct.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Bi-Dirct.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Gui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -175,10 +153,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM" />
       <item itemvalue="Python.Bi-Dirct" />
-      <item itemvalue="Python.Gui" />
+      <item itemvalue="Python.Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM" />
       <item itemvalue="Python.LoadData" />
+      <item itemvalue="Python.Gui" />
     </list>
     <recent_temporary>
       <list>
@@ -221,7 +199,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Embedded_books/A1.py</url>
-          <line>188</line>
+          <line>178</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

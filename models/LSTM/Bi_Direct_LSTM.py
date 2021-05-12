@@ -23,6 +23,7 @@ class Bi_Direct_LSTM:
         self.parameters = parameters
         self.model = self.create_model()
         self.process_bar: ProcessBar = process_bar
+        self.history = None
 
     def create_model(self):
         """Create a Bi-Direct LSTM model that is specified according to the parameters, and return the model.\n
@@ -67,13 +68,12 @@ class Bi_Direct_LSTM:
         result = DataFrame()
         iterations = self.parameters.number_of_iteration
         while iterations > 0:
-            self.set_iteration(self.parameters.number_of_iteration-iterations+1)
-            self.process_bar.status = f'{iterations} / {self.parameters.number_of_iteration}'
+
             x_train, y_train = DM.DataManagement.create_new_batch(c1, c2, self.parameters.multiplying_rate, self.parameters.undersampling_rate)
-            history = self.model.fit(x_train, y_train, validation_split=.30, epochs=self.parameters.number_of_epoch,
+            self.history = self.model.fit(x_train, y_train, validation_split=.30, epochs=self.parameters.number_of_epoch,
                                 batch_size=self.parameters.batch_size, verbose=1)
 
-            if history.history['accuracy'][-1] >= self.parameters.accuracy_threshold:
+            if self.history.history['accuracy'][-1] >= self.parameters.accuracy_threshold:
                 # test the model if the wanted accuracy is achieved
                 iterations -= 1
                 print("Remaining iterations to run %d"%iterations)
@@ -83,9 +83,10 @@ class Bi_Direct_LSTM:
 
                 temp = DataFrame()
                 for data_name in data_names:
-                    temp[data_name] = history.history[data_name]
+                    temp[data_name] = self.history.history[data_name]
                 result = result.append(temp, ignore_index=True)
-
+            self.set_iteration(self.parameters.number_of_iteration - iterations + 1)
+            self.process_bar.status = f'{iterations} / {self.parameters.number_of_iteration}'
             # self.model.reset_states()
 
         self.process_bar.finished = True
@@ -93,7 +94,7 @@ class Bi_Direct_LSTM:
         result.plot()
         plt.show(block=False)
 
-        return history, M
+        return self.history, M
 
     def set_iteration(self, current_iteration: int):
         self.process_bar.status = f'{current_iteration} / {self.parameters.number_of_iteration}'

@@ -55,7 +55,7 @@ class Param(Page):
         self.f_multiplying.place(x=50, y=190)
         self.f_multiplying_text = Entry(self, width=15)
         self.f_multiplying_text.place(x=250, y=190)
-        self.f_multiplying_text.insert(0,'3')
+        self.f_multiplying_text.insert(0,'2')
         """Accuracy threshold"""
         self.accuracy_threshold = Label(self, text='Accuracy threshold', bg=def_bg, fg=def_fg)
         self.accuracy_threshold.place(x=50, y=220)

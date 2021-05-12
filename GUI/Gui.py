@@ -21,8 +21,6 @@ def new_exit():
 
 root.protocol('WM_DELETE_WINDOW', new_exit)  # root is your root window
 
-root.protocol('WM_DELETE_WINDOW', doSomething)  # root is your root window
-
 
 root.update()
 root.mainloop()

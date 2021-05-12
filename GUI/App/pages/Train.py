@@ -74,7 +74,7 @@ class TrainPage(Page):
         """Save Model"""
         self.save_model = Button(self, text="Save The Model", bg='blue', fg=def_fg)
         """Start Testing"""
-        self.start_testing = Button(self, text="Start Testing", bg='green', fg=def_fg, command=self.start_lstm_model)
+        self.start_testing = Button(self, text="Start Training and Testing", bg='green', fg=def_fg, command=self.start_lstm_model)
         self.start_testing.place(x=590, y=400)
 
     def set_progress_bar(self, value: float):
@@ -94,14 +94,21 @@ class TrainPage(Page):
         pass
 
     def update_status(self):
-        self.save_model.place_forget()
+        if not self.process_bar.finished:
+            self.save_model['state'] = 'disable'
+        self.back['state'] = 'disable'
+        self.start_testing['state'] = 'disable'
         while not self.process_bar.finished:
             print(f'updated progress bar : {self.process_bar.process}')
             self.set_progress_bar(value= self.process_bar.process*100)
             self.iteration_text['text'] = self.process_bar.status
-            self.val_loss_text['text'] = self.lstm.model.history['val_loss']
-            self.val_accuracy_text['text'] = self.lstm.model.history['val_accuracy']
-            self.loss_text['text'] = self.lstm.model.history['loss']
-            self.accuracy_text['text'] = self.lstm.model.history['accuracy']
+            if self.lstm.history:
+                self.val_loss_text['text'] = self.lstm.history.history['val_loss']
+                self.val_accuracy_text['text'] = self.lstm.history.history['val_accuracy']
+                self.loss_text['text'] = self.lstm.history.history['loss'][-1]
+                self.accuracy_text['text'] = self.lstm.history.history['accuracy'][-1]
             sleep(1)
-        self.save_model.place(x=490, y=400)
+        if self.process_bar.finished:
+            self.save_model['state'] = 'enable'
+        self.back['state'] = 'enable'
+        self.start_testing['state'] = 'enabled'
