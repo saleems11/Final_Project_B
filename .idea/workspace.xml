@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0b012406-2983-44b6-a433-d03dda92b89f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Embedded_books/A1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Embedded_books/A1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/App/pages/Train.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/Train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/App/pages/parameters_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/parameters_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/Gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
