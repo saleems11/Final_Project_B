@@ -81,7 +81,7 @@ class Book_chunks_labels(show_in_tkinter):
     def create_figure(result_obj, dpi) -> Figure:
         # plot the data
         # figure = Figure(dpi=dpi)
-        figure = Figure(figsize=[10, 6])
+        figure = Figure(figsize=[12, 4])
         ax = figure.subplots()
         # call creating heat map
         result_obj.create_book_chunks_labels(ax=ax)

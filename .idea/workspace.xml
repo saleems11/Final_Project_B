@@ -22,12 +22,12 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b012406-2983-44b6-a433-d03dda92b89f" name="Default Changelist" comment="">
+    <list default="true" id="88f4ee48-4d57-4b00-9926-51444e982cca" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/App/pages/ShowResultsPage.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/ShowResultsPage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/App/pages/Train.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/Train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Objects/Book.py" beforeDir="false" afterPath="$PROJECT_DIR$/Objects/Book.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Show_results/Book_chunks_labels.py" beforeDir="false" afterPath="$PROJECT_DIR$/Show_results/Book_chunks_labels.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Show_results/Error_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/Show_results/Error_bar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Show_results/Heat_map.py" beforeDir="false" afterPath="$PROJECT_DIR$/Show_results/Heat_map.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Show_results/Histograms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Show_results/Histograms.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +44,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="Showing_prediction_res_saleem" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -188,8 +188,8 @@
       <list>
         <item itemvalue="Python.Gui" />
         <item itemvalue="Python.LoadData" />
-        <item itemvalue="Python.Bi-Dirct" />
         <item itemvalue="Python.Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM" />
+        <item itemvalue="Python.Bi-Dirct" />
         <item itemvalue="Python.Gui" />
       </list>
     </recent_temporary>
@@ -254,22 +254,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="822" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1621012566812" />
-    <state width="1899" height="214" key="GridCell.Tab.0.bottom" timestamp="1621016462278">
+    <state width="1899" height="214" key="GridCell.Tab.0.bottom" timestamp="1621018275421">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="214" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1621016462278" />
-    <state width="1899" height="214" key="GridCell.Tab.0.center" timestamp="1621016462277">
+    <state width="1899" height="214" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1621018275421" />
+    <state width="1899" height="214" key="GridCell.Tab.0.center" timestamp="1621018275421">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="214" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1621016462277" />
-    <state width="1899" height="214" key="GridCell.Tab.0.left" timestamp="1621016462277">
+    <state width="1899" height="214" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1621018275421" />
+    <state width="1899" height="214" key="GridCell.Tab.0.left" timestamp="1621018275421">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="214" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1621016462277" />
-    <state width="1899" height="214" key="GridCell.Tab.0.right" timestamp="1621016462278">
+    <state width="1899" height="214" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1621018275421" />
+    <state width="1899" height="214" key="GridCell.Tab.0.right" timestamp="1621018275421">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="214" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1621016462278" />
+    <state width="1899" height="214" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1621018275421" />
     <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1620989669464">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
