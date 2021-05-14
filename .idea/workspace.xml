@@ -2,7 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0b012406-2983-44b6-a433-d03dda92b89f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Embedded_books/A1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Embedded_books/A1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/App/pages/LoadData.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/LoadData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/App/pages/Train.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/Train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/App/pages/parameters_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/parameters_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Objects/TestingData.py" beforeDir="false" afterPath="$PROJECT_DIR$/Objects/TestingData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/LoadingBalancingData/DataManagement.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LoadingBalancingData/DataManagement.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +57,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_MARK_IGNORED_FILES_AS_EXCLUDED" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -179,7 +189,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/LoadDataParametersTrainingGUI" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -194,13 +216,83 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Embedded_books/A1.py</url>
-          <line>178</line>
+          <line>179</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Algs/Embedding.py</url>
           <line>114</line>
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py</url>
+          <line>80</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py</url>
+          <line>85</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py</url>
+          <line>95</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py</url>
+          <line>125</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/GUI/App/pages/LoadData.py</url>
+          <line>341</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/GUI/App/pages/LoadData.py</url>
+          <line>342</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/GUI/App/pages/LoadData.py</url>
+          <line>344</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/GUI/App/pages/LoadData.py</url>
+          <line>343</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/models/LoadingBalancingData/DataManagement.py</url>
+          <line>40</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/models/LoadingBalancingData/DataManagement.py</url>
+          <line>44</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Objects/TestingData.py</url>
+          <line>21</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Objects/TestingData.py</url>
+          <line>55</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Objects/TestingData.py</url>
+          <line>104</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Objects/TestingData.py</url>
+          <line>71</line>
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -69,6 +69,7 @@ class Embed_data_set:
             process.inc()
             process.status = 'Saving c3.npy'
             c3_embedded_books_cluster_dir = Embed_data_set.get_book_cluster_dir_path("c3")
+            un_embedded_book_cluster_path = c3_dir
             for file_txt_name, file_npy_name in zip(c3_books_files_names_txt, c3_books_files_names_npy):
                 Embed_data_set.embed_and_save_book_1024(embedded_file_name=file_npy_name,
                                                         embedded_books_cluster_dir=c3_embedded_books_cluster_dir,

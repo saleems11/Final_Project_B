@@ -72,31 +72,31 @@ class TestingData:
         for idx, book_name in enumerate(self.c3_books_names):
             """Get the c1_anchor data"""
             for idn, anchor_book in enumerate(self.c1_anchor_name):
-                if anchor_book == book_name[:-4]:
+                if anchor_book == book_name:
                     self.books.append(Book(book_name=anchor_book,
                                            embedded_data=c3[idx],
                                            cluster=self.anchors_names['c1_anchor']))
             """Get the c2_anchor data"""
             for idn, anchor_book in enumerate(self.c2_anchor_name):
-                if anchor_book == book_name[:-4]:
+                if anchor_book == book_name:
                     self.books.append(Book(book_name=anchor_book,
                                            embedded_data=c3[idx],
                                            cluster=self.anchors_names['c2_anchor']))
             """Get the c1_test data"""
             for idn, test_book in enumerate(self.c1_test_names):
-                if test_book == book_name[:-4]:
+                if test_book == book_name:
                     self.books.append(Book(test_book,
                                            c3[idx],
                                            self.anchors_names['c1_test']))
             """Get the c2_test data"""
             for idn, test_book in enumerate(self.c2_test_names):
-                if test_book == book_name[:-4]:
+                if test_book == book_name:
                     self.books.append(Book(book_name=test_book,
                                            embedded_data=c3[idx],
                                            cluster=self.anchors_names['c2_test']))
             """Get the c3_test data"""
             for idn, test_book in enumerate(self.c3_test_names):
-                if test_book == book_name[:-4]:
+                if test_book == book_name:
                     self.books.append(Book(book_name=test_book,
                                            embedded_data=c3[idx],
                                            cluster=self.anchors_names['c3_test']))

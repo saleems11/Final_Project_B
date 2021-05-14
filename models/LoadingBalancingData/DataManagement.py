@@ -9,13 +9,13 @@ from Objects.TestingData import TestingData
 
 
 class DataManagement:
-    def __init__(self, tweet_size: int, embedding_size: int, c1_anchor_name:str, c2_anchor_name: str, c1_test_names: List[str],
+    def __init__(self, tweet_size: int, embedding_size: int, c1_anchor_name: List[str], c2_anchor_name: List[str], c1_test_names: List[str],
                  c2_test_names: List[str], c3_test_names: List[str], c1_dir: str, c2_dir: str, c3_dir: str):
 
         self.tweet_size: int = tweet_size
         self.embedding_size: int = embedding_size
-        self.c1_anchor_name: str = c1_anchor_name
-        self.c2_anchor_name: str = c2_anchor_name
+        self.c1_anchor_name: List[str] = c1_anchor_name
+        self.c2_anchor_name: List[str] = c2_anchor_name
         self.c1_test_names: List[str] = c1_test_names
         self.c2_test_names: List[str] = c2_test_names
         self.c3_test_names: List[str] = c3_test_names

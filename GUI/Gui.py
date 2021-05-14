@@ -16,7 +16,7 @@ HomePage(main_frame)
 def new_exit():
     if messagebox.askokcancel("Warning", "Do you want to quit?"):
         root.destroy()
-    sys.exit()
+        sys.exit()
 
 
 root.protocol('WM_DELETE_WINDOW', new_exit)  # root is your root window

@@ -3,6 +3,7 @@ from tkinter.filedialog import askopenfilename
 from tkinter.ttk import Combobox, Entry
 from typing import List
 
+from Objects.TestingData import TestingData
 from models.LSTM.Parameters import Parameters
 from .Train import TrainPage
 from .page import Page, def_bg, def_fg
@@ -21,7 +22,7 @@ ACTIVATION_FUNCTION = ["Sigmoid", "RElu"]
 
 
 class Param(Page):
-    def __init__(self, parent, c1_embeded, c2_embeded, testing_data_embeded, tweet_length):
+    def __init__(self, parent, c1_embeded, c2_embeded, testing_data_embeded: TestingData, tweet_length):
         Page.__init__(self, parent, title='Parameters')
         self.parent = parent
         self.filename: str = ''
@@ -61,14 +62,14 @@ class Param(Page):
         self.accuracy_threshold.place(x=50, y=220)
         self.accuracy_threshold_text = Entry(self, width=15)
         self.accuracy_threshold_text.place(x=250, y=220)
-        self.accuracy_threshold_text.insert(0,'0.90')
+        self.accuracy_threshold_text.insert(0,'0.96')
 
         """Silhouette threshold"""
         self.silhouette_threshold = Label(self, text='Silhouette threshold', bg=def_bg, fg=def_fg)
         self.silhouette_threshold.place(x=50, y=250)
         self.silhouette_threshold_text = Entry(self, width=15)
         self.silhouette_threshold_text.place(x=250, y=250)
-        self.silhouette_threshold_text.insert(0,'0.75')
+        self.silhouette_threshold_text.insert(0,'0.55')
 
         """Learning Rate"""
         self.learning_rate = Label(self, text='Learning Rate', bg=def_bg, fg=def_fg)
@@ -82,7 +83,7 @@ class Param(Page):
         self.number_of_epoch.place(x=400, y=100)
         self.number_of_epoch_text = Entry(self, width=15)
         self.number_of_epoch_text.place(x=550, y=100)
-        self.number_of_epoch_text.insert(0,'15')
+        self.number_of_epoch_text.insert(0,'10')
 
         """Optimizer"""
         self.optimzer = Label(self, text='Optimizer', bg=def_bg, fg=def_fg)
@@ -97,21 +98,27 @@ class Param(Page):
         self.drop_out.place(x=400, y=160)
         self.drop_out_text = Entry(self, width=15)
         self.drop_out_text.place(x=550, y=160)
-        self.drop_out_text.insert(0,'0.4')
+        self.drop_out_text.insert(0,'0.3')
 
         """Hidden State Size"""
         self.hidden_state_size = Label(self, text='Hidden State Size', bg=def_bg, fg=def_fg)
         self.hidden_state_size.place(x=400, y=190)
         self.hidden_state_size_text = Entry(self, width=15)
         self.hidden_state_size_text.place(x=550, y=190)
-        self.hidden_state_size_text.insert(0,'300')
+        self.hidden_state_size_text.insert(0,'160')
         """Batch_Size"""
         self.batch_size = Label(self, text='Batch Size', bg=def_bg, fg=def_fg)
         self.batch_size.place(x=400, y=220)
         self.batch_size_text = Entry(self, width=15)
         self.batch_size_text.place(x=550, y=220)
-        self.batch_size_text.insert(0,'300')
+        self.batch_size_text.insert(0,'100')
 
+        """Fully Connected Layer"""
+        self.fully_connected_layer = Label(self, text='Fully Connected Layer', bg=def_bg, fg=def_fg)
+        self.fully_connected_layer.place(x=400, y=250)
+        self.fully_connected_layer_text = Entry(self, width=15)
+        self.fully_connected_layer_text.place(x=550, y=250)
+        self.fully_connected_layer_text.insert(0,'30')
 
         """Buttons"""
         # self.back = Button(self, text="Back", bg='red', fg=def_fg, command=self.back)
@@ -125,7 +132,7 @@ class Param(Page):
         pass
 
     def next(self):
-        result: List[str] = [self.check_if_integer(value=self.number_of_iterations_text.get(), min_number=1,
+        result: List[str] = [self.check_if_integer(value=self.number_of_iterations_text.get(), min_number=0,
                                                     max_number=ITERATION_MAX_NUMBER,msg='Number of iteration'),
                               self.check_if_integer(value=self.f1_sampling_text.get(), min_number=0,
                                                     max_number=ITERATION_MAX_NUMBER, msg='F1-Under Sampling'),
@@ -144,12 +151,14 @@ class Param(Page):
                               self.check_if_integer(value=self.hidden_state_size_text.get(), min_number=0,
                                                     max_number=ITERATION_MAX_NUMBER, msg='Hidden State Size'),
                              self.check_if_integer(value=self.batch_size_text.get(), min_number=0,
-                                                   max_number=ITERATION_MAX_NUMBER, msg='Batch Size')
+                                                   max_number=ITERATION_MAX_NUMBER, msg='Batch Size'),
+                             self.check_if_integer(value=self.fully_connected_layer_text.get(), min_number=0,
+                                                   max_number=ITERATION_MAX_NUMBER, msg='Fully connected Layer')
                              ]
         check_ = [not res for res in result]
         if all(check_):
             lstm_hidden_state_size = int(self.hidden_state_size_text.get())
-            fully_connected_layer = int(300)
+            fully_connected_layer = int(self.fully_connected_layer_text.get())
             drop_out = float(self.drop_out_text.get())
             learning_rate = float(self.learning_rate_text.get())
             number_of_epoch = int(self.number_of_epoch_text.get())

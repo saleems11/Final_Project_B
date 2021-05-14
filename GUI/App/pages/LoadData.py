@@ -333,14 +333,14 @@ class HomePage(Page):
         self.load_data_btn1['state'] = 'disabled'
         self.load_data_btn2['state'] = 'disabled'
 
-        c3_test_names = []
+        c3_test_names = [test_dir]
         self.embed_data = DataManagement(tweet_size=self.tweet_length_parameter, embedding_size=1024,
-                                         c1_anchor_name=anchor_c1_dir[0], c2_anchor_name=anchor_c2_dir[0],
+                                         c1_anchor_name=anchor_c1_dir, c2_anchor_name=anchor_c2_dir,
                                          c1_test_names=original_dir, c2_test_names=pseudo_dir,
                                          c3_test_names=c3_test_names, c1_dir=c1_dir, c2_dir=c2_dir, c3_dir=list_test)
         if not TESTING:
             c1, c2, testing_data = self.embed_data.load_data(self.process_bar)
-            self.c1_embeded= c1
+            self.c1_embeded = c1
             self.c2_embeded = c2
             self.testing_data_embeded = testing_data
         self.process_bar.finished = True

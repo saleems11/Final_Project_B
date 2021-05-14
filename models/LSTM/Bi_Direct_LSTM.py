@@ -1,4 +1,6 @@
 import tensorflow as tf
+import models.K_means_Siluete.K_means_Siluete as KMS
+
 from keras.models import Sequential
 from keras.layers import LSTM
 from keras.layers import Dense
@@ -7,7 +9,6 @@ from keras.layers import Bidirectional
 
 from pandas import DataFrame
 import numpy as np
-import matplotlib.pyplot as plt
 
 import models.LoadingBalancingData.DataManagement as DM
 from GUI.App.pages.process_bar import ProcessBar
@@ -38,7 +39,11 @@ class Bi_Direct_LSTM:
             merge_mode="concat"))
 
         model.add(Dropout(self.parameters.drop_out))
-        model.add(Dense(self.parameters.fully_connect_layer, activation='relu'))
+        if self.parameters.activation_function == 'RElu':
+            model.add(Dense(self.parameters.fully_connect_layer, activation='relu'))
+        elif self.parameters.activation_function == "Sigmoid":
+            model.add(Dense(self.parameters.fully_connect_layer, activation='sigmoid'))
+
         model.add(Dropout(self.parameters.drop_out))
         model.add(Dense(2, activation='softmax'))
 
@@ -86,15 +91,17 @@ class Bi_Direct_LSTM:
                     temp[data_name] = self.history.history[data_name]
                 result = result.append(temp, ignore_index=True)
             self.set_iteration(self.parameters.number_of_iteration - iterations + 1)
-            self.process_bar.status = f'{iterations} / {self.parameters.number_of_iteration}'
+            self.process_bar.status = f'{(self.parameters.number_of_iteration -iterations)+1} / {self.parameters.number_of_iteration}'
             # self.model.reset_states()
+        if M:
+            M = np.concatenate(M, axis=0)
+            labels, kmeans = KMS.calculate_plot_Kmeans(M, testing_data.iteration_size, testing_data)
+            score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans,
+                                   iteration_size=testing_data.iteration_size,
+                                   silhouette_threshold=self.parameters.silhouette_threshold)
+        score = 0
+        return self.history, M, score
 
-        self.process_bar.finished = True
-        # plot the result
-        result.plot()
-        plt.show(block=False)
-
-        return self.history, M
 
     def set_iteration(self, current_iteration: int):
         self.process_bar.status = f'{current_iteration} / {self.parameters.number_of_iteration}'
