@@ -15,11 +15,13 @@ import tkinter as tk
 
 
 class ShowResultsPage(Page):
-    def __init__(self, parent_frame):
+    def __init__(self, parent_frame, M, testing_data):
         # init page/ delete old page
         Page.__init__(self, parent_frame)
 
         self.parent_frame = parent_frame
+        self.M = M
+        self.testing_data = testing_data
 
         # split the GUi to three parts vertically
         self.top_frame = Frame(parent_frame)
@@ -41,7 +43,7 @@ class ShowResultsPage(Page):
         # variables and lists for GUI
         """ The final code replace the next line bellow the bellow line"""
         # Gui.testing_books_names
-        self.testing_books_names = ["Jan", "Feb", "Mar", "Very long name and Very long bame"]  # etc
+        self.testing_books_names = testing_data.c3_books_names
         self.chunks_labels_selected_book_chunk_staring_idx_value = None
         self.chunks_labels_selected_book_chunk_ending_idx_value = None
 
@@ -118,7 +120,6 @@ class ShowResultsPage(Page):
     def clicked_on_error_bar_show_Btn(self):
         self.switch_top_frame_clicked_button(self.error_bar_show_Btn)
         self.create_error_bar_frame()
-        pass
 
     def clicked_on_chunks_labels_show_Btn(self):
         self.switch_top_frame_clicked_button(self.chunks_labels_show_Btn)
@@ -144,63 +145,56 @@ class ShowResultsPage(Page):
 
             smoothing_option = self.chunks_labels_smooth_frequency_graph_check_box_val.get()
             rounding_option = self.chunks_labels_round_frequency_graph_check_box_val.get()
-
-            """ load other Data"""
             average_over_iter_option = self.chunks_labels_over_iterations_check_box_val.get()
 
-            """ Just for testing """
-            self.chunk_labels = Book_chunks_labels(
-                None,
-                book_name=None,
-                rounded=rounding_option,
-                smoothed=smoothing_option,
-                testing=True)
+            # the finale code
+            book = self.testing_data.get_book(book_name=book_name)
 
+            # check if the ending_idx smaller than book size
             if self.select_book_chunk_ending_idx_entry.get() != '':
+                data_size = book.embedded_data.shape[0]
                 self.chunks_labels_selected_book_chunk_ending_idx_value = int(
                     self.select_book_chunk_ending_idx_entry.get())
-
-                # check if the ending_idx smaller than book size
-                data_size = len(self.chunk_labels.y_data)
                 if data_size <= self.chunks_labels_selected_book_chunk_ending_idx_value:
                     tk.messagebox.showinfo("Input miss mach", "Please input valid number smaller than data size"
                                                               "(ending index is bigger than data size: %d )" % data_size)
                     return
 
-                self.chunk_labels.y_data = self.chunk_labels.y_data[
-                                           self.chunks_labels_selected_book_chunk_staring_idx_value:
-                                           self.chunks_labels_selected_book_chunk_ending_idx_value]
-            else:
-                self.chunk_labels.y_data = self.chunk_labels.y_data[
-                                           self.chunks_labels_selected_book_chunk_staring_idx_value:]
-
-            # the finale code
-            # book = Gui.testing_data.get_book(book_name=book_name)
-
-            # check if the ending_idx smaller than book size
-            # if self.select_book_chunk_ending_idx_entry.get() != '':
-            #     data_size = len(book.predictions_res_over_iter[-1])
-            #     if data_size <= select_book_chunk_ending_idx_value:
-            #         tk.messagebox.showinfo("Input miss mach", "Please input valid number smaller than data size"
-            #                                                   "(ending index is bigger than data size: %d )" % data_size)
-            #         return
-
-            # here must know if average_over_iter_option is used
-            # to know witch data to give to the GUI creator
-
-            # self.chunk_labels = Book_chunks_labels(
-            #     book.predictions_res_over_iter[-1][self.select_book_chunk_staring_idx_value:
-            #     select_book_chunk_ending_idx_value],
-            #     book_name=book.book_name,
-            #     rounded= smoothing_option,
-            #     average_over_iter= average_over_iter_option)
+                """ from starting index to finish index"""
+                if average_over_iter_option:
+                    mean_over_iterations = book.mean_prediction_over_iteration()
+                    self.chunk_labels = Book_chunks_labels(
+                        mean_over_iterations[
+                        self.chunks_labels_selected_book_chunk_staring_idx_value:
+                        self.chunks_labels_selected_book_chunk_ending_idx_value],
+                        book_name=book.book_name,
+                        rounded=rounding_option,
+                        smoothed=smoothing_option)
+                else:
+                    self.chunk_labels = Book_chunks_labels(
+                        book.predictions_res_over_iter[-1][
+                        self.chunks_labels_selected_book_chunk_staring_idx_value:
+                        self.chunks_labels_selected_book_chunk_ending_idx_value],
+                        book_name=book.book_name,
+                        rounded=rounding_option,
+                        smoothed=smoothing_option)
             # look at the hint above
-            # else:
-            # self.chunk_labels = Book_chunks_labels(
-            #     book.predictions_res_over_iter[-1][self.select_book_chunk_staring_idx_value:],
-            #     book_name=book.book_name,
-            #     rounded= smoothing_option,
-            #     average_over_iter= average_over_iter_option)
+            else:
+                """ from starting index to finish """
+                if average_over_iter_option:
+                    mean_over_iterations = book.mean_prediction_over_iteration()
+                    self.chunk_labels = Book_chunks_labels(
+                        mean_over_iterations[
+                        self.chunks_labels_selected_book_chunk_staring_idx_value:],
+                        book_name=book.book_name,
+                        rounded=rounding_option,
+                        smoothed=smoothing_option)
+                else:
+                    self.chunk_labels = Book_chunks_labels(
+                        book.predictions_res_over_iter[-1][self.chunks_labels_selected_book_chunk_staring_idx_value:],
+                        book_name=book.book_name,
+                        rounded=rounding_option,
+                        smoothed=smoothing_option)
 
             Book_chunks_labels.create_GUI(result_obj=self.chunk_labels, main_frame=self.chunk_labels_frame_bottom_frame)
 
@@ -215,55 +209,52 @@ class ShowResultsPage(Page):
             """ Used to load other data """
             average_over_iter_option = self.histogram_over_iterations_chunks_labels_check_box_val.get()
 
-            """ Just for testing """
-            self.histogram = Histograms(
-                book_prediction_res=None,
-                book_name=None,
-                smoothed=smoothing_option,
-                testing=True)
+            """ the finale code not 100% working """
+            book = self.testing_data.get_book(book_name=book_name)
 
+            # check if the ending_idx smaller than book size
             if self.select_book_chunk_ending_idx_entry.get() != '':
-                self.histogram_selected_book_chunk_ending_idx_value = int(
-                    self.select_book_chunk_ending_idx_entry.get())
-
-                # check if the ending_idx smaller than book size
-                data_size = len(self.histogram.book_prediction_res)
+                data_size = book.embedded_data.shape[0]
+                self.histogram_selected_book_chunk_ending_idx_value = int(self.select_book_chunk_ending_idx_entry.get())
                 if data_size <= self.histogram_selected_book_chunk_ending_idx_value:
                     tk.messagebox.showinfo("Input miss mach", "Please input valid number smaller than data size"
                                                               "(ending index is bigger than data size: %d )" % data_size)
                     return
 
-                self.histogram.book_prediction_res = self.histogram.book_prediction_res[
-                                                     self.histogram_selected_book_chunk_staring_idx_value:
-                                                     self.histogram_selected_book_chunk_ending_idx_value]
-            else:
-                self.histogram.book_prediction_res = self.histogram.book_prediction_res[
-                                                     self.histogram_selected_book_chunk_staring_idx_value:]
+                """ starting index to finish index"""
 
-            # # the finale code not 100% working
-            # book = Gui.testing_data.get_book(book_name=book_name)
-            #
-            # # check if the ending_idx smaller than book size
-            # if self.select_book_chunk_ending_idx_entry.get() != '':
-            #     data_size = len(book.mean_of_mean_prediction_res_over_iter)
-            #     if data_size <= self.histogram_selected_book_chunk_ending_idx_value:
-            #         tk.messagebox.showinfo("Input miss mach", "Please input valid number smaller than data size"
-            #                                                   "(ending index is bigger than data size: %d )" % data_size)
-            #         return
-            #
-            # # here must know if average_over_iter_option is used
-            # # to know witch data to give to the GUI creator
-            #
-            # self.histogram = Histograms(
-            #     book_prediction_res=mean_of_mean_prediction_res_over_iter,
-            #     book_name=book.book_name)
-            # # look at the hint above
-            # else:
-            # self.chunk_labels = Book_chunks_labels(
-            #     book.predictions_res_over_iter[-1][self.select_book_chunk_staring_idx_value:],
-            #     book_name=book.book_name,
-            #     rounded= smoothing_option,
-            #     average_over_iter= average_over_iter_option)
+                if average_over_iter_option:
+                    mean_over_iterations = book.mean_prediction_over_iteration()
+                    self.histogram = Histograms(
+                        book_prediction_res=mean_over_iterations[
+                                            self.histogram_selected_book_chunk_staring_idx_value:
+                                            self.histogram_selected_book_chunk_ending_idx_value],
+                        book_name=book.book_name,
+                        smoothed=smoothing_option)
+                else:
+                    self.histogram = Histograms(
+                        book_prediction_res=book.predictions_res_over_iter[-1][
+                                            self.histogram_selected_book_chunk_staring_idx_value:
+                                            self.histogram_selected_book_chunk_ending_idx_value],
+                        book_name=book.book_name,
+                        smoothed=smoothing_option)
+
+
+            else:
+                """ starting index to finish index """
+                if average_over_iter_option:
+                    mean_over_iterations = book.mean_prediction_over_iteration()
+                    self.histogram = Histograms(
+                        book_prediction_res=mean_over_iterations[
+                                            self.histogram_selected_book_chunk_staring_idx_value:],
+                        book_name=book.book_name,
+                        smoothed=smoothing_option)
+                else:
+                    self.histogram = Histograms(
+                        book_prediction_res=book.predictions_res_over_iter[-1][
+                                            self.histogram_selected_book_chunk_staring_idx_value:],
+                        book_name=book.book_name,
+                        smoothed=smoothing_option)
 
         Histograms.create_GUI(result_obj=self.histogram, main_frame=self.histogram_frame_bottom_frame)
 
@@ -319,9 +310,9 @@ class ShowResultsPage(Page):
     def create_heat_map_frame(self):
         if self.heat_map is None:
             """ for testing purposes"""
-            self.heat_map = Heat_map(None, None, testing=True)
+            # self.heat_map = Heat_map(None, None, testing=True)
             """ The final code point to the global parameters """
-            # self.heat_map = Heat_map(data=Gui.M, iteration_size=Gui.iteration_size)
+            self.heat_map = Heat_map(data=self.M, iteration_size=self.testing_data.iteration_size)
 
         Heat_map.create_GUI(result_obj=self.heat_map, main_frame=self.mid_frame)
 
@@ -329,18 +320,19 @@ class ShowResultsPage(Page):
 
         if self.error_bar is None:
             """ For testing """
-            self.error_bar = Error_bar(x=None,
-                                       y=None,
-                                       y_mean=None,
-                                       y_mean_c1=None,
-                                       y_mean_c2=None,
-                                       label=None,
-                                       asymmetric_y_error=None,
-                                       testing=True)
-            self.error_bar.create_GUI(result_obj=self.error_bar, main_frame=self.mid_frame)
+            # self.error_bar = Error_bar(x=None,
+            #                            y=None,
+            #                            y_mean=None,
+            #                            y_mean_c1=None,
+            #                            y_mean_c2=None,
+            #                            label=None,
+            #                            asymmetric_y_error=None,
+            #                            testing=True)
+            # self.error_bar.create_GUI(result_obj=self.error_bar, main_frame=self.mid_frame)
             """ The Finale Code"""
             # get the data using a thread
-            # threading.Thread(target=self.get_error_bar_data_and_show)
+            # threading.Thread(target=self.get_error_bar_data_and_show, daemon=True)
+            self.get_error_bar_data_and_show()
         else:
             self.error_bar.create_GUI(result_obj=self.error_bar, main_frame=self.mid_frame)
 
@@ -497,10 +489,10 @@ class ShowResultsPage(Page):
 
     """ Threads Functions """
 
-    def get_error_bar_data_and_show(self, error_bar):
+    def get_error_bar_data_and_show(self):
         books_names, books_mean_values_over_all_iter, books_error_down_values_over_all_iter, \
         books_error_up_values_over_all_iter, books_mean_values_over_all_iter, c1_mean_val, c2_mean_val, mean_val \
-            = Gui.testing_data.get_error_bar_data()
+            = self.testing_data.get_error_bar_data()
 
         self.error_bar = Error_bar(x=books_names,
                                    y=books_mean_values_over_all_iter,

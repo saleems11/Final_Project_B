@@ -99,7 +99,8 @@ class Bi_Direct_LSTM:
             score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans,
                                    iteration_size=testing_data.iteration_size,
                                    silhouette_threshold=self.parameters.silhouette_threshold)
-        score = 0
+        else:
+            score = 0
         return self.history, M, score
 
 
@@ -137,7 +138,7 @@ class Bi_Direct_LSTM:
                 prediction_res += prediction[0]
 
             mean_predictions = prediction_res / len(books_list[idx].embedded_data)
-            books_list[idx].add_prediction_res(predictions=predictions, mean_predictions=mean_predictions)
+            books_list[idx].add_prediction_res(predictions=predictions[:, 0], mean_predictions=mean_predictions)
             predictions_list.append(mean_predictions)
 
         return np.array(predictions_list, dtype='f')

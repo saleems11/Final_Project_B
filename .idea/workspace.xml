@@ -23,10 +23,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b012406-2983-44b6-a433-d03dda92b89f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/App/pages/ShowResultsPage.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/ShowResultsPage.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/App/pages/Train.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/Train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/K_means_Siluete/K_means_Siluete.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/K_means_Siluete/K_means_Siluete.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Objects/Book.py" beforeDir="false" afterPath="$PROJECT_DIR$/Objects/Book.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +42,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitSEFilterConfiguration">
@@ -200,6 +206,14 @@
       <option name="presentableId" value="Default" />
       <updated>1620245473618</updated>
     </task>
+    <task id="LOCAL-00001" summary="Merge elia GUI code with the model code in the master.">
+      <created>1620989662320</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1620989662320</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -228,28 +242,38 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Merge elia GUI code with the model code in the master." />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge elia GUI code with the model code in the master." />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1620987548072">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1620987548072" />
-    <state width="1899" height="230" key="GridCell.Tab.0.bottom" timestamp="1620988612710">
+    <state width="822" height="466" key="DebuggerActiveHint" timestamp="1621012566812">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="230" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1620988612710" />
-    <state width="1899" height="230" key="GridCell.Tab.0.center" timestamp="1620988612710">
+    <state width="822" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1621012566812" />
+    <state width="1899" height="214" key="GridCell.Tab.0.bottom" timestamp="1621016462278">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="230" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1620988612710" />
-    <state width="1899" height="230" key="GridCell.Tab.0.left" timestamp="1620988612710">
+    <state width="1899" height="214" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1621016462278" />
+    <state width="1899" height="214" key="GridCell.Tab.0.center" timestamp="1621016462277">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="230" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1620988612710" />
-    <state width="1899" height="230" key="GridCell.Tab.0.right" timestamp="1620988612710">
+    <state width="1899" height="214" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1621016462277" />
+    <state width="1899" height="214" key="GridCell.Tab.0.left" timestamp="1621016462277">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="230" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1620988612710" />
+    <state width="1899" height="214" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1621016462277" />
+    <state width="1899" height="214" key="GridCell.Tab.0.right" timestamp="1621016462278">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="214" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1621016462278" />
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1620989669464">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1620989669464" />
     <state x="769" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1620987006624">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -273,64 +297,9 @@
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py</url>
-          <line>95</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py</url>
-          <line>125</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/GUI/App/pages/LoadData.py</url>
-          <line>341</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/GUI/App/pages/LoadData.py</url>
-          <line>342</line>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/GUI/App/pages/LoadData.py</url>
-          <line>344</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/GUI/App/pages/LoadData.py</url>
-          <line>343</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/models/LoadingBalancingData/DataManagement.py</url>
-          <line>40</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/models/LoadingBalancingData/DataManagement.py</url>
-          <line>44</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Objects/TestingData.py</url>
-          <line>21</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Objects/TestingData.py</url>
-          <line>55</line>
-          <option name="timeStamp" value="28" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Objects/TestingData.py</url>
-          <line>104</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Objects/TestingData.py</url>
-          <line>71</line>
-          <option name="timeStamp" value="32" />
+          <url>file://$PROJECT_DIR$/GUI/App/pages/ShowResultsPage.py</url>
+          <line>192</line>
+          <option name="timeStamp" value="37" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

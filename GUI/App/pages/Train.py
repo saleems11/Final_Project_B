@@ -143,7 +143,7 @@ class TrainPage(Page):
               testing_data_embeded=self.testing_data_embeded, tweet_length=self.lstm.parameters.tweet_length)
 
     def next(self):
-        ShowResultsPage.ShowResultsPage(self.parent)
+        ShowResultsPage.ShowResultsPage(self.parent, self.M, self.testing_data_embeded)
         print("Still un-implemented")
         pass
 

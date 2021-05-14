@@ -1,3 +1,5 @@
+import numpy as np
+
 class Book:
 
     def __init__(self, book_name, embedded_data, cluster):
@@ -25,9 +27,16 @@ class Book:
     def prediction_res_over_all_iter(self):
         most_min = min(self.mean_prediction_res_over_iter)
         most_max = max(self.mean_prediction_res_over_iter)
-        mean_over_iterations = sum(self.mean_prediction_res_over_iter)/len(self.mean_prediction_res_over_iter)
 
+        mean_over_iterations = sum(self.mean_prediction_res_over_iter)/len(self.mean_prediction_res_over_iter)
         return most_min, most_max, mean_over_iterations
+
+    def mean_prediction_over_iteration(self):
+        mean_over_iterations = np.zeros(self.predictions_res_over_iter[0].shape[0])
+        for prediction_res in self.predictions_res_over_iter:
+            mean_over_iterations += prediction_res
+        mean_over_iterations = mean_over_iterations/len(self.predictions_res_over_iter)
+        return mean_over_iterations
 
     def add_label(self, label):
         self.label.append(label)
