@@ -37,14 +37,14 @@ class Param(Page):
         self.active_function = Combobox(parent, width=15, textvariable=self.n)
         self.active_function['values'] = ACTIVATION_FUNCTION
         self.active_function.place(x=250, y=100)
-        self.active_function.current(ACTIVATION_FUNCTION.index('RElu'))
+        self.active_function.current(ACTIVATION_FUNCTION.index('Sigmoid'))
 
         """Number Of Iterations"""
         self.number_of_iterations = Label(self, text='Number Of Iterations', bg=def_bg, fg=def_fg)
         self.number_of_iterations.place(x=50, y=130)
         self.number_of_iterations_text = Entry(self, width=15)
         self.number_of_iterations_text.place(x=250, y=130)
-        self.number_of_iterations_text.insert(0,'3')
+        self.number_of_iterations_text.insert(0,'1')
         """F1- the undersampling rate"""
         self.f1_sampling = Label(self, text='F1- the under sampling rate', bg=def_bg, fg=def_fg)
         self.f1_sampling.place(x=50, y=160)
@@ -69,7 +69,7 @@ class Param(Page):
         self.silhouette_threshold.place(x=50, y=250)
         self.silhouette_threshold_text = Entry(self, width=15)
         self.silhouette_threshold_text.place(x=250, y=250)
-        self.silhouette_threshold_text.insert(0,'0.55')
+        self.silhouette_threshold_text.insert(0,'0.5')
 
         """Learning Rate"""
         self.learning_rate = Label(self, text='Learning Rate', bg=def_bg, fg=def_fg)

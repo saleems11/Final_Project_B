@@ -8,7 +8,7 @@ from Exceptions.Exceptions import AnchorsInSameCluster, SilhouetteBellowThreshol
 
 
 def calculate_plot_Kmeans(M, iteration_size, testing_data):
-    plt.figure()
+    # plt.figure()
     kmeans = KMeans(n_clusters=2)
 
     labels = kmeans.fit_predict(M.reshape(-1, 1))
@@ -30,17 +30,16 @@ def calculate_plot_Kmeans(M, iteration_size, testing_data):
         if labels[0] == labels[len(testing_data.anchor_c1)]: raise AnchorsInSameCluster('The anchors are in the same cluster')
 
 
-    # plot the anchors
-    for i in range(int(len(M) / iteration_size)):
-        plt.scatter(M[i * iteration_size], 0, c='green', s=200, alpha=0.5)
-        plt.scatter(M[i * iteration_size + 1], 0, c='red', s=200, alpha=0.5)
-    # plot the rest of the data
-    plt.scatter(M[:], [0]*len(M), c=labels[:], s=50, cmap='viridis')
-    # plot the center of the data
-    plt.scatter(centers[:], [0]*len(centers), c='black', s=200, alpha=0.3)
-
-    plt.show(block=False)
-    # create new figure
+    # # plot the anchors
+    # for i in range(int(len(M) / iteration_size)):
+    #     plt.scatter(M[i * iteration_size], 0, c='green', s=200, alpha=0.5)
+    #     plt.scatter(M[i * iteration_size + 1], 0, c='red', s=200, alpha=0.5)
+    # # plot the rest of the data
+    # plt.scatter(M[:], [0]*len(M), c=labels[:], s=50, cmap='viridis')
+    # # plot the center of the data
+    # plt.scatter(centers[:], [0]*len(centers), c='black', s=200, alpha=0.3)
+    #
+    # plt.show(block=False)
 
     return labels, kmeans
 
@@ -57,9 +56,9 @@ def silhouette(M, labels, kmeans, iteration_size, silhouette_threshold):
     print("The Silhouette score is :" + str(score))
 
     # create new figures
-    plt.figure()
-    visualizer = SilhouetteVisualizer(kmeans, colors='yellowbrick')
-    visualizer.fit(M.reshape(-1, 1))
-    visualizer.show()
+    # plt.figure()
+    # visualizer = SilhouetteVisualizer(kmeans, colors='yellowbrick')
+    # visualizer.fit(M.reshape(-1, 1))
+    # visualizer.show()
 
     return round(score, 2)  # the last score

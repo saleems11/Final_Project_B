@@ -9,6 +9,7 @@ from PIL import Image, ImageTk
 
 from Exceptions.Exceptions import SilhouetteBellowThreshold, AnchorsInSameCluster
 from GUI.App.pages import parameters_page
+from GUI.App.pages import ShowResultsPage
 from GUI.App.pages.page import Page, def_fg, def_bg
 from GUI.App.pages.process_bar import ProcessBar
 from models.LSTM.Bi_Direct_LSTM import Bi_Direct_LSTM
@@ -79,8 +80,11 @@ class TrainPage(Page):
         self.silhouette_score_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
         self.silhouette_score_text.place(x=200, y=300)
         """Back"""
-        self.back = Button(self, text="Back", bg='red', fg=def_fg, command=self.back)
-        self.back.place(x=470, y=400)
+        self.back_btn = Button(self, text="Back", bg='red', fg=def_fg, command=self.back)
+        self.back_btn.place(x=470, y=400)
+        """Next"""
+        self.next_btn = Button(self, text="Next", bg='green', fg=def_fg, command=self.next)
+        self.next_btn.place(x=720, y=500)
         """Save Model"""
         self.save_model = Button(self, text="Save The Model", bg='blue', fg=def_fg, command=self.save_the_model)
         self.save_model.place(x=520, y=400)
@@ -89,6 +93,7 @@ class TrainPage(Page):
         self.start_testing.place(x=620, y=400)
         if not self.process_bar.finished:
             self.save_model['state'] = 'disable'
+            self.next_btn['state'] = 'disable'
 
     def save_the_model(self):
         """this function will save the model"""
@@ -110,11 +115,21 @@ class TrainPage(Page):
             self.history = history
             self.silhoutte_score = silhoutte_score
             self.silhouette_score_text['text'] = self.silhoutte_score
+            self.process_bar.finished = True
+
         except SilhouetteBellowThreshold as e:
             messagebox.showwarning(title='Error of Silhouette Bellow Threshold', message=f'{str(e)}')
+
+            self.process_bar.finished = True
+
+            while self.p1.is_alive():
+                sleep(1)
+            parameters_page.Param(self.parent, c1_embeded=self.c1_embeded, c2_embeded=self.c2_embeded,
+                                  testing_data_embeded=self.testing_data_embeded,
+                                  tweet_length=self.lstm.parameters.tweet_length)
+
         except AnchorsInSameCluster as e:
             messagebox.showwarning(title='Error of AnchorsInSameCluster', message=f'{str(e)}')
-        finally:
             self.process_bar.finished = True
 
             while self.p1.is_alive():
@@ -127,8 +142,13 @@ class TrainPage(Page):
         parameters_page.Param(self.parent, c1_embeded=self.c1_embeded, c2_embeded=self.c2_embeded,
               testing_data_embeded=self.testing_data_embeded, tweet_length=self.lstm.parameters.tweet_length)
 
+    def next(self):
+        ShowResultsPage.ShowResultsPage(self.parent)
+        print("Still un-implemented")
+        pass
+
     def update_status(self):
-        self.back['state'] = 'disable'
+        self.back_btn['state'] = 'disable'
         self.start_testing['state'] = 'disable'
         while not self.process_bar.finished:
             self.set_progress_bar(value= self.process_bar.process*100)
@@ -141,5 +161,6 @@ class TrainPage(Page):
             sleep(1)
         if self.process_bar.finished:
             self.save_model['state'] = 'active'
-        self.back['state'] = 'active'
+            self.next_btn['state'] = 'active'
+        self.back_btn['state'] = 'active'
         self.start_testing['state'] = 'active'
