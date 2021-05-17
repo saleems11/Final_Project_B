@@ -53,7 +53,7 @@ class Histograms(show_in_tkinter):
     def create_figure(result_obj, dpi) -> Figure:
         # plot the data
         # figure = Figure(dpi=dpi)
-        figure = Figure(figsize=[12, 4])
+        figure = Figure(figsize=Histograms.normal_fig_size)
         ax = figure.subplots()
         # call creating heat map
         result_obj.create_Histograms(ax=ax)

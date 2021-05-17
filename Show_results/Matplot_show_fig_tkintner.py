@@ -5,6 +5,8 @@ class show_in_tkinter(metaclass=abc.ABCMeta):
 
     # in percent
     main_data_window_size = 0.8
+    tall_fig_size = [12, 4]
+    normal_fig_size = [11.5, 3.5]
 
     @staticmethod
     @abc.abstractmethod

@@ -28,6 +28,8 @@
       <change beforePath="$PROJECT_DIR$/Show_results/Error_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/Show_results/Error_bar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Show_results/Heat_map.py" beforeDir="false" afterPath="$PROJECT_DIR$/Show_results/Heat_map.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Show_results/Histograms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Show_results/Histograms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Show_results/Matplot_show_fig_tkintner.py" beforeDir="false" afterPath="$PROJECT_DIR$/Show_results/Matplot_show_fig_tkintner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,21 +256,25 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="822" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1621012566812" />
-    <state width="1899" height="214" key="GridCell.Tab.0.bottom" timestamp="1621018275421">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1515" height="151" key="GridCell.Tab.0.bottom" timestamp="1621246310920">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state width="1515" height="151" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1621246310920" />
     <state width="1899" height="214" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1621018275421" />
-    <state width="1899" height="214" key="GridCell.Tab.0.center" timestamp="1621018275421">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1515" height="151" key="GridCell.Tab.0.center" timestamp="1621246310920">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state width="1515" height="151" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1621246310920" />
     <state width="1899" height="214" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1621018275421" />
-    <state width="1899" height="214" key="GridCell.Tab.0.left" timestamp="1621018275421">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1515" height="151" key="GridCell.Tab.0.left" timestamp="1621246310919">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state width="1515" height="151" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1621246310919" />
     <state width="1899" height="214" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1621018275421" />
-    <state width="1899" height="214" key="GridCell.Tab.0.right" timestamp="1621018275421">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1515" height="151" key="GridCell.Tab.0.right" timestamp="1621246310920">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state width="1515" height="151" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1621246310920" />
     <state width="1899" height="214" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1621018275421" />
     <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1620989669464">
       <screen x="0" y="0" width="1920" height="1040" />

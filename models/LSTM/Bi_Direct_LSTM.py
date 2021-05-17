@@ -90,8 +90,8 @@ class Bi_Direct_LSTM:
                 for data_name in data_names:
                     temp[data_name] = self.history.history[data_name]
                 result = result.append(temp, ignore_index=True)
-            self.set_iteration(self.parameters.number_of_iteration - iterations + 1)
-            self.process_bar.status = f'{(self.parameters.number_of_iteration -iterations)+1} / {self.parameters.number_of_iteration}'
+            self.set_iteration(self.parameters.number_of_iteration - iterations + 1, iterations)
+
             # self.model.reset_states()
         if M:
             M = np.concatenate(M, axis=0)
@@ -104,8 +104,8 @@ class Bi_Direct_LSTM:
         return self.history, M, score
 
 
-    def set_iteration(self, current_iteration: int):
-        self.process_bar.status = f'{current_iteration} / {self.parameters.number_of_iteration}'
+    def set_iteration(self, current_iteration:int, iterations:int):
+        self.process_bar.status = f'{(self.parameters.number_of_iteration - iterations) + 1} / {self.parameters.number_of_iteration}'
         self.process_bar.process = current_iteration/self.parameters.number_of_iteration
 
     @staticmethod
