@@ -17,7 +17,7 @@ from .Parameters import Parameters
 
 class Bi_Direct_LSTM:
 
-    def __init__(self, parameters: Parameters, process_bar: ProcessBar,  average_iteration_time: [float]):
+    def __init__(self, parameters: Parameters, process_bar: ProcessBar,  estimated_time_remaining: [float]):
         # to run on the GPU and solve a bug
         gpu_devices = tf.config.experimental.list_physical_devices('GPU')
         for device in gpu_devices:
@@ -29,7 +29,8 @@ class Bi_Direct_LSTM:
 
         self.prev_iteration = 0
         self.last_iter_starting_time = time()
-        self.average_iteration_time = average_iteration_time
+        self.estimated_time_remaining = estimated_time_remaining
+        self.average_iteration_time = 0
         self.total_time = 0
 
 
@@ -88,11 +89,15 @@ class Bi_Direct_LSTM:
 
             if self.history.history['accuracy'][-1] >= self.parameters.accuracy_threshold:
                 # test the model if the wanted accuracy is achieved
+
+                # for time estimating
                 iterations -= 1
                 self.prev_iteration = self.prev_iteration + 1
                 self.total_time += time() - self.last_iter_starting_time
                 self.last_iter_starting_time = time()
-                self.average_iteration_time[0] = self.total_time/self.prev_iteration
+                self.average_iteration_time = self.total_time/self.prev_iteration
+                self.estimated_time_remaining[0] = self.average_iteration_time * iterations
+
                 print("Remaining iterations to run %d"%iterations)
 
                 books_prediction_results, book_names_in_order = Bi_Direct_LSTM.test_model(self.model, testing_data.anchor_c1, testing_data.anchor_c2,

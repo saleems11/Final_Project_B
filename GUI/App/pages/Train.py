@@ -32,10 +32,10 @@ class TrainPage(Page):
         self.process_bar = ProcessBar()
 
         # for time estimating
-        self.average_iteration_time = [0.0]
+        self.estimated_time_remaining = [0.0]
 
         self.lstm = Bi_Direct_LSTM(parameters=self.parameters, process_bar=self.process_bar,
-                                   average_iteration_time=self.average_iteration_time)
+                                   estimated_time_remaining=self.estimated_time_remaining)
 
         self.p1 = threading.Thread(target=self.update_status, daemon=True)
         self.p = threading.Thread(target=self.start_training_testing, daemon=True)
@@ -163,7 +163,9 @@ class TrainPage(Page):
         while not self.process_bar.finished:
             self.set_progress_bar(value=self.process_bar.process*100)
             # self.iteration_text['text'] = self.process_bar.status
-            self.time_remaining_text['text'] = "%.2fs" % self.average_iteration_time[0]
+            if self.estimated_time_remaining[0] > 0.3:
+                self.time_remaining_text['text'] = "%.2fs" % self.estimated_time_remaining[0]
+                self.estimated_time_remaining[0] -= 1
             if self.lstm.history:
                 self.val_loss_text['text'] = self.lstm.history.history['val_loss'][-1]
                 self.val_accuracy_text['text'] = self.lstm.history.history['val_accuracy'][-1]

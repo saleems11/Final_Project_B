@@ -134,7 +134,7 @@ class ShowResultsPage(Page):
         # Making the text read only
         self.text_area.configure(state='disabled')
 
-        self.text_area.grid(column=0, pady=5, padx=10, sticky='NEW')
+        self.text_area.grid(column=0, pady=2, padx=10, sticky='NEW')
         # print("unimplemented init bottom frame")
 
     ''' Click management '''
@@ -418,11 +418,11 @@ class ShowResultsPage(Page):
         self.select_book_label.grid(row=0, column=0, padx=x_padding, pady=y_padding, sticky="W")
         self.books_selecting_list_option.grid(row=0, column=1, padx=x_padding, pady=y_padding, columnspan=3)
 
-        self.select_book_chunk_staring_idx_label.grid(row=1, column=0, padx=x_padding, pady=y_padding, sticky="W")
-        self.select_book_chunk_staring_idx_entry.grid(row=1, column=1, padx=x_padding, pady=y_padding)
-        self.select_book_chunk_ending_idx_label.grid(row=1, column=2, padx=x_padding, pady=y_padding)
-        self.select_book_chunk_ending_idx_entry.grid(row=1, column=3, padx=x_padding, pady=y_padding)
-        self.load_graph_Btn.grid(row=1, column=4, padx=x_padding * 2, pady=y_padding)
+        self.select_book_chunk_staring_idx_label.grid(row=1, column=0, padx=x_padding, pady=y_padding/2, sticky="W")
+        self.select_book_chunk_staring_idx_entry.grid(row=1, column=1, padx=x_padding, pady=y_padding/2)
+        self.select_book_chunk_ending_idx_label.grid(row=1, column=2, padx=x_padding, pady=y_padding/2)
+        self.select_book_chunk_ending_idx_entry.grid(row=1, column=3, padx=x_padding, pady=y_padding/2)
+        self.load_graph_Btn.grid(row=1, column=4, padx=x_padding * 2, pady=y_padding/2)
 
         self.smooth_frequency_graph_check_box.grid(row=0, column=4, padx=x_padding, pady=y_padding)
         self.over_iterations_avg_check_box.grid(row=0, column=5, padx=x_padding, pady=y_padding)
