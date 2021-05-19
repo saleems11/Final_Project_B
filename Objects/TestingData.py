@@ -165,7 +165,7 @@ class TestingData:
             c1_labels_count += book.total_c1_hits
             c2_labels_count += book.total_c2_hits
 
-            books_names.append(book.book_name[:20])
+            books_names.append(book.book_name)
             books_mean_values_over_all_iter.append(mean_over_iterations)
             books_error_down_values_over_all_iter.append(abs(most_min - mean_over_iterations))
             books_error_up_values_over_all_iter.append(abs(most_max - mean_over_iterations))

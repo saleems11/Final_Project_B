@@ -43,4 +43,4 @@ class Book:
 
     @staticmethod
     def get_book_details_as_string(book_name:str, index:int, cluster:str) -> str:
-        return "{0}({1})[{2}]".format(book_name, cluster, index)
+        return "[{0}]({1}) {2}".format(index, cluster, book_name)

@@ -9,6 +9,7 @@ from keras.layers import Bidirectional
 
 from pandas import DataFrame
 import numpy as np
+from time import time
 
 import models.LoadingBalancingData.DataManagement as DM
 from GUI.App.pages.process_bar import ProcessBar
@@ -16,7 +17,7 @@ from .Parameters import Parameters
 
 class Bi_Direct_LSTM:
 
-    def __init__(self, parameters: Parameters, process_bar: ProcessBar):
+    def __init__(self, parameters: Parameters, process_bar: ProcessBar,  average_iteration_time: [float]):
         # to run on the GPU and solve a bug
         gpu_devices = tf.config.experimental.list_physical_devices('GPU')
         for device in gpu_devices:
@@ -25,6 +26,12 @@ class Bi_Direct_LSTM:
         self.model = self.create_model()
         self.process_bar: ProcessBar = process_bar
         self.history = None
+
+        self.prev_iteration = 0
+        self.last_iter_starting_time = time()
+        self.average_iteration_time = average_iteration_time
+        self.total_time = 0
+
 
     def create_model(self):
         """Create a Bi-Direct LSTM model that is specified according to the parameters, and return the model.\n
@@ -82,6 +89,10 @@ class Bi_Direct_LSTM:
             if self.history.history['accuracy'][-1] >= self.parameters.accuracy_threshold:
                 # test the model if the wanted accuracy is achieved
                 iterations -= 1
+                self.prev_iteration = self.prev_iteration + 1
+                self.total_time += time() - self.last_iter_starting_time
+                self.last_iter_starting_time = time()
+                self.average_iteration_time[0] = self.total_time/self.prev_iteration
                 print("Remaining iterations to run %d"%iterations)
 
                 books_prediction_results, book_names_in_order = Bi_Direct_LSTM.test_model(self.model, testing_data.anchor_c1, testing_data.anchor_c2,
@@ -127,14 +138,16 @@ class Bi_Direct_LSTM:
             books_names_as_M.append(book.book_name)
         for book in anchor_c2:
             books_names_as_M.append(book.book_name)
+
         prediction_t = np.concatenate((prediction_t, c1_prediction), axis=0)
-        for book in c1_prediction:
-            books_names_as_M.append(book.book_name)
-        prediction_t = np.concatenate((prediction_t, c2_prediction), axis=0)
-        for book in c2_prediction:
+        for book in c1:
             books_names_as_M.append(book.book_name)
 
-        for book in c3_prediction:
+        prediction_t = np.concatenate((prediction_t, c2_prediction), axis=0)
+        for book in c2:
+            books_names_as_M.append(book.book_name)
+
+        for book in c3:
             books_names_as_M.append(book.book_name)
         return np.concatenate((prediction_t, c3_prediction), axis=0), books_names_as_M
 

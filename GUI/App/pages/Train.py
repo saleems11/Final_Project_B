@@ -1,10 +1,11 @@
 import threading
 import traceback
 from time import sleep
-from tkinter import Label, Button, HORIZONTAL, IntVar, filedialog, messagebox
+from tkinter import Label, Button, HORIZONTAL, IntVar, filedialog, messagebox, NORMAL, DISABLED
 from tkinter.ttk import Progressbar
 
 import numpy as np
+import time
 from PIL import Image, ImageTk
 
 from Exceptions.Exceptions import SilhouetteBellowThreshold, AnchorsInSameCluster
@@ -30,7 +31,11 @@ class TrainPage(Page):
         self.parameters = parameters
         self.process_bar = ProcessBar()
 
-        self.lstm = Bi_Direct_LSTM(parameters=self.parameters, process_bar=self.process_bar)
+        # for time estimating
+        self.average_iteration_time = [0.0]
+
+        self.lstm = Bi_Direct_LSTM(parameters=self.parameters, process_bar=self.process_bar,
+                                   average_iteration_time=self.average_iteration_time)
 
         self.p1 = threading.Thread(target=self.update_status, daemon=True)
         self.p = threading.Thread(target=self.start_training_testing, daemon=True)
@@ -73,12 +78,17 @@ class TrainPage(Page):
         self.val_loss.place(x=100, y=270)
         self.val_loss_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
         self.val_loss_text.place(x=200, y=270)
-
         """silhouette_score"""
         self.silhouette_score = Label(self, text="Silhouette Score", bg=def_bg, fg=def_fg)
         self.silhouette_score.place(x=100, y=300)
         self.silhouette_score_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
         self.silhouette_score_text.place(x=200, y=300)
+        """time_remaining"""
+        self.time_remaining = Label(self, text="E.Time Remaining", bg=def_bg, fg=def_fg)
+        self.time_remaining.place(x=100, y=330)
+        self.time_remaining_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
+        self.time_remaining_text.place(x=200, y=330)
+
         """Back"""
         self.back_btn = Button(self, text="Back", bg='red', fg=def_fg, command=self.back)
         self.back_btn.place(x=470, y=400)
@@ -92,8 +102,9 @@ class TrainPage(Page):
         self.start_testing = Button(self, text="Start Training and Testing", bg='green', fg=def_fg, command=self.start_lstm_model)
         self.start_testing.place(x=620, y=400)
         if not self.process_bar.finished:
-            self.save_model['state'] = 'disable'
-            self.next_btn['state'] = 'disable'
+            self.save_model['state'] = DISABLED
+            self.next_btn['state'] = DISABLED
+            self.back_btn['state'] = DISABLED
 
     def save_the_model(self):
         """this function will save the model"""
@@ -145,23 +156,22 @@ class TrainPage(Page):
 
     def next(self):
         ShowResultsPage.ShowResultsPage(self.parent, self.M, self.testing_data_embeded, self.book_names_in_order_of_M)
-        print("Still un-implemented")
-        pass
 
     def update_status(self):
-        self.back_btn['state'] = 'disable'
-        self.start_testing['state'] = 'disable'
+        self.back_btn['state'] = DISABLED
+        self.start_testing['state'] = DISABLED
         while not self.process_bar.finished:
-            self.set_progress_bar(value= self.process_bar.process*100)
-            self.iteration_text['text'] = self.process_bar.status
+            self.set_progress_bar(value=self.process_bar.process*100)
+            # self.iteration_text['text'] = self.process_bar.status
+            self.time_remaining_text['text'] = "%.2fs" % self.average_iteration_time[0]
             if self.lstm.history:
                 self.val_loss_text['text'] = self.lstm.history.history['val_loss'][-1]
                 self.val_accuracy_text['text'] = self.lstm.history.history['val_accuracy'][-1]
                 self.loss_text['text'] = self.lstm.history.history['loss'][-1]
                 self.accuracy_text['text'] = self.lstm.history.history['accuracy'][-1]
             sleep(1)
-        if self.process_bar.finished:
-            self.save_model['state'] = 'active'
-            self.next_btn['state'] = 'active'
-        self.back_btn['state'] = 'active'
-        self.start_testing['state'] = 'active'
+
+        self.save_model['state'] = NORMAL
+        self.next_btn['state'] = NORMAL
+        self.back_btn['state'] = NORMAL
+        self.start_testing['state'] = DISABLED
