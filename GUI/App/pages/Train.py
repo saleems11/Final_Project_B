@@ -110,10 +110,11 @@ class TrainPage(Page):
 
     def start_training_testing(self):
         try:
-            history, M, silhoutte_score = self.lstm.train_test_for_iteration(c1=self.c1_embeded, c2=self.c2_embeded, testing_data=self.testing_data_embeded)
+            history, M, silhoutte_score, book_names_in_order_of_M = self.lstm.train_test_for_iteration(c1=self.c1_embeded, c2=self.c2_embeded, testing_data=self.testing_data_embeded)
             self.M = M
             self.history = history
             self.silhoutte_score = silhoutte_score
+            self.book_names_in_order_of_M = book_names_in_order_of_M
             self.silhouette_score_text['text'] = self.silhoutte_score
             self.process_bar.finished = True
 
@@ -143,7 +144,7 @@ class TrainPage(Page):
               testing_data_embeded=self.testing_data_embeded, tweet_length=self.lstm.parameters.tweet_length)
 
     def next(self):
-        ShowResultsPage.ShowResultsPage(self.parent, self.M, self.testing_data_embeded)
+        ShowResultsPage.ShowResultsPage(self.parent, self.M, self.testing_data_embeded, self.book_names_in_order_of_M)
         print("Still un-implemented")
         pass
 

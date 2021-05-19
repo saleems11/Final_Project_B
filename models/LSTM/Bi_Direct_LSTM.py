@@ -70,6 +70,7 @@ class Bi_Direct_LSTM:
         results = []
         M = []
         data_names = ['accuracy', 'val_accuracy', 'loss', 'val_loss']
+        book_names_in_order = None
         result = DataFrame()
         iterations = self.parameters.number_of_iteration
         while iterations > 0:
@@ -83,8 +84,9 @@ class Bi_Direct_LSTM:
                 iterations -= 1
                 print("Remaining iterations to run %d"%iterations)
 
-                M.append(Bi_Direct_LSTM.test_model(self.model, testing_data.anchor_c1, testing_data.anchor_c2,
-                                                   testing_data.c1_test, testing_data.c2_test, testing_data.c3_test))
+                books_prediction_results, book_names_in_order = Bi_Direct_LSTM.test_model(self.model, testing_data.anchor_c1, testing_data.anchor_c2,
+                                          testing_data.c1_test, testing_data.c2_test, testing_data.c3_test)
+                M.append(books_prediction_results)
 
                 temp = DataFrame()
                 for data_name in data_names:
@@ -101,7 +103,7 @@ class Bi_Direct_LSTM:
                                    silhouette_threshold=self.parameters.silhouette_threshold)
         else:
             score = 0
-        return self.history, M, score
+        return self.history, M, score, book_names_in_order
 
 
     def set_iteration(self, current_iteration:int, iterations:int):
@@ -113,7 +115,7 @@ class Bi_Direct_LSTM:
         """Test the model by running anchor dataSet(c1, c2) and additional
         data(c1, c2, c3). return numpy array concatenate of all the classes results
         the order of the data is anchors(c1, c2), c1,c2,c3"""
-
+        books_names_as_M = []
         c1_anchor_prediction = Bi_Direct_LSTM.make_prediction(model, anchor_c1)
         c2_anchor_prediction = Bi_Direct_LSTM.make_prediction(model, anchor_c2)
         c3_prediction = Bi_Direct_LSTM.make_prediction(model, c3)
@@ -121,10 +123,20 @@ class Bi_Direct_LSTM:
         c2_prediction = Bi_Direct_LSTM.make_prediction(model, c2)
 
         prediction_t = np.concatenate((c1_anchor_prediction, c2_anchor_prediction), axis=0)
+        for book in anchor_c1:
+            books_names_as_M.append(book.book_name)
+        for book in anchor_c2:
+            books_names_as_M.append(book.book_name)
         prediction_t = np.concatenate((prediction_t, c1_prediction), axis=0)
+        for book in c1_prediction:
+            books_names_as_M.append(book.book_name)
         prediction_t = np.concatenate((prediction_t, c2_prediction), axis=0)
+        for book in c2_prediction:
+            books_names_as_M.append(book.book_name)
 
-        return np.concatenate((prediction_t, c3_prediction), axis=0)
+        for book in c3_prediction:
+            books_names_as_M.append(book.book_name)
+        return np.concatenate((prediction_t, c3_prediction), axis=0), books_names_as_M
 
     @staticmethod
     def make_prediction(model, books_list):
