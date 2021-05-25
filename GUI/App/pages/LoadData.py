@@ -111,7 +111,7 @@ class HomePage(Page):
         if pseudo_dir:
             self.pseudo_x_btn.place(x=110, y=420)
         if test_dir:
-            self.test_btn.place(x=110, y=450)
+            self.test_x_btn.place(x=110, y=450)
         self.bar = Progressbar(self, orient=HORIZONTAL, length=700, mode="determinate")
         self.start_embedding = Button(self, text="Start Embedding", bg='green', fg=def_fg, command=self.embedding_files)
         self.check_dir()
@@ -315,7 +315,11 @@ class HomePage(Page):
             print(f'updated progress bar : {self.process_bar.process}')
             self.set_progress_bar(value=self.process_bar.process*100)
             self.down_status_text['text'] = self.process_bar.status
-            sleep(2)
+            sleep(0.5)
+
+        self.set_progress_bar(value=self.process_bar.process * 100)
+        self.down_status_text['text'] = self.process_bar.status
+
         self.next_btn.place(x=830, y=550)
         self.tweet_length_text.place_forget()
         self.tweet_length.place_forget()

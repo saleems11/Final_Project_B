@@ -82,6 +82,7 @@ class Bi_Direct_LSTM:
         result = DataFrame()
         iterations = self.parameters.number_of_iteration
         while iterations > 0:
+            self.set_iteration(self.parameters.number_of_iteration - iterations, iterations)
 
             x_train, y_train = DM.DataManagement.create_new_batch(c1, c2, self.parameters.multiplying_rate, self.parameters.undersampling_rate)
             self.history = self.model.fit(x_train, y_train, validation_split=.30, epochs=self.parameters.number_of_epoch,
@@ -108,10 +109,12 @@ class Bi_Direct_LSTM:
                 for data_name in data_names:
                     temp[data_name] = self.history.history[data_name]
                 result = result.append(temp, ignore_index=True)
-            self.set_iteration(self.parameters.number_of_iteration - iterations + 1, iterations)
+
 
             # self.model.reset_states()
         if M:
+            self.set_iteration(self.parameters.number_of_iteration - iterations + 1, iterations)
+
             M = np.concatenate(M, axis=0)
             labels, kmeans = KMS.calculate_plot_Kmeans(M, testing_data.iteration_size, testing_data)
             score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans,
@@ -121,9 +124,8 @@ class Bi_Direct_LSTM:
             score = 0
         return self.history, M, score, book_names_in_order
 
-
     def set_iteration(self, current_iteration:int, iterations:int):
-        self.process_bar.status = f'{(self.parameters.number_of_iteration - iterations) + 1} / {self.parameters.number_of_iteration}'
+        self.process_bar.status = f'{(self.parameters.number_of_iteration - iterations)} / {self.parameters.number_of_iteration}'
         self.process_bar.process = current_iteration/self.parameters.number_of_iteration
 
     @staticmethod

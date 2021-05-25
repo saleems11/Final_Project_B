@@ -94,7 +94,7 @@ class TrainPage(Page):
         self.back_btn.place(x=470, y=400)
         """Next"""
         self.next_btn = Button(self, text="Next", bg='green', fg=def_fg, command=self.next)
-        self.next_btn.place(x=720, y=500)
+        self.next_btn.place(x=760, y=400)
         """Save Model"""
         self.save_model = Button(self, text="Save The Model", bg='blue', fg=def_fg, command=self.save_the_model)
         self.save_model.place(x=520, y=400)
@@ -162,7 +162,7 @@ class TrainPage(Page):
         self.start_testing['state'] = DISABLED
         while not self.process_bar.finished:
             self.set_progress_bar(value=self.process_bar.process*100)
-            # self.iteration_text['text'] = self.process_bar.status
+            self.iteration_text['text'] = self.process_bar.status
             if self.estimated_time_remaining[0] > 0.3:
                 self.time_remaining_text['text'] = "%.2fs" % self.estimated_time_remaining[0]
                 self.estimated_time_remaining[0] -= 1
