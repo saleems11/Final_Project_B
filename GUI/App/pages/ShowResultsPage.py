@@ -1,7 +1,5 @@
-from tkinter import Frame
 from GUI.App.pages.Pages_parameters import Pages_parameters
 from GUI.App.pages.page import Page
-from tkinter import Button
 
 from Show_results.Heat_map import Heat_map
 from Show_results.Error_bar import Error_bar
@@ -10,13 +8,19 @@ from Show_results.Histograms import Histograms
 
 from Objects.Book import Book
 
-import threading
+import sys
+
+from tkinter import messagebox, Frame, Button
 import tkinter as tk
 import tkinter.scrolledtext as st
 
 
 class ShowResultsPage(Page):
+    """ A Class used as GUI and controller for the part of showing the result of the model after training
+    and testing the model."""
     def __init__(self, parent_frame, M, testing_data, book_names_in_order_of_M):
+        """ initialize the object with M which contains the mean prediction result of each book over many iterations
+        testing data, is the object responsible for handeling many kinds of the prediction result"""
         # init page/ delete old page
         Page.__init__(self, parent_frame)
 
@@ -35,16 +39,13 @@ class ShowResultsPage(Page):
         self.bottom_frame = Frame(parent_frame)
         self.bottom_frame.grid(row=2, column=0, sticky="nswe")
 
-        # objects contain data
+        # objects contain data for each type of data representations
         self.error_bar = None
         self.heat_map = None
         self.chunk_labels = None
         self.histogram = None
-        self.chunk_labels = None
 
         # variables and lists for GUI
-        """ The final code replace the next line bellow the bellow line"""
-        # Gui.testing_books_names
         self.testing_books_names = testing_data.c3_books_names
         self.chunks_labels_selected_book_chunk_staring_idx_value = None
         self.chunks_labels_selected_book_chunk_ending_idx_value = None
@@ -73,21 +74,25 @@ class ShowResultsPage(Page):
         # add GUI parts
 
         # top frame parameters init
+        """ The buttons available in the top frame """
         self.top_frame_prev_pressed_Btn = None
         self.heat_map_show_Btn = None
         self.error_bar_show_Btn = None
         self.chunks_labels_show_Btn = None
         self.histogram_show_Btn = None
 
+        self.finish_Btn = None
+
         self.init_top_frame()
+        """ The default page """
         self.clicked_on_heat_map_show_Btn()
 
-        # bottom frame parameters init
-        self.finish_Btn = None
 
     ''' Initializing the Main frame sections'''
 
     def init_top_frame(self):
+        """ create frame parts  and connect the elements to the event handlers and then place them
+        The top frame is the one responsible for switching between frames"""
         self.heat_map_show_Btn = \
             Button(self.top_frame, text="Heat Map", bg=Pages_parameters.def_bg,
                    fg=Pages_parameters.def_fg, command=self.clicked_on_heat_map_show_Btn)
@@ -111,7 +116,7 @@ class ShowResultsPage(Page):
         self.finish_Btn.grid(row=0, column=4, padx=30, pady=10)
 
     def init_bottom_frame(self, books_names=None):
-        """ set book names to index, the code handel two version of indexing books names\n
+        """ set book names to index, the code handel two version of indexing books names
         One of them is according to M, and the other according to the order of inserted books"""
         scrolling_text = ""
 
@@ -127,7 +132,7 @@ class ShowResultsPage(Page):
             else:
                 scrolling_text = scrolling_text + '\n' + txt
 
-        # each line will contain third of the data
+        # each line will book name and the index and the cluster of each book
         self.text_area = st.ScrolledText(self.bottom_frame, height=4)
 
         self.text_area.insert(tk.INSERT, scrolling_text)
@@ -135,7 +140,6 @@ class ShowResultsPage(Page):
         self.text_area.configure(state='disabled')
 
         self.text_area.grid(column=0, pady=2, padx=10, sticky='NEW')
-        # print("unimplemented init bottom frame")
 
     ''' Click management '''
 
@@ -150,35 +154,44 @@ class ShowResultsPage(Page):
     def clicked_on_chunks_labels_show_Btn(self):
         self.switch_top_frame_clicked_button(self.chunks_labels_show_Btn)
         self.create_chunk_labels_frame()
-        pass
+
 
     def clicked_on_histogram_show_Btn(self):
         self.switch_top_frame_clicked_button(self.histogram_show_Btn)
         self.create_histograms_frame()
-        pass
 
     def clicked_on_finish_Btn(self):
         print("Still not Implemented")
         self.reset_variables()
-        pass
+        if messagebox.askokcancel("Warning", "Do you want to quit?"):
+            self.parent_frame.destroy()
+            sys.exit()
+
 
     def clicked_on_load_book_chunks_frequency_graph(self):
+        """ Handel the click for loading book frequency graph """
+
+        # check is all the inputs are correct
         if self.check_book_and_chunks_selecting_inputs():
             book_name = self.chunk_labels_book_names_opt.get()
             self.chunks_labels_selected_book_chunk_staring_idx_value = int(
                 self.select_book_chunk_staring_idx_entry.get())
             self.prev_selected_book_name_chunks_labels = book_name
 
+            # get  check box options
             smoothing_option = self.chunks_labels_smooth_frequency_graph_check_box_val.get()
             rounding_option = self.chunks_labels_round_frequency_graph_check_box_val.get()
             average_over_iter_option = self.chunks_labels_over_iterations_check_box_val.get()
 
-            # the finale code
+            # get the Book object that contain the  wanted data
             book = self.testing_data.get_book(book_name=book_name)
 
-            # check if the ending_idx smaller than book size
+            # for making better GUI the user doesn't have to enter the last index of the data
+            # so when he leave it empty it automatically says that he want all the from staring index to the end
+            #  here is the check if the user  left it empty
             if self.select_book_chunk_ending_idx_entry.get() != '':
                 data_size = book.embedded_data.shape[0]
+                # check if the ending_idx smaller than book size
                 self.chunks_labels_selected_book_chunk_ending_idx_value = int(
                     self.select_book_chunk_ending_idx_entry.get())
                 if data_size <= self.chunks_labels_selected_book_chunk_ending_idx_value:
@@ -187,7 +200,9 @@ class ShowResultsPage(Page):
                     return
 
                 """ from starting index to finish index"""
+                #  load different data according to the user options
                 if average_over_iter_option:
+                    """ Take the result of the mean average data over iterations """
                     mean_over_iterations = book.mean_prediction_over_iteration()
                     self.chunk_labels = Book_chunks_labels(
                         mean_over_iterations[
@@ -197,6 +212,7 @@ class ShowResultsPage(Page):
                         rounded=rounding_option,
                         smoothed=smoothing_option)
                 else:
+                    """ Take the result of the average data over iterations """
                     self.chunk_labels = Book_chunks_labels(
                         book.predictions_res_over_iter[-1][
                         self.chunks_labels_selected_book_chunk_staring_idx_value:
@@ -204,10 +220,11 @@ class ShowResultsPage(Page):
                         book_name=book.book_name,
                         rounded=rounding_option,
                         smoothed=smoothing_option)
-            # look at the hint above
+            # The user choose ending index
             else:
                 """ from starting index to finish """
                 if average_over_iter_option:
+                    """ Take the result of the mean average data over iterations """
                     mean_over_iterations = book.mean_prediction_over_iteration()
                     self.chunk_labels = Book_chunks_labels(
                         mean_over_iterations[
@@ -216,40 +233,49 @@ class ShowResultsPage(Page):
                         rounded=rounding_option,
                         smoothed=smoothing_option)
                 else:
+                    """ Take the result of the average data over iterations """
                     self.chunk_labels = Book_chunks_labels(
                         book.predictions_res_over_iter[-1][self.chunks_labels_selected_book_chunk_staring_idx_value:],
                         book_name=book.book_name,
                         rounded=rounding_option,
                         smoothed=smoothing_option)
-
+            """ Pre built function that build selecting the option for book frequency graph and Histogram"""
             Book_chunks_labels.create_GUI(result_obj=self.chunk_labels, main_frame=self.chunk_labels_frame_bottom_frame)
 
     def clicked_on_load_books_histogram_graph(self):
+        """ Handel the click for loading book Histogram """
+
+        # check is all the inputs are correct
         if self.check_book_and_chunks_selecting_inputs():
             book_name = self.histogram_book_names_opt.get()
             self.histogram_selected_book_chunk_staring_idx_value = int(
                 self.select_book_chunk_staring_idx_entry.get())
             self.prev_selected_book_name_histogram = book_name
 
+            # get  check box options
             smoothing_option = self.histogram_smooth_frequency_graph_check_box_val.get()
-            """ Used to load other data """
             average_over_iter_option = self.histogram_over_iterations_chunks_labels_check_box_val.get()
 
-            """ the finale code not 100% working """
+            # get the Book object that contain the  wanted data
             book = self.testing_data.get_book(book_name=book_name)
 
-            # check if the ending_idx smaller than book size
+
+            # for making better GUI the user doesn't have to enter the last index of the data
+            # so when he leave it empty it automatically says that he want all the from staring index to the end
+            #  here is the check if the user  left it empty
             if self.select_book_chunk_ending_idx_entry.get() != '':
                 data_size = book.embedded_data.shape[0]
+                # check if the ending_idx smaller than book size
                 self.histogram_selected_book_chunk_ending_idx_value = int(self.select_book_chunk_ending_idx_entry.get())
                 if data_size <= self.histogram_selected_book_chunk_ending_idx_value:
                     tk.messagebox.showinfo("Input miss mach", "Please input valid number smaller than data size"
                                                               "(ending index is bigger than data size: %d )" % data_size)
                     return
 
-                """ starting index to finish index"""
-
+                """ from starting index to finish index"""
+                #  load different data according to the user options
                 if average_over_iter_option:
+                    """ Take the result of the mean average data over iterations """
                     mean_over_iterations = book.mean_prediction_over_iteration()
                     self.histogram = Histograms(
                         book_prediction_res=mean_over_iterations[
@@ -258,6 +284,7 @@ class ShowResultsPage(Page):
                         book_name=book.book_name,
                         smoothed=smoothing_option)
                 else:
+                    """ Take the result of the average data over iterations """
                     self.histogram = Histograms(
                         book_prediction_res=book.predictions_res_over_iter[-1][
                                             self.histogram_selected_book_chunk_staring_idx_value:
@@ -265,10 +292,11 @@ class ShowResultsPage(Page):
                         book_name=book.book_name,
                         smoothed=smoothing_option)
 
-
+            # The user choose ending index
             else:
                 """ starting index to finish index """
                 if average_over_iter_option:
+                    """ Take the result of the mean average data over iterations """
                     mean_over_iterations = book.mean_prediction_over_iteration()
                     self.histogram = Histograms(
                         book_prediction_res=mean_over_iterations[
@@ -276,17 +304,20 @@ class ShowResultsPage(Page):
                         book_name=book.book_name,
                         smoothed=smoothing_option)
                 else:
+                    """ Take the result of the average data over iterations """
                     self.histogram = Histograms(
                         book_prediction_res=book.predictions_res_over_iter[-1][
                                             self.histogram_selected_book_chunk_staring_idx_value:],
                         book_name=book.book_name,
                         smoothed=smoothing_option)
 
+        """ Pre built function that build selecting the option for book frequency graph and Histogram"""
         Histograms.create_GUI(result_obj=self.histogram, main_frame=self.histogram_frame_bottom_frame)
 
     """ Logic's Handling and input data checking """
 
     def check_book_and_chunks_selecting_inputs(self):
+        """Check  user input for book frequency graph and Histogram"""
         all_rest_of_data_index = True
 
         if self.select_book_chunk_staring_idx_entry.get() == '':
@@ -318,6 +349,7 @@ class ShowResultsPage(Page):
         return True
 
     def switch_top_frame_clicked_button(self, cur_button):
+        """ Update the top frame part according to the clicked button"""
         # reset the prev button
 
         if self.top_frame_prev_pressed_Btn != None:
@@ -330,13 +362,16 @@ class ShowResultsPage(Page):
         # reset mid frame
         self.mid_frame = Frame(self.parent_frame)
         self.mid_frame.grid(row=1, column=0, sticky="nswe")
-        # reset bottom frame
+        # reset bottom frame, and delete all the  widgets
+        for widgets in self.bottom_frame.winfo_children():
+            widgets.destroy()
         self.bottom_frame = Frame(self.parent_frame)
         self.bottom_frame.grid(row=2, column=0, sticky="nwe")
 
     """ creating Sub-frames"""
 
     def create_heat_map_frame(self):
+        """ create Heat map frame using M matrix """
         if self.heat_map is None:
             """ for testing purposes"""
             # self.heat_map = Heat_map(None, None, testing=True)
@@ -347,7 +382,9 @@ class ShowResultsPage(Page):
         self.init_bottom_frame()
 
     def create_error_bar_frame(self):
+        """ create Error Bar frame using testing data object """
 
+        # in the first time
         if self.error_bar is None:
             """ For testing """
             # self.error_bar = Error_bar(x=None,
@@ -362,9 +399,12 @@ class ShowResultsPage(Page):
             """ The Finale Code"""
             # get the data using a thread
             # threading.Thread(target=self.get_error_bar_data_and_show, daemon=True)
+
+            # update self.error_bar and show the results
             self.get_error_bar_data_and_show()
         else:
             self.error_bar.create_GUI(result_obj=self.error_bar, main_frame=self.mid_frame)
+            # show  for each index in the graph details about the book
             self.init_bottom_frame(self.error_bar.books_names)
 
     def selecting_book_chunks_frame(self, main_frame, list_option_value, on_click_func, smoothing_check_box_val,
@@ -430,6 +470,8 @@ class ShowResultsPage(Page):
             self.round_frequency_graph_check_box.grid(row=0, column=6, padx=x_padding, pady=y_padding, columnspan=2)
 
     def create_chunk_labels_frame(self):
+        """ creating chunk labels frame GUI elements and arranging them
+        It also  load the prev run data (graph data and GUI elements options) if it exist"""
 
         """  Split  the main frame """
         self.chunk_labels_frame_top_frame = Frame(self.mid_frame)
@@ -446,7 +488,7 @@ class ShowResultsPage(Page):
         else:
             self.chunk_labels_book_names_opt.set(self.testing_books_names[0])  # default value
 
-        """ add GUI parts to the top frame """
+        """ add GUI parts to the top frame (Pre-Built) """
         self.selecting_book_chunks_frame(main_frame=self.chunk_labels_frame_top_frame,
                                          list_option_value=self.chunk_labels_book_names_opt,
                                          on_click_func=self.clicked_on_load_book_chunks_frequency_graph,
@@ -467,14 +509,16 @@ class ShowResultsPage(Page):
         # load the values of prev run
         if self.chunks_labels_selected_book_chunk_ending_idx_value != None:
             self.select_book_chunk_ending_idx_entry.delete(0, tk.END)
-            self.select_book_chunk_ending_idx_entry.insert(0,
-                                                           str(self.chunks_labels_selected_book_chunk_ending_idx_value))
+            self.select_book_chunk_ending_idx_entry.insert(0, str(
+                self.chunks_labels_selected_book_chunk_ending_idx_value))
 
         """ load the prev graph"""
         if self.chunk_labels is not None:
             Book_chunks_labels.create_GUI(result_obj=self.chunk_labels, main_frame=self.chunk_labels_frame_bottom_frame)
 
     def create_histograms_frame(self):
+        """ creating histogram frame GUI elements and arranging them
+        It also  load the prev run data (graph data and GUI elements options) if it exist"""
 
         """  Split  the main frame """
         self.histogram_frame_top_frame = Frame(self.mid_frame)
@@ -518,9 +562,10 @@ class ShowResultsPage(Page):
         if self.histogram is not None:
             Histograms.create_GUI(result_obj=self.histogram, main_frame=self.histogram_frame_bottom_frame)
 
-    """ Threads Functions """
+    """ Get data """
 
     def get_error_bar_data_and_show(self):
+        """ get error bar data and save it to self.error_bar and show the GUI """
         books_names, books_mean_values_over_all_iter, books_error_down_values_over_all_iter, \
         books_error_up_values_over_all_iter, books_mean_values_over_all_iter, c1_mean_val, c2_mean_val, mean_val \
             = self.testing_data.get_error_bar_data()
@@ -540,12 +585,11 @@ class ShowResultsPage(Page):
         Error_bar.create_GUI(result_obj=self.error_bar, main_frame=self.mid_frame)
         self.init_bottom_frame(self.error_bar.books_names)
 
-    """ Resest """
+    """ Reset """
 
     def reset_variables(self):
+        """ delete the saved objects """
         self.heat_map = None
         self.error_bar = None
         self.chunk_labels = None
         self.histogram = None
-
-        pass
