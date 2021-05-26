@@ -20,9 +20,11 @@ class Embedding:
 
     @staticmethod
     def clean_str(text: str) -> str:
-        """Removing any additional characters found in the TEXT, Based on AraVec.\n
-         text in str format as a book :parameter\n
-         str as a preprocessed book :returns"""
+        """Removing any additional characters found in the TEXT, Based on AraVec.
+         :parameter
+         text in str format as a book
+         :returns
+         str as a preprocessed book"""
 
         search = ["أ", "إ", "آ", "ة", "_", "-", "/", ".", "،", " و ", " يا ", '"', "ـ", "'", "ى", "\\", '\n', '\t',
                   '&quot;', '?', '؟', '!', ':', '(', ')', '']
@@ -52,13 +54,14 @@ class Embedding:
 
     @staticmethod
     def AraVec(striped_text: [str], embedding_dimension=100) -> [[int]]:
-        """Embed each word in the book into a Vector in a 100 dimension, based on wikipedia.\n
+        """Embed each word in the book into a Vector in a 100/300 dimension.
         Unigram is used, because it Based on single word, unlike N-gram witch based on multiple.
-        Addetionaly, skip-gram is used, because it give more than one representation of a word.\n
-        a striped text as a striped book :parameter\n
-        an embedded value as a array of vectors:returns\n
-        There might be in case of word not being found in the directory, so the result len will
-        be smaller.\n
+        Addetionaly, skip-gram is used, because it give more than one representation of a word.
+        :parameter
+        a striped text array of words in a striped book
+        :returns
+        an embedded value as a array of vectors for each word
+        There might be a case where words can't be found in the directory, so the result len will be smaller.\n
         AraVec Github link: https://github.com/bakrianoo/aravec/tree/master/AraVec%202.0"""
 
         count_unknown = 0
@@ -81,6 +84,8 @@ class Embedding:
                 embedded_book_array[words_index] = Embedding.t_model.wv[word]
                 words_index += 1
             except KeyError:
+                # taking words that appear with the litter and in arabic
+                # the and litter is removed from the word and then check if it appears in the dictionary
                 if str(word)[0] == 'و':
                     try:
                         embedded_book_array[words_index] = Embedding.t_model.wv[word]
@@ -100,11 +105,13 @@ class Embedding:
 
     @staticmethod
     def Elmo(sentences: [str], batch_size=3, output_layer=-1) -> [[int]]:
-        """Embedding each word in a sentence according to it's position, each sentence is splitted\n
-        The func return the avg of the three layers of the model.\n
-        Embeding size is 1024 for each word.\n
-        sentences list splited into word:parameter\n
-        numpy list of list(the Embedded result of the words):returns\n
+        """Embedding each word in a sentence according to it's position, each sentence is spitted
+        The func return the avg of the three layers of the model.
+        Embedding size is 1024 for each word.
+        :parameter
+        sentences list is spliced into word
+        :returns
+        numpy list of list(the Embedded result of the words)
         Elmo Github link for multi lang: https://github.com/HIT-SCIR/ELMoForManyLangs"""
 
         """Embedder(model_dir='/path/to/your/model/', batch_size=64)
@@ -115,7 +122,9 @@ class Embedding:
             Embedding.e = Embedder('\\'.join([Embedding.project_working_dir, 'models', 'ArabicElmo']),
                                    batch_size=batch_size)
 
+        # clear the garbage
         gc.collect()
+        # to reduce GPU cache memory used by torch
         torch.cuda.empty_cache()
 
         """def sents2elmo(sents, output_layer=-1):
@@ -127,12 +136,13 @@ class Embedding:
         -1 for an average of 3 layers. (default)
         -2 for all 3 layers"""
 
-
+        # allocating result memory
         embedded = np.empty(shape=(len(sentences), len(sentences[0]),1024), dtype='f')
 
-        arrayofnumpy = Embedding.e.sents2elmo(sentences, output_layer=output_layer)
+        listofnumpy = Embedding.e.sents2elmo(sentences, output_layer=output_layer)
 
+        # converting list to numpy array
         for i in range(0, len(sentences)):
-            embedded[i] = arrayofnumpy[i]
+            embedded[i] = listofnumpy[i]
 
         return embedded
