@@ -2,6 +2,7 @@ from Objects.Book import Book
 import numpy as np
 
 class TestingData:
+    """ A Class for managing the prediction result according to the cluster and the  each book name"""
     anchors_names = {'c1_test': 'c1 test',
                      'c2_test': 'c2 test',
                      'unknown_author': 'unknown author',
@@ -9,7 +10,8 @@ class TestingData:
                      'c2_anchor': 'c2 anchor'}
 
     def __init__(self, c3, c3_books_names, c1_anchor_name, c2_anchor_name, c1_test_names, c2_test_names, c3_test_names):
-
+        """ initialize all the cluster books references, and sort each book to the appropriate cluster
+        and adding them to the books list"""
         self.books = []
 
         self.c3_books_names = c3_books_names
@@ -29,33 +31,10 @@ class TestingData:
 
         self.set_clusters_image()
 
-        # set the anchor and testing data pointers
-
-        # for idx, book_name in enumerate(c3_books_names):
-        #     """Get the c1_anchor data"""
-        #     for idn, anchor_book in enumerate(c1_anchor_name):
-        #         if anchor_book == book_name[:-4]:
-        #             self.anchor_c1.append(c3[idx])
-        #     """Get the c2_anchor data"""
-        #     for idn, anchor_book in enumerate(c2_anchor_name):
-        #         if anchor_book == book_name[:-4]:
-        #             self.anchor_c2.append(c3[idx])
-        #     """Get the c1_test data"""
-        #     for idn, test_book in enumerate(c1_test_names):
-        #         if test_book == book_name[:-4]:
-        #             self.c1_test.append(c3[idx])
-        #     """Get the c2_test data"""
-        #     for idn, test_book in enumerate(c2_test_names):
-        #         if test_book == book_name[:-4]:
-        #             self.c2_test.append(c3[idx])
-        #     """Get the c3_test data"""
-        #     for idn, test_book in enumerate(c3_test_names):
-        #         if test_book == book_name[:-4]:
-        #             self.c3_test.append(c3[idx])
-
         self.iteration_size = len(c3)
 
     def set_clusters_image(self):
+        """ sort book object into appropriate cluster list according to book cluster """
         for idx in range(len(self.books)):
             if self.books[idx].cluster == self.anchors_names['c1_anchor']:
                 self.anchor_c1.append(self.books[idx])
@@ -69,6 +48,7 @@ class TestingData:
                 self.c3_test.append(self.books[idx])
 
     def sort_data_to_clusters(self, c3):
+        """ add book object into books list according to book cluster and set each book attributes """
         for idx, book_name in enumerate(self.c3_books_names):
             """Get the c1_anchor data"""
             for idn, anchor_book in enumerate(self.c1_anchor_name):
@@ -138,6 +118,8 @@ class TestingData:
             print()
 
     def get_error_bar_data(self):
+        """ get the needed data for the error bar including for each book the min, max, mean mean
+        prediction over of all the iterations and c1, c2 means and the total mean"""
         books_names = []
         books_mean_values_over_all_iter = []
         books_error_up_values_over_all_iter = []
@@ -150,10 +132,13 @@ class TestingData:
         mean_val = 0
 
         for book in self.books:
+            # get book (most_min, most_max, mean_over_iterations) of mean prediction result
             most_min, most_max, mean_over_iterations = book.prediction_res_over_all_iter()
 
+            # update all books mean value
             mean_val += mean_over_iterations
 
+            # update for each label added to book the mean value of each cluster
             for label in book.label:
                 if label == 0:
                     c1_mean_val += mean_over_iterations
@@ -162,9 +147,11 @@ class TestingData:
                     c2_mean_val += mean_over_iterations
                     book.total_c2_hits += 1
 
+            # update the cluster books number clustered to c1,c2
             c1_labels_count += book.total_c1_hits
             c2_labels_count += book.total_c2_hits
 
+            # calculate mean value, error up, error down, and books names
             books_names.append(book.book_name)
             books_mean_values_over_all_iter.append(mean_over_iterations)
             books_error_down_values_over_all_iter.append(abs(most_min - mean_over_iterations))
@@ -172,6 +159,7 @@ class TestingData:
 
         mean_val /= len(self.books)
 
+        # calculate the mean of each cluster
         if c1_labels_count != 0:
             c1_mean_val = c1_mean_val / c1_labels_count
         if c2_labels_count != 0:
@@ -187,12 +175,12 @@ class TestingData:
                mean_val
 
 
-    def set_book_mean_prediction_val_over_iter(self, book):
-        mean_val = np.zeros((len(book.predictions_res_over_iter[0])), dtype='f')
-        for predictions in book.predictions_res_over_iter:
-            mean_val = np.add(mean_val, predictions[:, 0])
-
-        book.mean_of_mean_prediction_res_over_iter = np.divide(mean_val, len(book.predictions_res_over_iter))
+    # def set_book_mean_prediction_val_over_iter(self, book):
+    #     mean_val = np.zeros((len(book.predictions_res_over_iter[0])), dtype='f')
+    #     for predictions in book.predictions_res_over_iter:
+    #         mean_val = np.add(mean_val, predictions[:, 0])
+    #
+    #     book.mean_of_mean_prediction_res_over_iter = np.divide(mean_val, len(book.predictions_res_over_iter))
 
 
     def get_book(self, book_name):

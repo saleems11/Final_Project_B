@@ -94,7 +94,7 @@ class TrainPage(Page):
         self.back_btn.place(x=470, y=400)
         """Next"""
         self.next_btn = Button(self, text="Next", bg='green', fg=def_fg, command=self.next)
-        self.next_btn.place(x=760, y=400)
+        self.next_btn.place(x=790, y=400)
         """Save Model"""
         self.save_model = Button(self, text="Save The Model", bg='blue', fg=def_fg, command=self.save_the_model)
         self.save_model.place(x=520, y=400)

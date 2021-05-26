@@ -1,5 +1,5 @@
+""" This code is not being used right now"""
 class SmartChecking:
-
     def __init__(self):
         self.tweet_size_options = [200]
         # total number of options

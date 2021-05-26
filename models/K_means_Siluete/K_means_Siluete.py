@@ -1,13 +1,16 @@
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
-from yellowbrick.cluster import SilhouetteVisualizer
-import matplotlib.pyplot as plt
-import numpy as np
+# from yellowbrick.cluster import SilhouetteVisualizer
+# import matplotlib.pyplot as plt
+# import numpy as np
 
 from Exceptions.Exceptions import AnchorsInSameCluster, SilhouetteBellowThreshold
 
 
 def calculate_plot_Kmeans(M, iteration_size, testing_data):
+    """ calculate and plot k-means on M matrix, with k=2
+    also check if there is two anchor's in the same cluster in the same iteration and over all the iterations
+    if two anchors in the  same cluster throw AnchorsInSameCluster Exception """
     # plt.figure()
     kmeans = KMeans(n_clusters=2)
 
@@ -15,8 +18,8 @@ def calculate_plot_Kmeans(M, iteration_size, testing_data):
     centers = kmeans.cluster_centers_
 
     # update_testing data label
-    for idx in range(len(testing_data.books)):
-        testing_data.books[idx].add_label(labels[idx % iteration_size])
+    for idx in range(len(labels)):
+        testing_data.books[idx%iteration_size].add_label(labels[idx])
 
     # check if the anchors are in the same cluster
     for i in range(int(len(M) / iteration_size)):
@@ -46,6 +49,8 @@ def calculate_plot_Kmeans(M, iteration_size, testing_data):
 
 
 def silhouette(M, labels, kmeans, iteration_size, silhouette_threshold):
+    """ calculate the silhouette score using the M Matrix and check the silhouette_threshold, if
+    it doesn't achieve it, throw SilhouetteBellowThreshold Exception"""
     score = silhouette_score(M.reshape(-1, 1), labels=labels, metric='euclidean')
     if score < silhouette_threshold:
         raise SilhouetteBellowThreshold("The silhouette accuracy is smaller than silhouette_threshold"
