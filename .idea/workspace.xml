@@ -24,9 +24,10 @@
   <component name="ChangeListManager">
     <list default="true" id="88f4ee48-4d57-4b00-9926-51444e982cca" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algs/Balancing_Routine.py" beforeDir="false" afterPath="$PROJECT_DIR$/Algs/Balancing_Routine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algs/Embedd_DataSet.py" beforeDir="false" afterPath="$PROJECT_DIR$/Algs/Embedd_DataSet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algs/Embedding.py" beforeDir="false" afterPath="$PROJECT_DIR$/Algs/Embedding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controlers/controller.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Embedded_books/A1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Embedded_books/A1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Embedded_books/Embed_book.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Embedded_books/Embed_dataSet.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,13 +60,10 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/GUI/App/pages/__init__.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/GUI/App/pages/display_pages.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Embedded_books/Embed_book.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Embedded_books/rename.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Controlers/controller.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Exceptions/Exceptions.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Algs/Embedding.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Embedded_books/A1.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Embedded_books/Embed_dataSet.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1s8DlRsSe6aDZQam7BWnFPVKt8K" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -255,7 +253,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621960673089</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="finished Alg documenting.">
+      <created>1622044211268</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1622044211268</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -288,7 +293,8 @@
     <MESSAGE value="merge show result via gui with master." />
     <MESSAGE value="added time remainig and solved some bugs in loading data and added option to load data automaticly for testing, and some changes to the GUI." />
     <MESSAGE value="GUI trainig and loading data bug fixes." />
-    <option name="LAST_COMMIT_MESSAGE" value="GUI trainig and loading data bug fixes." />
+    <MESSAGE value="finished Alg documenting." />
+    <option name="LAST_COMMIT_MESSAGE" value="finished Alg documenting." />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1620987548072">
@@ -348,11 +354,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Embedded_books/A1.py</url>
-          <line>186</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Algs/Embedding.py</url>
           <line>141</line>
