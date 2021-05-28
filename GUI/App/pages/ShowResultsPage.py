@@ -8,20 +8,22 @@ from Show_results.Error_bar import Error_bar
 from Show_results.Book_chunks_labels import Book_chunks_labels
 from Show_results.Histograms import Histograms
 
-# import GUI.Gui as Gui
+from Objects.Book import Book
 
 import threading
 import tkinter as tk
+import tkinter.scrolledtext as st
 
 
 class ShowResultsPage(Page):
-    def __init__(self, parent_frame, M, testing_data):
+    def __init__(self, parent_frame, M, testing_data, book_names_in_order_of_M):
         # init page/ delete old page
         Page.__init__(self, parent_frame)
 
         self.parent_frame = parent_frame
         self.M = M
         self.testing_data = testing_data
+        self.book_names_in_order_of_M = book_names_in_order_of_M
 
         # split the GUi to three parts vertically
         self.top_frame = Frame(parent_frame)
@@ -82,7 +84,6 @@ class ShowResultsPage(Page):
 
         # bottom frame parameters init
         self.finish_Btn = None
-        self.init_bottom_frame()
 
     ''' Initializing the Main frame sections'''
 
@@ -99,17 +100,42 @@ class ShowResultsPage(Page):
         self.histogram_show_Btn = \
             Button(self.top_frame, text="Histogram", bg=Pages_parameters.def_bg,
                    fg=Pages_parameters.def_fg, command=self.clicked_on_histogram_show_Btn)
+        self.finish_Btn = \
+            Button(self.top_frame, text="Finish", bg=Pages_parameters.red,
+                   fg=Pages_parameters.def_fg, command=self.clicked_on_finish_Btn)
 
         self.heat_map_show_Btn.grid(row=0, column=0, padx=10, pady=10)
         self.error_bar_show_Btn.grid(row=0, column=1, padx=10, pady=10)
         self.chunks_labels_show_Btn.grid(row=0, column=2, padx=10, pady=10)
         self.histogram_show_Btn.grid(row=0, column=3, padx=10, pady=10)
+        self.finish_Btn.grid(row=0, column=4, padx=30, pady=10)
 
-    def init_bottom_frame(self):
-        self.finish_Btn = \
-            Button(self.bottom_frame, text="Finish", bg=Pages_parameters.def_bg,
-                   fg=Pages_parameters.def_fg, command=self.clicked_on_finish_Btn)
-        self.finish_Btn.pack(padx=5, pady=5, side=tk.RIGHT)
+    def init_bottom_frame(self, books_names=None):
+        """ set book names to index, the code handel two version of indexing books names\n
+        One of them is according to M, and the other according to the order of inserted books"""
+        scrolling_text = ""
+
+        if books_names is None:
+            books_names = self.book_names_in_order_of_M
+
+        # get book details as string
+        for idx, book_name in enumerate(books_names):
+            book_cluster = self.testing_data.get_book_cluster(book_name=book_name)
+            txt = Book.get_book_details_as_string(book_name=book_name, index=idx, cluster=book_cluster)
+            if idx == 0:
+                scrolling_text = scrolling_text + txt
+            else:
+                scrolling_text = scrolling_text + '\n' + txt
+
+        # each line will contain third of the data
+        self.text_area = st.ScrolledText(self.bottom_frame, height=4)
+
+        self.text_area.insert(tk.INSERT, scrolling_text)
+        # Making the text read only
+        self.text_area.configure(state='disabled')
+
+        self.text_area.grid(column=0, pady=2, padx=10, sticky='NEW')
+        # print("unimplemented init bottom frame")
 
     ''' Click management '''
 
@@ -304,6 +330,9 @@ class ShowResultsPage(Page):
         # reset mid frame
         self.mid_frame = Frame(self.parent_frame)
         self.mid_frame.grid(row=1, column=0, sticky="nswe")
+        # reset bottom frame
+        self.bottom_frame = Frame(self.parent_frame)
+        self.bottom_frame.grid(row=2, column=0, sticky="nwe")
 
     """ creating Sub-frames"""
 
@@ -315,6 +344,7 @@ class ShowResultsPage(Page):
             self.heat_map = Heat_map(data=self.M, iteration_size=self.testing_data.iteration_size)
 
         Heat_map.create_GUI(result_obj=self.heat_map, main_frame=self.mid_frame)
+        self.init_bottom_frame()
 
     def create_error_bar_frame(self):
 
@@ -335,6 +365,7 @@ class ShowResultsPage(Page):
             self.get_error_bar_data_and_show()
         else:
             self.error_bar.create_GUI(result_obj=self.error_bar, main_frame=self.mid_frame)
+            self.init_bottom_frame(self.error_bar.books_names)
 
     def selecting_book_chunks_frame(self, main_frame, list_option_value, on_click_func, smoothing_check_box_val,
                                     average_check_box_val, rounding_check_box_val=None):
@@ -387,16 +418,16 @@ class ShowResultsPage(Page):
         self.select_book_label.grid(row=0, column=0, padx=x_padding, pady=y_padding, sticky="W")
         self.books_selecting_list_option.grid(row=0, column=1, padx=x_padding, pady=y_padding, columnspan=3)
 
-        self.select_book_chunk_staring_idx_label.grid(row=1, column=0, padx=x_padding, pady=y_padding, sticky="W")
-        self.select_book_chunk_staring_idx_entry.grid(row=1, column=1, padx=x_padding, pady=y_padding)
-        self.select_book_chunk_ending_idx_label.grid(row=1, column=2, padx=x_padding, pady=y_padding)
-        self.select_book_chunk_ending_idx_entry.grid(row=1, column=3, padx=x_padding, pady=y_padding)
-        self.load_graph_Btn.grid(row=1, column=4, padx=x_padding * 2, pady=y_padding)
+        self.select_book_chunk_staring_idx_label.grid(row=1, column=0, padx=x_padding, pady=y_padding/2, sticky="W")
+        self.select_book_chunk_staring_idx_entry.grid(row=1, column=1, padx=x_padding, pady=y_padding/2)
+        self.select_book_chunk_ending_idx_label.grid(row=1, column=2, padx=x_padding, pady=y_padding/2)
+        self.select_book_chunk_ending_idx_entry.grid(row=1, column=3, padx=x_padding, pady=y_padding/2)
+        self.load_graph_Btn.grid(row=1, column=4, padx=x_padding * 2, pady=y_padding/2)
 
-        self.smooth_frequency_graph_check_box.grid(row=2, column=0, padx=x_padding, pady=y_padding)
-        self.over_iterations_avg_check_box.grid(row=2, column=1, padx=x_padding, pady=y_padding)
+        self.smooth_frequency_graph_check_box.grid(row=0, column=4, padx=x_padding, pady=y_padding)
+        self.over_iterations_avg_check_box.grid(row=0, column=5, padx=x_padding, pady=y_padding)
         if rounding_check_box_val is not None:
-            self.round_frequency_graph_check_box.grid(row=2, column=2, padx=x_padding, pady=y_padding, columnspan=2)
+            self.round_frequency_graph_check_box.grid(row=0, column=6, padx=x_padding, pady=y_padding, columnspan=2)
 
     def create_chunk_labels_frame(self):
 
@@ -494,7 +525,10 @@ class ShowResultsPage(Page):
         books_error_up_values_over_all_iter, books_mean_values_over_all_iter, c1_mean_val, c2_mean_val, mean_val \
             = self.testing_data.get_error_bar_data()
 
-        self.error_bar = Error_bar(x=books_names,
+        books_indexes = [str(i) for i in range(len(books_names))]
+
+        self.error_bar = Error_bar(books_names=books_names,
+                                   x=books_indexes,
                                    y=books_mean_values_over_all_iter,
                                    y_mean=mean_val,
                                    y_mean_c1=c1_mean_val,
@@ -504,6 +538,7 @@ class ShowResultsPage(Page):
                                                        books_error_up_values_over_all_iter])
 
         Error_bar.create_GUI(result_obj=self.error_bar, main_frame=self.mid_frame)
+        self.init_bottom_frame(self.error_bar.books_names)
 
     """ Resest """
 

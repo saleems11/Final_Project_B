@@ -10,7 +10,7 @@ from Show_results.Matplot_show_fig_tkintner import show_in_tkinter
 
 class Error_bar(show_in_tkinter):
 
-    def __init__(self, x, y, y_mean, y_mean_c1, y_mean_c2, label: str, asymmetric_y_error: [[float,], [float,]], testing=False):
+    def __init__(self, books_names, x, y, y_mean, y_mean_c1, y_mean_c2, label: str, asymmetric_y_error: [[float,], [float,]], testing=False):
         """ Receive :\n
         X: for book index or books names,
         y: is the y value for the specific book,
@@ -19,6 +19,7 @@ class Error_bar(show_in_tkinter):
         from the top and the bottom, input structure [[y-,..], [y+,..]]"""
 
         if testing:
+            self.books_names =None
             self.x = None
             self.y = None
             self.y_mean = None
@@ -28,6 +29,7 @@ class Error_bar(show_in_tkinter):
             self.asymmetric_y_error = None
             self._generate_sample_data()
         else:
+            self.books_names = books_names
             self.x = x
             self.y = y
             self.y_mean = y_mean

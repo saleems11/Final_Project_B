@@ -2,10 +2,11 @@ import os
 import threading
 import traceback
 from time import sleep
-from tkinter import Label, Button, HORIZONTAL, IntVar, filedialog, messagebox
+from tkinter import Label, Button, HORIZONTAL, IntVar, filedialog, messagebox, NORMAL, DISABLED
 from tkinter.ttk import Progressbar
 
 import numpy as np
+import time
 from PIL import Image, ImageTk
 from keras import models
 
@@ -25,7 +26,11 @@ class TrainPage(Page):
         self.parameters = parameters
         self.process_bar = ProcessBar()
 
-        self.lstm = Bi_Direct_LSTM(parameters=self.parameters, process_bar=self.process_bar)
+        # for time estimating
+        self.estimated_time_remaining = [0.0]
+
+        self.lstm = Bi_Direct_LSTM(parameters=self.parameters, process_bar=self.process_bar,
+                                   estimated_time_remaining=self.estimated_time_remaining)
 
         self.p1 = threading.Thread(target=self.update_status, daemon=True)
         self.p = threading.Thread(target=self.start_training_testing, daemon=True)
@@ -68,18 +73,23 @@ class TrainPage(Page):
         self.val_loss.place(x=100, y=270)
         self.val_loss_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
         self.val_loss_text.place(x=200, y=270)
-
         """silhouette_score"""
         self.silhouette_score = Label(self, text="Silhouette Score", bg=def_bg, fg=def_fg)
         self.silhouette_score.place(x=100, y=300)
         self.silhouette_score_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
         self.silhouette_score_text.place(x=200, y=300)
+        """time_remaining"""
+        self.time_remaining = Label(self, text="E.Time Remaining", bg=def_bg, fg=def_fg)
+        self.time_remaining.place(x=100, y=330)
+        self.time_remaining_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
+        self.time_remaining_text.place(x=200, y=330)
+
         """Back"""
         self.back_btn = Button(self, text="Back", bg='red', fg=def_fg, command=self.back)
         self.back_btn.place(x=470, y=400)
         """Next"""
         self.next_btn = Button(self, text="Next", bg='green', fg=def_fg, command=self.next)
-        self.next_btn.place(x=720, y=500)
+        self.next_btn.place(x=760, y=400)
         """Save Model"""
         self.save_model = Button(self, text="Save The Model", bg='blue', fg=def_fg, command=self.save_the_model)
         self.save_model.place(x=520, y=400)
@@ -90,8 +100,9 @@ class TrainPage(Page):
         self.start_testing = Button(self, text="Start Training and Testing", bg='green', fg=def_fg, command=self.start_lstm_model)
         self.start_testing.place(x=620, y=400)
         if not self.process_bar.finished:
-            self.save_model['state'] = 'disable'
-            self.next_btn['state'] = 'disable'
+            self.save_model['state'] = DISABLED
+            self.next_btn['state'] = DISABLED
+            self.back_btn['state'] = DISABLED
 
     def load_model(self):
         """this function load the model from data file"""
@@ -128,10 +139,11 @@ class TrainPage(Page):
     def start_training_testing(self):
         """This function will create bi-lstm model and making training,testing on the model"""
         try:
-            history, M, silhoutte_score = self.lstm.train_test_for_iteration(c1=self.c1_embeded, c2=self.c2_embeded, testing_data=self.testing_data_embeded)
+            history, M, silhoutte_score, book_names_in_order_of_M = self.lstm.train_test_for_iteration(c1=self.c1_embeded, c2=self.c2_embeded, testing_data=self.testing_data_embeded)
             self.M = M
             self.history = history
             self.silhoutte_score = silhoutte_score
+            self.book_names_in_order_of_M = book_names_in_order_of_M
             self.silhouette_score_text['text'] = self.silhoutte_score
             self.process_bar.finished = True
 
@@ -163,18 +175,19 @@ class TrainPage(Page):
 
     def next(self):
         """Go next to the result page after the model finishing the training and testing"""
-        ShowResultsPage.ShowResultsPage(self.parent, self.M, self.testing_data_embeded)
-        print("Still un-implemented")
-        pass
+        ShowResultsPage.ShowResultsPage(self.parent, self.M, self.testing_data_embeded, self.book_names_in_order_of_M)
 
     def update_status(self):
         """This method will update the labels of the training page and
         process bar till the model is not finished """
-        self.back_btn['state'] = 'disable'
-        self.start_testing['state'] = 'disable'
-        while not self.process_bar.finished:
-            self.set_progress_bar(value= self.process_bar.process*100)
+        self.back_btn['state'] = DISABLED
+        self.start_testing['state'] = DISABLED
+        while self.p.is_alive():
+            self.set_progress_bar(value=self.process_bar.process*100)
             self.iteration_text['text'] = self.process_bar.status
+            if self.estimated_time_remaining[0] > 0.3:
+                self.time_remaining_text['text'] = "%.2fs" % self.estimated_time_remaining[0]
+                self.estimated_time_remaining[0] -= 1
             if self.lstm.history:
                 self.val_loss_text['text'] = self.lstm.history.history['val_loss'][-1]
                 self.val_accuracy_text['text'] = self.lstm.history.history['val_accuracy'][-1]
@@ -182,10 +195,10 @@ class TrainPage(Page):
                 self.accuracy_text['text'] = self.lstm.history.history['accuracy'][-1]
             sleep(1)
         if self.process_bar.finished:
-            self.save_model['state'] = 'active'
-            self.next_btn['state'] = 'active'
-        self.back_btn['state'] = 'active'
-        self.start_testing['state'] = 'active'
+            self.save_model['state'] = NORMAL
+            self.next_btn['state'] = NORMAL
+        self.back_btn['state'] = NORMAL
+        self.start_testing['state'] = NORMAL
 
     def save_parameters(self,path):
         """This function create parameter file into the giving path"""

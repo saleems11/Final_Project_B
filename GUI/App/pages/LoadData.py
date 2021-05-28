@@ -13,12 +13,12 @@ from .process_bar import ProcessBar
 TESTING: bool = False
 c1_dir: str = ''
 c2_dir: str = ''
+c3_dir: str = ''
 anchor_c1_dir: List[str] = []
 anchor_c2_dir: List[str] = []
 original_dir: List[str] = []
 pseudo_dir: List[str] = []
-test_dir: str = ''
-list_test: str = ''
+test_dir:List[str] = []
 process_bar: int = 0
 
 def_bg = "#201F1E"
@@ -26,7 +26,8 @@ def_fg = "lightgrey"
 
 
 class HomePage(Page):
-    def __init__(self, parent):
+
+    def __init__(self, parent, testing=False):
         """initialize all the data and buttons """
         Page.__init__(self, parent, title='Load Data And Embedding')
         self.value = None
@@ -37,6 +38,18 @@ class HomePage(Page):
         # init page/ delete old page
         self.tweet_size = 200
         self.process = 0
+
+        if testing:
+            global c1_dir, c2_dir, c3_dir, anchor_c1_dir, anchor_c2_dir, original_dir, pseudo_dir, test_dir
+            c1_dir = "C:/Users/iamme/Desktop/Books/t1"
+            c2_dir = "C:/Users/iamme/Desktop/Books/t2"
+            c3_dir = "C:/Users/iamme/Desktop/Books/t3"
+            anchor_c1_dir = ['Al_Mankhul_min_Taliqat_al_Usul.txt']
+            anchor_c2_dir = ['Kimiya_yi_Saadat.txt']
+            original_dir = ['al_iqtisad_fi_al_itiqad.txt', 'Al_Mustasfa_min_ilm_al_Usul.txt', 'Fada_ih_al_Batiniyya_wa_Fada_il_al_Mustazhiriyy.txt', 'Faysal_at_Tafriqa_Bayna_al_Islam_wa_al_Zandaqa.txt', 'Iljam_Al_Awamm_an_Ilm_Al_Kalam.txt', 'Mishakat_al_Anwar.txt']
+            pseudo_dir = ['al_Madnun_bihi_ala_ghayri.txt']
+            test_dir = ['Tahafut_al_Falasifa.txt']
+
         self.p1 = threading.Thread(target=self.update_status, daemon=True)
         self.p = threading.Thread(target=self.start_embedding_process, daemon=True)
         self.c1_embeded = self.c2_embeded = self.testing_data_embeded = None
@@ -100,7 +113,8 @@ class HomePage(Page):
         if pseudo_dir:
             self.pseudo_x_btn.place(x=110, y=420)
         if test_dir:
-            self.test_btn.place(x=110, y=450)
+            self.test_x_btn.place(x=110, y=450)
+
         """progress bar initialize"""
         self.bar = Progressbar(self, orient=HORIZONTAL, length=700, mode="determinate")
         """start embedding btn"""
@@ -180,11 +194,15 @@ class HomePage(Page):
         self.check_dir()
 
     def clear_test_btn(self) -> None:
+
         """clear the test list and add them to listbox"""
-        global pseudo_dir
-        self.lb.insert(self.list_size, test_dir)
-        self.list_size += 1
-        pseudo_dir = []
+        global test_dir
+        for file in test_dir:
+            self.lb.insert(self.list_size, file)
+            self.list_size += 1
+
+        # empty the list
+        test_dir = []
         self.test_btn['text'] = 'Select Test Book'
         self.test_x_btn.place_forget()
         self.check_dir()
@@ -211,7 +229,8 @@ class HomePage(Page):
         """if all the dirs are not none then start embedding will be clickable else not clickable"""
         if count_word_files(c1_dir) and count_word_files(c2_dir) and\
                 len(anchor_c1_dir) and len(anchor_c2_dir) and len(original_dir) and\
-                len(pseudo_dir) and len(list_test) and len(test_dir):
+                len(pseudo_dir) and len(test_dir):
+
             self.bar.place(x=100, y=550)
             self.start_embedding.place(x=950, y=550)
         else:
@@ -220,9 +239,10 @@ class HomePage(Page):
 
     def get_list_of_test(self):
         """this function get all the books after selecting the dir and add them to listbox"""
-        global list_test
+        global c3_dir
+
         try:
-            list_test = filedialog.askdirectory()
+            c3_dir = filedialog.askdirectory()
             self.lb.delete(0, 'end')
             self.clear_anchor_c1()
             self.clear_anchor_c2()
@@ -230,7 +250,7 @@ class HomePage(Page):
             self.clear_pseudo_btn()
 
             self.lb.place(x=600, y=300)
-            for file in os.listdir(path=list_test):
+            for file in os.listdir(path=c3_dir):
                 if file.endswith('.txt'):
                     _, tail = os.path.split(file)
                     self.lb.insert(self.list_size, tail)
@@ -293,15 +313,15 @@ class HomePage(Page):
     def browse_test(self):
         """this function add selected test books to list"""
         global test_dir
-        if len(self.lb.curselection())== 0 or len(self.lb.curselection()) > 1:
+        if len(self.lb.curselection()) == 0 or len(self.lb.curselection()) > 1:
             messagebox.showwarning(title='ERROR', message='Please choose 1 book for testing')
             return
         for i in self.lb.curselection():
-            test_dir = self.lb.get(i)
+            test_dir.append(self.lb.get(i))
         self.call_delete()
         self.test_x_btn.place(x=110, y=450)
         self.check_dir()
-        print(f'test dir: {pseudo_dir} ')
+        print(f'test dir: {test_dir} ')
 
     def embedding_files(self) -> None:
         """this function start two thread one for embedding the data
@@ -324,9 +344,13 @@ class HomePage(Page):
         self.down_status_text.place(x=230, y=515)
         while not self.process_bar.finished:
             print(f'updated progress bar : {self.process_bar.process}')
-            self.set_progress_bar(value= self.process_bar.process*100)
+            self.set_progress_bar(value=self.process_bar.process*100)
             self.down_status_text['text'] = self.process_bar.status
-            sleep(2)
+            sleep(0.5)
+
+        self.set_progress_bar(value=self.process_bar.process * 100)
+        self.down_status_text['text'] = self.process_bar.status
+
         self.next_btn.place(x=830, y=550)
         self.tweet_length_text.place_forget()
         self.tweet_length.place_forget()
@@ -334,7 +358,7 @@ class HomePage(Page):
     def start_embedding_process(self):
         """Embed the dataset and disable all the btn in screen """
         print('Start embedding')
-        global c1_dir, c2_dir, list_test, anchor_c2_dir, anchor_c1_dir
+        global c1_dir, c2_dir, c3_dir, anchor_c2_dir, anchor_c1_dir
         result: List[str] = [
                              self.check_if_integer(value=self.tweet_length_text.get(), min_number=0,
                                                    max_number=ITERATION_MAX_NUMBER, msg='Batch Size')
@@ -361,11 +385,11 @@ class HomePage(Page):
         self.load_data_btn1['state'] = 'disabled'
         self.load_data_btn2['state'] = 'disabled'
 
-        c3_test_names = [test_dir]
+        c3_test_names = test_dir
         self.embed_data = DataManagement(tweet_size=self.tweet_length_parameter, embedding_size=1024,
                                          c1_anchor_name=anchor_c1_dir, c2_anchor_name=anchor_c2_dir,
                                          c1_test_names=original_dir, c2_test_names=pseudo_dir,
-                                         c3_test_names=c3_test_names, c1_dir=c1_dir, c2_dir=c2_dir, c3_dir=list_test)
+                                         c3_test_names=c3_test_names, c1_dir=c1_dir, c2_dir=c2_dir, c3_dir=c3_dir)
         if not TESTING:
             c1, c2, testing_data = self.embed_data.load_data(self.process_bar)
             self.c1_embeded = c1

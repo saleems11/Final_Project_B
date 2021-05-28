@@ -9,6 +9,7 @@ from keras.layers import Bidirectional
 
 from pandas import DataFrame
 import numpy as np
+from time import time
 
 import models.LoadingBalancingData.DataManagement as DM
 from GUI.App.pages.process_bar import ProcessBar
@@ -16,7 +17,7 @@ from .Parameters import Parameters
 
 class Bi_Direct_LSTM:
 
-    def __init__(self, parameters: Parameters, process_bar: ProcessBar):
+    def __init__(self, parameters: Parameters, process_bar: ProcessBar,  estimated_time_remaining: [float]):
         # to run on the GPU and solve a bug
         gpu_devices = tf.config.experimental.list_physical_devices('GPU')
         for device in gpu_devices:
@@ -25,6 +26,13 @@ class Bi_Direct_LSTM:
         self.model = self.create_model()
         self.process_bar: ProcessBar = process_bar
         self.history = None
+
+        self.prev_iteration = 0
+        self.last_iter_starting_time = time()
+        self.estimated_time_remaining = estimated_time_remaining
+        self.average_iteration_time = 0
+        self.total_time = 0
+
 
     def create_model(self):
         """Create a Bi-Direct LSTM model that is specified according to the parameters, and return the model.\n
@@ -70,9 +78,11 @@ class Bi_Direct_LSTM:
         results = []
         M = []
         data_names = ['accuracy', 'val_accuracy', 'loss', 'val_loss']
+        book_names_in_order = None
         result = DataFrame()
         iterations = self.parameters.number_of_iteration
         while iterations > 0:
+            self.set_iteration(self.parameters.number_of_iteration - iterations, iterations)
 
             x_train, y_train = DM.DataManagement.create_new_batch(c1, c2, self.parameters.multiplying_rate, self.parameters.undersampling_rate)
             self.history = self.model.fit(x_train, y_train, validation_split=.30, epochs=self.parameters.number_of_epoch,
@@ -80,20 +90,31 @@ class Bi_Direct_LSTM:
 
             if self.history.history['accuracy'][-1] >= self.parameters.accuracy_threshold:
                 # test the model if the wanted accuracy is achieved
+
+                # for time estimating
                 iterations -= 1
+                self.prev_iteration = self.prev_iteration + 1
+                self.total_time += time() - self.last_iter_starting_time
+                self.last_iter_starting_time = time()
+                self.average_iteration_time = self.total_time/self.prev_iteration
+                self.estimated_time_remaining[0] = self.average_iteration_time * iterations
+
                 print("Remaining iterations to run %d"%iterations)
 
-                M.append(Bi_Direct_LSTM.test_model(self.model, testing_data.anchor_c1, testing_data.anchor_c2,
-                                                   testing_data.c1_test, testing_data.c2_test, testing_data.c3_test))
+                books_prediction_results, book_names_in_order = Bi_Direct_LSTM.test_model(self.model, testing_data.anchor_c1, testing_data.anchor_c2,
+                                          testing_data.c1_test, testing_data.c2_test, testing_data.c3_test)
+                M.append(books_prediction_results)
 
                 temp = DataFrame()
                 for data_name in data_names:
                     temp[data_name] = self.history.history[data_name]
                 result = result.append(temp, ignore_index=True)
-            self.set_iteration(self.parameters.number_of_iteration - iterations + 1, iterations)
+
 
             # self.model.reset_states()
         if M:
+            self.set_iteration(self.parameters.number_of_iteration - iterations + 1, iterations)
+
             M = np.concatenate(M, axis=0)
             labels, kmeans = KMS.calculate_plot_Kmeans(M, testing_data.iteration_size, testing_data)
             score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans,
@@ -101,11 +122,10 @@ class Bi_Direct_LSTM:
                                    silhouette_threshold=self.parameters.silhouette_threshold)
         else:
             score = 0
-        return self.history, M, score
-
+        return self.history, M, score, book_names_in_order
 
     def set_iteration(self, current_iteration:int, iterations:int):
-        self.process_bar.status = f'{(self.parameters.number_of_iteration - iterations) + 1} / {self.parameters.number_of_iteration}'
+        self.process_bar.status = f'{(self.parameters.number_of_iteration - iterations)} / {self.parameters.number_of_iteration}'
         self.process_bar.process = current_iteration/self.parameters.number_of_iteration
 
     @staticmethod
@@ -113,7 +133,7 @@ class Bi_Direct_LSTM:
         """Test the model by running anchor dataSet(c1, c2) and additional
         data(c1, c2, c3). return numpy array concatenate of all the classes results
         the order of the data is anchors(c1, c2), c1,c2,c3"""
-
+        books_names_as_M = []
         c1_anchor_prediction = Bi_Direct_LSTM.make_prediction(model, anchor_c1)
         c2_anchor_prediction = Bi_Direct_LSTM.make_prediction(model, anchor_c2)
         c3_prediction = Bi_Direct_LSTM.make_prediction(model, c3)
@@ -121,10 +141,22 @@ class Bi_Direct_LSTM:
         c2_prediction = Bi_Direct_LSTM.make_prediction(model, c2)
 
         prediction_t = np.concatenate((c1_anchor_prediction, c2_anchor_prediction), axis=0)
-        prediction_t = np.concatenate((prediction_t, c1_prediction), axis=0)
-        prediction_t = np.concatenate((prediction_t, c2_prediction), axis=0)
+        for book in anchor_c1:
+            books_names_as_M.append(book.book_name)
+        for book in anchor_c2:
+            books_names_as_M.append(book.book_name)
 
-        return np.concatenate((prediction_t, c3_prediction), axis=0)
+        prediction_t = np.concatenate((prediction_t, c1_prediction), axis=0)
+        for book in c1:
+            books_names_as_M.append(book.book_name)
+
+        prediction_t = np.concatenate((prediction_t, c2_prediction), axis=0)
+        for book in c2:
+            books_names_as_M.append(book.book_name)
+
+        for book in c3:
+            books_names_as_M.append(book.book_name)
+        return np.concatenate((prediction_t, c3_prediction), axis=0), books_names_as_M
 
     @staticmethod
     def make_prediction(model, books_list):

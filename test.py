@@ -89,11 +89,19 @@ import pandas as pd
 # a = np.array([1,2,3])
 # print(np.divide(a, 2))
 
-def hel():
-    print("hello")
+# def hel():
+#     print("hello")
+#
+# def res(func):
+#     func()
+#     print("Done func")
+#
+# res(hel)
 
-def res(func):
-    func()
-    print("Done func")
+# book_name = 'me'
+# cluster = 'c1'
+# index = 0
+# print("{0}({1})[{2}]".format(book_name, cluster, index))
 
-res(hel)
+a = list(range(10))
+print(a)

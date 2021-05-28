@@ -2,11 +2,11 @@ from Objects.Book import Book
 import numpy as np
 
 class TestingData:
-    anchors_names = {'c1_test': 'c1_test',
-                     'c2_test': 'c2_test',
-                     'c3_test': 'c3_test',
-                     'c1_anchor': 'c1_anchor',
-                     'c2_anchor': 'c2_anchor'}
+    anchors_names = {'c1_test': 'c1 test',
+                     'c2_test': 'c2 test',
+                     'unknown_author': 'unknown author',
+                     'c1_anchor': 'c1 anchor',
+                     'c2_anchor': 'c2 anchor'}
 
     def __init__(self, c3, c3_books_names, c1_anchor_name, c2_anchor_name, c1_test_names, c2_test_names, c3_test_names):
 
@@ -65,7 +65,7 @@ class TestingData:
                 self.c1_test.append(self.books[idx])
             elif self.books[idx].cluster == self.anchors_names['c2_test']:
                 self.c2_test.append(self.books[idx])
-            elif self.books[idx].cluster == self.anchors_names['c3_test']:
+            elif self.books[idx].cluster == self.anchors_names['unknown_author']:
                 self.c3_test.append(self.books[idx])
 
     def sort_data_to_clusters(self, c3):
@@ -99,7 +99,7 @@ class TestingData:
                 if test_book == book_name:
                     self.books.append(Book(book_name=test_book,
                                            embedded_data=c3[idx],
-                                           cluster=self.anchors_names['c3_test']))
+                                           cluster=self.anchors_names['unknown_author']))
 
     def show_results_of_tests(self, M, labels):
         for i in range(int(len(M) / self.iteration_size)):
@@ -165,7 +165,7 @@ class TestingData:
             c1_labels_count += book.total_c1_hits
             c2_labels_count += book.total_c2_hits
 
-            books_names.append(book.book_name[:20])
+            books_names.append(book.book_name)
             books_mean_values_over_all_iter.append(mean_over_iterations)
             books_error_down_values_over_all_iter.append(abs(most_min - mean_over_iterations))
             books_error_up_values_over_all_iter.append(abs(most_max - mean_over_iterations))
@@ -199,5 +199,12 @@ class TestingData:
         for book in self.books:
             if book.book_name == book_name:
                 return book
+        # or raise exception
+        return None
+
+    def get_book_cluster(self, book_name):
+        for book in self.books:
+            if book.book_name == book_name:
+                return book.cluster
         # or raise exception
         return None

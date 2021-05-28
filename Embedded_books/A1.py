@@ -19,21 +19,21 @@ class Embed_data_set:
 
         if embedding_size == 1024:
             # repeating code for c1, c2, c3
-            process.inc()
             process.status = 'Converting File Names of c1'
             c1_books_files_names_npy = Embed_data_set.convert_file_name_to_embedded_name(
                 files_names=c1_books_files_names_txt,
                 embedding_size=embedding_size,
                 tweet_size=tweet_size)
             process.inc()
+
             process.status = 'Converting File Names of c2'
             c2_books_files_names_npy = Embed_data_set.convert_file_name_to_embedded_name(
                 files_names=c2_books_files_names_txt,
                 embedding_size=embedding_size,
                 tweet_size=tweet_size)
             process.inc()
-            process.status = 'Converting File Names of c3'
 
+            process.status = 'Converting File Names of c3'
             c3_books_files_names_npy = Embed_data_set.convert_file_name_to_embedded_name(
                 files_names=c3_books_files_names_txt,
                 embedding_size=embedding_size,
@@ -44,6 +44,7 @@ class Embed_data_set:
             # repeating code for c1, c2, c3
             # c1
             process.inc()
+
             process.status = 'Save c1.npy '
             c1_embedded_books_cluster_dir = Embed_data_set.get_book_cluster_dir_path("c1")
             un_embedded_book_cluster_path = c1_dir
@@ -54,6 +55,7 @@ class Embed_data_set:
                                                         tweet_size=tweet_size)
             # c2
             process.inc()
+
             process.status = 'Saving c2.npy'
             c2_embedded_books_cluster_dir = Embed_data_set.get_book_cluster_dir_path("c2")
             un_embedded_book_cluster_path = c2_dir
@@ -67,6 +69,7 @@ class Embed_data_set:
 
             # c3
             process.inc()
+
             process.status = 'Saving c3.npy'
             c3_embedded_books_cluster_dir = Embed_data_set.get_book_cluster_dir_path("c3")
             un_embedded_book_cluster_path = c3_dir
@@ -79,6 +82,7 @@ class Embed_data_set:
             # repeating code for c1, c2, c3
             # get total clusters sizes
             process.inc()
+
             process.status = 'Allocating the main array'
             c1_size, c1_embedded_books_array_length = Embed_data_set.get_cluster_size(c1_books_files_names_npy,
                                                                                       c1_embedded_books_cluster_dir)
@@ -94,6 +98,7 @@ class Embed_data_set:
             # append the saved files to the main array
             # repeating code for c1, c2, c3
             process.inc()
+
             process.status = 'Loading the cluster to main array of c1'
             start_idx = 0
             begin_idx = 0
@@ -106,6 +111,7 @@ class Embed_data_set:
             c1_cluster = main_array[begin_idx: start_idx]
             begin_idx = start_idx
             process.inc()
+
             process.status = 'Loading the cluster to main array of c2'
             start_idx = Embed_data_set.load_cluster_to_main_array(books_files_names_npy=c2_books_files_names_npy,
                                                                   embedded_cluster_dir=c2_embedded_books_cluster_dir,
@@ -124,6 +130,7 @@ class Embed_data_set:
             # c3_cluster = main_array[begin_idx: start_idx]
             # begin_idx = start_idx
             process.inc()
+
             process.status = 'Loading the cluster to main array of c3'
             c3_cluster = []
             Embed_data_set.load_cluster(c3_cluster, c3_books_files_names_npy, c3_embedded_books_cluster_dir)

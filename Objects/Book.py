@@ -40,3 +40,7 @@ class Book:
 
     def add_label(self, label):
         self.label.append(label)
+
+    @staticmethod
+    def get_book_details_as_string(book_name:str, index:int, cluster:str) -> str:
+        return "[{0}]({1}) {2}".format(index, cluster, book_name)
