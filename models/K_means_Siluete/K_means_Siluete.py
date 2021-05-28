@@ -21,17 +21,43 @@ def calculate_plot_Kmeans(M, iteration_size, testing_data):
     for idx in range(len(labels)):
         testing_data.books[idx%iteration_size].add_label(labels[idx])
 
+    """ get the labels for C1, C2 """
+    c1_label_indexes = []
+    c2_label_indexes = []
+    for i in range(len(testing_data.books)):
+        if testing_data.books[i].cluster == 'c1 anchor':
+            c1_label_indexes.append(i)
+        elif testing_data.books[i].cluster == 'c2 anchor':
+            c2_label_indexes.append(i)
+
+    """ check for each anchor if all his anchor points are in the same cluster """
+    for i in range(0, len(M), iteration_size):
+        prev = -1
+        for idx in c1_label_indexes:
+            if prev == -1:
+                prev = labels[i+idx]
+            elif labels[idx + i] != prev: raise AnchorsInSameCluster('The C1 anchors are in different cluster')
+        prev = -1
+        for idx in c2_label_indexes:
+            if prev == -1:
+                prev = labels[i+idx]
+            elif labels[idx + i] != prev: raise AnchorsInSameCluster('The C2 anchors are in different cluster')
+    """ check if the two cluster have different label """
+    if labels[c1_label_indexes[0]] ==labels[c2_label_indexes[0]]:
+        raise AnchorsInSameCluster('The anchors are in the same cluster')
+
+    """ 
     # check if the anchors are in the same cluster
     for i in range(int(len(M) / iteration_size)):
         # check if all c1 anchors are in the same cluster
         for j in range(1, len(testing_data.anchor_c1)):
-            if labels[j - 1] != labels[j]: raise AnchorsInSameCluster('The anchors are in the same cluster')
+            if labels[j - 1] != labels[j]: raise AnchorsInSameCluster('The C1 anchors are in different cluster')
         # check if all c2 anchors are in the same cluster
         for j in range(len(testing_data.anchor_c1) + 1, len(testing_data.anchor_c1) + len(testing_data.anchor_c2)):
-            if labels[j - 1] != labels[j]: raise AnchorsInSameCluster('The anchors are in the same cluster')
+            if labels[j - 1] != labels[j]: raise AnchorsInSameCluster('The C2 anchors are in v cluster')
         # check if all c1 and c2 are in different cluster
         if labels[0] == labels[len(testing_data.anchor_c1)]: raise AnchorsInSameCluster('The anchors are in the same cluster')
-
+    """
 
     # # plot the anchors
     # for i in range(int(len(M) / iteration_size)):

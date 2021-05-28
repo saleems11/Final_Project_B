@@ -22,6 +22,7 @@ class TestingData:
         self.c3_test_names = c3_test_names
 
         self.sort_data_to_clusters(c3=c3)
+        self.reorder_books()
 
         self.anchor_c1 = []
         self.anchor_c2 = []
@@ -32,6 +33,29 @@ class TestingData:
         self.set_clusters_image()
 
         self.iteration_size = len(c3)
+
+    def reorder_books(self):
+        """ reorder the book in the same order as in Zeev papper
+        The reordering is done just if the files does exist"""
+        books_in_order = ['Al_Mankhul_min_Taliqat_al_Usul.txt', 'Al_Mustasfa_min_ilm_al_Usul.txt',
+                          'Fada_ih_al_Batiniyya_wa_Fada_il_al_Mustazhiriyy.txt',
+                          'Faysal_at_Tafriqa_Bayna_al_Islam_wa_al_Zandaqa.txt', 'al_iqtisad_fi_al_itiqad.txt',
+                          'Iljam_Al_Awamm_an_Ilm_Al_Kalam.txt', 'Tahafut_al_Falasifa.txt',
+                          'al_Madnun_bihi_ala_ghayri.txt', 'Kimiya_yi_Saadat.txt', 'Mishakat_al_Anwar.txt']
+        temp_books_list = []
+        for idx, book_name in enumerate(books_in_order):
+            selected_idx = -1
+            for j in range(len(self.c3_books_names)):
+                if book_name == self.c3_books_names[j]:
+                    selected_idx = j
+                    break
+            if selected_idx != -1:
+                temp_books_list.append(self.books[selected_idx])
+            else:
+                return
+
+        self.books = temp_books_list
+        self.c3_books_names = books_in_order
 
     def set_clusters_image(self):
         """ sort book object into appropriate cluster list according to book cluster """
@@ -131,6 +155,9 @@ class TestingData:
         c2_labels_count = 0
         mean_val = 0
 
+        c1_label = self.anchor_c1[0].label[-1]
+        c2_label = self.anchor_c2[0].label[-1]
+
         for book in self.books:
             # get book (most_min, most_max, mean_over_iterations) of mean prediction result
             most_min, most_max, mean_over_iterations = book.prediction_res_over_all_iter()
@@ -140,10 +167,10 @@ class TestingData:
 
             # update for each label added to book the mean value of each cluster
             for label in book.label:
-                if label == 0:
+                if label == c1_label:
                     c1_mean_val += mean_over_iterations
                     book.total_c1_hits += 1
-                elif label == 1:
+                elif label == c2_label:
                     c2_mean_val += mean_over_iterations
                     book.total_c2_hits += 1
 
@@ -182,6 +209,11 @@ class TestingData:
     #
     #     book.mean_of_mean_prediction_res_over_iter = np.divide(mean_val, len(book.predictions_res_over_iter))
 
+    def get_book_embedding_data(self):
+        embedded_book_data_list = []
+        for book in self.books:
+            embedded_book_data_list.append(book.embedded_data)
+        return embedded_book_data_list
 
     def get_book(self, book_name):
         for book in self.books:

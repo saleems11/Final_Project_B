@@ -18,7 +18,7 @@ import tkinter.scrolledtext as st
 class ShowResultsPage(Page):
     """ A Class used as GUI and controller for the part of showing the result of the model after training
     and testing the model."""
-    def __init__(self, parent_frame, M, testing_data, book_names_in_order_of_M):
+    def __init__(self, parent_frame, M, testing_data):
         """ initialize the object with M which contains the mean prediction result of each book over many iterations
         testing data, is the object responsible for handeling many kinds of the prediction result"""
         # init page/ delete old page
@@ -27,7 +27,7 @@ class ShowResultsPage(Page):
         self.parent_frame = parent_frame
         self.M = M
         self.testing_data = testing_data
-        self.book_names_in_order_of_M = book_names_in_order_of_M
+        # self.book_names_in_order_of_M = book_names_in_order_of_M
 
         # split the GUi to three parts vertically
         self.top_frame = Frame(parent_frame)
@@ -120,8 +120,8 @@ class ShowResultsPage(Page):
         One of them is according to M, and the other according to the order of inserted books"""
         scrolling_text = ""
 
-        if books_names is None:
-            books_names = self.book_names_in_order_of_M
+        # if books_names is None:
+        #     books_names = self.book_names_in_order_of_M
 
         # get book details as string
         for idx, book_name in enumerate(books_names):
@@ -379,7 +379,7 @@ class ShowResultsPage(Page):
             self.heat_map = Heat_map(data=self.M, iteration_size=self.testing_data.iteration_size)
 
         Heat_map.create_GUI(result_obj=self.heat_map, main_frame=self.mid_frame)
-        self.init_bottom_frame()
+        self.init_bottom_frame(self.testing_data.c3_books_names)
 
     def create_error_bar_frame(self):
         """ create Error Bar frame using testing data object """
