@@ -27,6 +27,8 @@ def_fg = "lightgrey"
 
 class HomePage(Page):
     def __init__(self, parent):
+        """initialize all the data and buttons """
+        Page.__init__(self, parent, title='Load Data And Embedding')
         self.value = None
         self.parent = None
         self.finished_embedding = False
@@ -38,7 +40,6 @@ class HomePage(Page):
         self.p1 = threading.Thread(target=self.update_status, daemon=True)
         self.p = threading.Thread(target=self.start_embedding_process, daemon=True)
         self.c1_embeded = self.c2_embeded = self.testing_data_embeded = None
-        Page.__init__(self, parent, title='Load Data And Embedding')
         self.scroll_bar = Scrollbar(self)
         self.lb = Listbox(self, height=10, width=60, selectmode='multiple')
         self.lb.config(yscrollcommand=self.scroll_bar.set)
@@ -77,19 +78,19 @@ class HomePage(Page):
                                      command=self.browse_original)
         self.al_ghazali_btn.place(x=130, y=390)
         self.pseudo_al_ghazali_btn = Button(self, text="Select Pseudo Al Ghazali books", bg=def_bg, fg=def_fg,
-                                            command=self.browse_pseudo)
+                                command=self.browse_pseudo)
         self.pseudo_al_ghazali_btn.place(x=130, y=420)
         self.test_btn = Button(self, text="Select Test Book", bg=def_bg, fg=def_fg, command=self.browse_test)
         self.test_btn.place(x=130, y=450)
-
+        """set the dirs btn"""
         self.pseudo_al_ghazali_btn.place(x=130, y=420)
         self.anchor_c1_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_anchor_c1)
         self.anchor_c2_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_anchor_c2)
         self.original_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_original_btn)
         self.pseudo_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_pseudo_btn)
         self.test_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_test_btn)
-
         self.next_btn = Button(self, text="Next - Training Page", bg='red', fg=def_fg, command=self.go_to)
+        """if the dirs are set the x btn will be added"""
         if anchor_c1_dir:
             self.anchor_c1_x_btn.place(x=110, y=330)
         if anchor_c2_dir:
@@ -100,10 +101,12 @@ class HomePage(Page):
             self.pseudo_x_btn.place(x=110, y=420)
         if test_dir:
             self.test_btn.place(x=110, y=450)
+        """progress bar initialize"""
         self.bar = Progressbar(self, orient=HORIZONTAL, length=700, mode="determinate")
+        """start embedding btn"""
         self.start_embedding = Button(self, text="Start Embedding", bg='green', fg=def_fg, command=self.embedding_files)
         self.check_dir()
-        """Tweet_length"""
+        """Tweet_length label and text"""
         self.tweet_length = Label(self, text='Tweet Length', bg='RED', fg=def_fg)
         self.tweet_length.place(x=830, y=515)
         self.tweet_length_text = Entry(self, width=15)
@@ -113,9 +116,11 @@ class HomePage(Page):
         self.down_status_text = Label(self, text='Loading...', bg='RED', fg=def_fg)
 
     def set_progress_bar(self, value: float):
+        """set the progress bar value"""
         self.bar['value'] = value
 
     def clear_c1(self) -> None:
+        """clear the c1 dir"""
         global c1_dir
         c1_dir = ''
         self.load_data_btn1['text'] = 'Select'
@@ -123,6 +128,7 @@ class HomePage(Page):
         self.check_dir()
 
     def clear_c2(self) -> None:
+        """clear the list c2 dir"""
         global c2_dir
         c2_dir = ''
         self.load_data_btn2['text'] = 'Select'
@@ -130,6 +136,7 @@ class HomePage(Page):
         self.check_dir()
 
     def clear_anchor_c1(self) -> None:
+        """clear the anchor c1 list and add them to listbox"""
         global anchor_c1_dir
         for file in anchor_c1_dir:
             self.lb.insert(self.list_size, file)
@@ -140,6 +147,7 @@ class HomePage(Page):
         self.check_dir()
 
     def clear_anchor_c2(self) -> None:
+        """clear the anchor c2 list and add them to listbox"""
         global anchor_c2_dir
         for file in anchor_c2_dir:
             self.lb.insert(self.list_size, file)
@@ -150,6 +158,7 @@ class HomePage(Page):
         self.check_dir()
 
     def clear_original_btn(self) -> None:
+        """clear the original list and add them to listbox"""
         global original_dir
         for file in original_dir:
             self.lb.insert(self.list_size, file)
@@ -160,6 +169,7 @@ class HomePage(Page):
         self.check_dir()
 
     def clear_pseudo_btn(self) -> None:
+        """clear the pseudo list and add them to listbox"""
         global pseudo_dir
         for file in pseudo_dir:
             self.lb.insert(self.list_size, file)
@@ -170,6 +180,7 @@ class HomePage(Page):
         self.check_dir()
 
     def clear_test_btn(self) -> None:
+        """clear the test list and add them to listbox"""
         global pseudo_dir
         self.lb.insert(self.list_size, test_dir)
         self.list_size += 1
@@ -179,8 +190,7 @@ class HomePage(Page):
         self.check_dir()
 
     def browse_button(self) -> None:
-        # Allow user to select a directory and store it in global var
-        # called folder_path
+        """get the list of the books after selecting the path for c1 books"""
         global c1_dir
         c1_dir = filedialog.askdirectory()
         self.load_data_btn1['text'] = c1_dir + f' -Number of words files: {count_word_files(c1_dir)}'
@@ -189,8 +199,7 @@ class HomePage(Page):
         print(f'C1: {c1_dir}')
 
     def browse_button2(self) -> None:
-        # Allow user to select a directory and store it in global var
-        # called folder_path
+        """get the list of the books after selecting the path for c2 books"""
         global c2_dir
         c2_dir = filedialog.askdirectory()
         self.load_data_btn2['text'] = c2_dir + f' -Number of words files: {count_word_files(c2_dir)}'
@@ -199,7 +208,10 @@ class HomePage(Page):
         print(f'C2: {c2_dir} ')
 
     def check_dir(self):
-        if c1_dir and c2_dir and anchor_c1_dir and anchor_c2_dir and original_dir and pseudo_dir and list_test and test_dir:
+        """if all the dirs are not none then start embedding will be clickable else not clickable"""
+        if count_word_files(c1_dir) and count_word_files(c2_dir) and\
+                len(anchor_c1_dir) and len(anchor_c2_dir) and len(original_dir) and\
+                len(pseudo_dir) and len(list_test) and len(test_dir):
             self.bar.place(x=100, y=550)
             self.start_embedding.place(x=950, y=550)
         else:
@@ -207,6 +219,7 @@ class HomePage(Page):
             self.start_embedding.place_forget()
 
     def get_list_of_test(self):
+        """this function get all the books after selecting the dir and add them to listbox"""
         global list_test
         try:
             list_test = filedialog.askdirectory()
@@ -226,6 +239,8 @@ class HomePage(Page):
             print(f'something went wrong with getting c3 folder : {filenotfound.strerror}')
 
     def browse_anchor_c1(self):
+        """this function add selected anchor c1 books to list"""
+
         global anchor_c1_dir
         if not len(self.lb.curselection()) > 0:
             return
@@ -237,6 +252,8 @@ class HomePage(Page):
         print(f'anchor c1 dir: {anchor_c1_dir} ')
 
     def browse_anchor_c2(self):
+        """this function add selected anchor c2 books to list"""
+
         global anchor_c2_dir
         if not len(self.lb.curselection()) > 0:
             return
@@ -248,6 +265,8 @@ class HomePage(Page):
         print(f'anchor c2 dir: {anchor_c2_dir} ')
 
     def browse_original(self):
+        """this function add selected original books to list"""
+
         global original_dir
         if not len(self.lb.curselection()) > 0:
             return
@@ -259,6 +278,8 @@ class HomePage(Page):
         print(f'original dir: {original_dir} ')
 
     def browse_pseudo(self):
+        """this function add selected pseudo books to list"""
+
         global pseudo_dir
         if not len(self.lb.curselection()) > 0:
             return
@@ -270,6 +291,7 @@ class HomePage(Page):
         print(f'pseudo dir: {pseudo_dir} ')
 
     def browse_test(self):
+        """this function add selected test books to list"""
         global test_dir
         if len(self.lb.curselection())== 0 or len(self.lb.curselection()) > 1:
             messagebox.showwarning(title='ERROR', message='Please choose 1 book for testing')
@@ -282,17 +304,21 @@ class HomePage(Page):
         print(f'test dir: {pseudo_dir} ')
 
     def embedding_files(self) -> None:
+        """this function start two thread one for embedding the data
+         and one for update the process bar"""
         global progress_bar_level
         self.p.start()
         self.p1.start()
 
     def call_delete(self):
+        """this function delete from the listbox all the selected data"""
         selection = self.lb.curselection()
         for i in reversed(selection):
             self.lb.delete(i)
             self.list_size = self.list_size - 1
 
     def update_status(self):
+        """this function update the status of embedding and process bar"""
         self.start_embedding.place_forget()
         self.down_status.place(x=130, y=515)
         self.down_status_text.place(x=230, y=515)
@@ -304,7 +330,9 @@ class HomePage(Page):
         self.next_btn.place(x=830, y=550)
         self.tweet_length_text.place_forget()
         self.tweet_length.place_forget()
+
     def start_embedding_process(self):
+        """Embed the dataset and disable all the btn in screen """
         print('Start embedding')
         global c1_dir, c2_dir, list_test, anchor_c2_dir, anchor_c1_dir
         result: List[str] = [
@@ -346,9 +374,11 @@ class HomePage(Page):
         self.process_bar.finished = True
 
     def go_to(self):
+        """go to the next page[Param]"""
         Param(self.parent, self.c1_embeded, self.c2_embeded, self.testing_data_embeded, self.tweet_length_parameter)
 
     def check_if_integer(self, max_number: float, min_number: float, value, check: bool = True, msg: str='') -> str:
+        """return error message if it is not integer else return ''"""
         try:
             if not value:
                 return f'{msg} -value is empty'
@@ -363,6 +393,7 @@ class HomePage(Page):
 
 
 def count_word_files(dir_path: str) -> int:
+    """this function return the count of txt files in dir_path"""
     return len(glob.glob1(dir_path, "*.txt"))
 
 

@@ -121,8 +121,8 @@ class Param(Page):
         self.fully_connected_layer_text.insert(0,'30')
 
         """Buttons"""
-        # self.back = Button(self, text="Back", bg='red', fg=def_fg, command=self.back)
-        # self.back.place(x=560, y=400)
+        self.back_btn = Button(self, text="Back", bg='red', fg=def_fg, command=self.back)
+        self.back_btn.place(x=560, y=400)
         self.add_parameters_btn = Button(self, text="Add Existing Parameters", bg='blue', fg=def_fg, command=self.add_exist_parameters)
         self.add_parameters_btn.place(x=610, y=400)
         self.next_btn = Button(self, text="Next", bg='green', fg=def_fg, command=self.next)
@@ -132,6 +132,9 @@ class Param(Page):
         pass
 
     def next(self):
+        """Function for next button:
+            If everything is passed the method will not return error message and will continue to next page
+            Else the method will return error message and will not change another page"""
         result: List[str] = [self.check_if_integer(value=self.number_of_iterations_text.get(), min_number=0,
                                                     max_number=ITERATION_MAX_NUMBER,msg='Number of iteration'),
                               self.check_if_integer(value=self.f1_sampling_text.get(), min_number=0,
@@ -198,8 +201,8 @@ class Param(Page):
         except ValueError:
             return f'{msg}- is not an float'
 
-
     def check_if_integer(self, max_number: float, min_number: float, value, check: bool = True, msg: str='') -> str:
+        """this function return msg with error if the text is not integer else None string"""
         try:
             if not value:
                 return f'{msg} -value is empty'
@@ -213,6 +216,10 @@ class Param(Page):
             return f'{msg}- is not an integer'
 
     def add_exist_parameters(self):
+        """This function get txt file with data inside :
+            Its will convert all the data inside into the parameter page
+            If there an error it will give an error message
+        """
         messagebox.showwarning(title='Tip', message='Please fill the text with parameters, parameter:value')
         self.filename = askopenfilename()
         print(self.filename)
@@ -222,28 +229,29 @@ class Param(Page):
         with open(file=self.filename) as parameter_file:
             for line in parameter_file:
                 parameter, value = line.split(':')
+                parameter = str(parameter).title()
                 value: str = value.strip()
                 if parameter == 'Activation Function' and value in ACTIVATION_FUNCTION:
                     self.active_function.current(ACTIVATION_FUNCTION.index(value))
                 elif parameter == 'Number Of Iterations':
                     self.number_of_iterations_text.delete(0, END)
                     self.number_of_iterations_text.insert(0, value)
-                elif parameter == 'F1- the under sampling rate':
+                elif parameter == 'F1- The Under Sampling Rate':
                     self.f1_sampling_text.delete(0, END)
                     self.f1_sampling_text.insert(0, value)
-                elif parameter == 'F2- the multiplying rate':
+                elif parameter == 'F2- The Multiplying Rate':
                     self.f_multiplying_text.delete(0, END)
                     self.f_multiplying_text.insert(0, value)
-                elif parameter == 'Accuracy threshold':
+                elif parameter == 'Accuracy Threshold':
                     self.accuracy_threshold_text.delete(0, END)
                     self.accuracy_threshold_text.insert(0, value)
-                elif parameter == 'Silhouette threshold':
+                elif parameter == 'Silhouette Threshold':
                     self.silhouette_threshold_text.delete(0, END)
                     self.silhouette_threshold_text.insert(0, value)
                 elif parameter == 'Learning Rate':
                     self.learning_rate_text.delete(0, END)
                     self.learning_rate_text.insert(0, value)
-                elif parameter == 'Number of epoch':
+                elif parameter == 'Number Of Epoch':
                     self.number_of_epoch_text.delete(0, END)
                     self.number_of_epoch_text.insert(0, value)
                 elif parameter == 'Optimizer' and value in OPTIMZERS:
@@ -255,7 +263,12 @@ class Param(Page):
                 elif parameter == 'Hidden State Size':
                     self.hidden_state_size_text.delete(0, END)
                     self.hidden_state_size_text.insert(0, value)
+                elif parameter == 'Batch Size':
+                    self.batch_size_text.delete(0, END)
+                    self.batch_size_text.insert(0, value)
+                elif parameter == 'Fully Connected Layer':
+                    self.fully_connected_layer_text.delete(0, END)
+                    self.fully_connected_layer_text.insert(0, value)
                 else:
                     messagebox.showwarning(title='Tip', message=f'The {parameter} is not exist please check it or\n it not assigned perfectly')
-
 

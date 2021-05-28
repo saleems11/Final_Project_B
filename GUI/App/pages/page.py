@@ -8,6 +8,7 @@ def_bg = "#201F1E"
 
 class Page(Frame):
     def __init__(self, parent, title: str = 'None'):
+        """creating new page with specific title"""
         self.width = 1200
         self.height = 600
         # remove old page
@@ -27,6 +28,7 @@ class Page(Frame):
         active_page.append(self)
 
     def delete(self):
+        """delete the previous page"""
         print("destroying previous tab")
         global active_page
         active_page.remove(self)
