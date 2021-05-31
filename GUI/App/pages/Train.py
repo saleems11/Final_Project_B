@@ -14,14 +14,14 @@ from Exceptions.Exceptions import SilhouetteBellowThreshold, AnchorsInSameCluste
 from GUI.App.pages import parameters_page
 from GUI.App.pages import ShowResultsPage
 from GUI.App.pages.page import Page, def_fg, def_bg
-from GUI.App.pages.parameters_page import ACTIVATION_FUNCTION, OPTIMZERS
 from GUI.App.pages.process_bar import ProcessBar
+from Objects import TestingData
 from models.LSTM.Bi_Direct_LSTM import Bi_Direct_LSTM
 from models.LSTM.Parameters import Parameters
 
 
 class TrainPage(Page):
-    def __init__(self, parent, parameters: Parameters, c1_embeded, c2_embeded, testing_data_embeded):
+    def __init__(self, parent, parameters: Parameters, c1_embeded, c2_embeded, testing_data_embeded: TestingData):
         print("Showning settings page")
         self.parameters = parameters
         self.process_bar = ProcessBar()
@@ -92,31 +92,48 @@ class TrainPage(Page):
         self.next_btn.place(x=760, y=400)
         """Save Model"""
         self.save_model = Button(self, text="Save The Model", bg='blue', fg=def_fg, command=self.save_the_model)
-        self.save_model.place(x=520, y=400)
+        self.save_model.place(x=510, y=400)
         """Load Model"""
         self.load_model_btn = Button(self, text="Load Model", bg='red', fg=def_fg, command=self.load_model)
-        self.load_model_btn.place(x=520, y=530)
+        self.load_model_btn.place(x=390, y=400)
         """Start Testing"""
-        self.start_testing = Button(self, text="Start Training and Testing", bg='green', fg=def_fg, command=self.start_lstm_model)
-        self.start_testing.place(x=620, y=400)
+        self.start_training_and_testing = Button(self, text="Start Training and Testing", bg='green', fg=def_fg, command=self.start_lstm_model)
+        self.start_testing = Button(self, text="Start Testing", bg='green', fg=def_fg, command=self.start_lstm_testing)
+        self.start_training_and_testing.place(x=610, y=400)
         if not self.process_bar.finished:
             self.save_model['state'] = DISABLED
             self.next_btn['state'] = DISABLED
             self.back_btn['state'] = DISABLED
 
+    def start_lstm_testing(self):
+        """
+        this function will start testing the model
+        """
+        self.back_btn['state'] = DISABLED
+        self.start_testing['state'] = DISABLED
+        self.lstm.test_model(self.lstm.model, self.testing_data_embeded.anchor_c1, self.testing_data_embeded.anchor_c2,
+                             self.testing_data_embeded.c1_test,  self.testing_data_embeded.c2_test,  self.testing_data_embeded.c3_test)
+
     def load_model(self):
         """this function load the model from data file"""
         model_dir = filedialog.askdirectory()
+        if not model_dir:
+            return
         if not os.path.exists(os.path.join(model_dir, 'saved_model.pb')) or\
                 not os.path.exists(os.path.join(model_dir, 'parameters.txt')):
             messagebox.showwarning(title='File not found', message='The saved_model.pb file is not exist\n or parameters file not exist')
             return
         self.load_parameters(file_path=os.path.join(model_dir, 'parameters.txt'))
         self.lstm.model = models.load_model(model_dir)
+        self.start_training_and_testing.place_forget()
+        self.start_testing.place(x=610, y=400)
+        self.next_btn.place(x=690, y=400)
 
     def save_the_model(self):
         """this function will save the model"""
         c2_dir = filedialog.askdirectory()
+        if not c2_dir:
+            return
         bi_lstm_dir = os.path.join(c2_dir, 'model')
         if not os.path.exists(bi_lstm_dir):
             os.makedirs(bi_lstm_dir)
@@ -181,7 +198,7 @@ class TrainPage(Page):
         """This method will update the labels of the training page and
         process bar till the model is not finished """
         self.back_btn['state'] = DISABLED
-        self.start_testing['state'] = DISABLED
+        self.start_training_and_testing['state'] = DISABLED
         while self.p.is_alive():
             self.set_progress_bar(value=self.process_bar.process*100)
             self.iteration_text['text'] = self.process_bar.status
@@ -198,25 +215,25 @@ class TrainPage(Page):
             self.save_model['state'] = NORMAL
             self.next_btn['state'] = NORMAL
         self.back_btn['state'] = NORMAL
-        self.start_testing['state'] = NORMAL
+        self.start_training_and_testing['state'] = NORMAL
 
     def save_parameters(self,path):
         """This function create parameter file into the giving path"""
         with open(os.path.join(path, 'parameters.txt'), 'w') as parameters_file:
             parameters_file.write(f'Activation Function:{self.parameters.activation_function}\n')
             parameters_file.write(f'Number of Iterations:{self.parameters.number_of_iteration}\n')
-            parameters_file.write(f'F1- The Under Sampling Rate:{self.parameters.undersampling_rate}')
-            parameters_file.write(f'F2- The Multiplying Rate:{self.parameters.multiplying_rate}')
-            parameters_file.write(f'Accuracy Threshold:{self.parameters.accuracy_threshold}')
-            parameters_file.write(f'Silhouette Threshold:{self.parameters.silhouette_threshold}')
-            parameters_file.write(f'Learning Rate:{self.parameters.learning_rate}')
-            parameters_file.write(f'Number Of Epoch:{self.parameters.number_of_epoch}')
-            parameters_file.write(f'Optimizer:{self.parameters.optimizer}')
-            parameters_file.write(f'Drop Out:{self.parameters.drop_out}')
-            parameters_file.write(f'Hidden State Size:{self.parameters.lstm_hidden_state_size}')
-            parameters_file.write(f'Batch Size:{self.parameters.batch_size}')
-            parameters_file.write(f'Fully Connected Layer:{self.parameters.fully_connect_layer}')
-            parameters_file.write(f'Tweet Length:{self.parameters.tweet_length}')
+            parameters_file.write(f'F1- The Under Sampling Rate:{self.parameters.undersampling_rate}\n')
+            parameters_file.write(f'F2- The Multiplying Rate:{self.parameters.multiplying_rate}\n')
+            parameters_file.write(f'Accuracy Threshold:{self.parameters.accuracy_threshold}\n')
+            parameters_file.write(f'Silhouette Threshold:{self.parameters.silhouette_threshold}\n')
+            parameters_file.write(f'Learning Rate:{self.parameters.learning_rate}\n')
+            parameters_file.write(f'Number Of Epoch:{self.parameters.number_of_epoch}\n')
+            parameters_file.write(f'Optimizer:{self.parameters.optimizer}\n')
+            parameters_file.write(f'Drop Out:{self.parameters.drop_out}\n')
+            parameters_file.write(f'Hidden State Size:{self.parameters.lstm_hidden_state_size}\n')
+            parameters_file.write(f'Batch Size:{self.parameters.batch_size}\n')
+            parameters_file.write(f'Fully Connected Layer:{self.parameters.fully_connect_layer}\n')
+            parameters_file.write(f'Tweet Length:{self.parameters.tweet_length}\n')
 
     def load_parameters(self, file_path : str):
         """This function get txt file with data inside :
@@ -229,7 +246,7 @@ class TrainPage(Page):
                 parameter = str(parameter).title()
                 value: str = value.strip()
                 if parameter == 'Tweet Length':
-                    if self.parameters.tweet_length != value:
+                    if int(self.parameters.tweet_length) != int(value):
                         messagebox.showwarning(title='Tweet length equality', message=f'The current tweet length: {self.parameters.tweet_length}\n'
                                                                                               f'and the Tweet length of loaded model = {value}\n'
                                                                                       f'please provide another model')
@@ -239,6 +256,8 @@ class TrainPage(Page):
                 parameter, value = line.split(':')
                 parameter = str(parameter).title()
                 value: str = value.strip()
+                from GUI.App.pages.parameters_page import OPTIMZERS
+                from GUI.App.pages.parameters_page import ACTIVATION_FUNCTION
                 if parameter == 'Activation Function' and value in ACTIVATION_FUNCTION:
                     self.parameters.activation_function = value
                 elif parameter == 'Number Of Iterations':
