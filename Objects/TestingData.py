@@ -11,7 +11,16 @@ class TestingData:
 
     def __init__(self, c3, c3_books_names, c1_anchor_name, c2_anchor_name, c1_test_names, c2_test_names, c3_test_names):
         """ initialize all the cluster books references, and sort each book to the appropriate cluster
-        and adding them to the books list"""
+        and adding them to the books list
+        Receives:
+        c3: contain all the embedded data in testing data
+        c3_books_names: [str] list of c3 testing data(list of all the books names in c1_anchor_name, c2_anchor_name,
+         c1_test_names, c2_test_names, c3_test_names)
+        c1_anchor_name: [str] list of books as anchor's in c1
+        c2_anchor_name: [str] list of books as anchor's in c2
+        c1_test_names: [str] list of books for testing as c1
+        c2_test_names: [str] list of books for testing as c2
+        c3_test_names: [str] list of books for testing as testing of unknown data"""
         self.books = []
 
         self.c3_books_names = c3_books_names
@@ -21,7 +30,9 @@ class TestingData:
         self.c2_test_names = c2_test_names
         self.c3_test_names = c3_test_names
 
+        """ sort the embedding results to the cluster group and create the books objects """
         self.sort_data_to_clusters(c3=c3)
+        """ reorder the file according to Zeev paper if all the files exist """
         self.reorder_books()
 
         self.anchor_c1 = []
@@ -30,6 +41,7 @@ class TestingData:
         self.c2_test = []
         self.c3_test = []
 
+        """ set the clusters pointers lists """
         self.set_clusters_image()
 
         self.iteration_size = len(c3)
@@ -201,30 +213,25 @@ class TestingData:
                c2_mean_val, \
                mean_val
 
-
-    # def set_book_mean_prediction_val_over_iter(self, book):
-    #     mean_val = np.zeros((len(book.predictions_res_over_iter[0])), dtype='f')
-    #     for predictions in book.predictions_res_over_iter:
-    #         mean_val = np.add(mean_val, predictions[:, 0])
-    #
-    #     book.mean_of_mean_prediction_res_over_iter = np.divide(mean_val, len(book.predictions_res_over_iter))
-
-    def get_book_embedding_data(self):
+    def get_books_embedding_data(self) -> []:
+        """ get books embedding data as list"""
         embedded_book_data_list = []
         for book in self.books:
             embedded_book_data_list.append(book.embedded_data)
         return embedded_book_data_list
 
-    def get_book(self, book_name):
+    def get_book(self, book_name) -> Book:
+        """ get book object by name """
         for book in self.books:
             if book.book_name == book_name:
                 return book
-        # or raise exception
-        return None
+        # raise exception
+        raise Exception("book name: %s cloud not be found" % book_name)
 
-    def get_book_cluster(self, book_name):
+    def get_book_cluster(self, book_name) -> str:
+        """ find the book and return his cluster """
         for book in self.books:
             if book.book_name == book_name:
                 return book.cluster
         # or raise exception
-        return None
+        return ''

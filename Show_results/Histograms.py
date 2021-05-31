@@ -51,8 +51,9 @@ class Histograms(show_in_tkinter):
 
     @staticmethod
     def create_figure(result_obj, dpi) -> Figure:
+        """ create a figure according to result_obj """
         # plot the data
-        # figure = Figure(dpi=dpi)
+        # set the figure size to normal_fig_size
         figure = Figure(figsize=Histograms.normal_fig_size)
         ax = figure.subplots()
         # call creating heat map
@@ -61,12 +62,14 @@ class Histograms(show_in_tkinter):
 
     @staticmethod
     def create_GUI(result_obj, main_frame):
+        """ create the GUI that  contain the figure and connect to tkinter"""
         # create two frames
         top_frame = Frame(main_frame)
         top_frame.grid(row=0, column=0, sticky="nswe")
         bottom_frame = Frame(main_frame)
         bottom_frame.grid(row=1, column=0, sticky="nswe")
 
+        # create the graph frame, and reduce his size according to main_data_window_size parameter
         window_size_reduction = None
         if result_obj.main_data_window_size > 0.3:
             window_size_reduction = result_obj.main_data_window_size - 0.25
@@ -86,11 +89,6 @@ class Histograms(show_in_tkinter):
 
 
     def _generate_sample_data(self):
+        """ generate random samples """
         self.book_prediction_res = [random() for i in range(400)]
         self.book_name = "Testing"
-
-
-if __name__ == "__main__":
-    # values = [0.749, 0.9, 0.3, 0.4, 0.1, 0.749, 0.9, 0.3, 0.4, 0.1, 0.3, 0.4, 0.1]
-    values = [random() for i in range(400)]
-    Histograms.create_Histograms(values, "hello")

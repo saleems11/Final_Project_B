@@ -5,8 +5,8 @@ from email.mime.text import MIMEText
 
 def send_mail(receiver_address, subject, mail_content):
     # The mail addresses and password
-    sender_address = 'myfuelltm2020@gmail.com'
-    sender_pass = 'hy3!Nf+4P_3b'
+    sender_address = 'unknown'
+    sender_pass = 'unknown'
     # Setup the MIME
     message = MIMEMultipart()
     message['From'] = sender_address
