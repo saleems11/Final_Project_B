@@ -33,3 +33,6 @@ class Page(Frame):
         global active_page
         active_page.remove(self)
         self.destroy()
+
+    def set_title(self, title: str):
+        self.title = Label(self, text=title, bg='white', fg='black')

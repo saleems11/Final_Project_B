@@ -269,6 +269,8 @@ class Param(Page):
                 elif parameter == 'Fully Connected Layer':
                     self.fully_connected_layer_text.delete(0, END)
                     self.fully_connected_layer_text.insert(0, value)
+                elif parameter == 'Tweet Length':
+                    pass
                 else:
                     messagebox.showwarning(title='Tip', message=f'The {parameter} is not exist please check it or\n it not assigned perfectly')
 

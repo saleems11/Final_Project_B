@@ -1,6 +1,7 @@
 import glob
 import os
 import threading
+from builtins import staticmethod
 from time import sleep
 from tkinter import Label, Button, HORIZONTAL, filedialog, Listbox, Scrollbar, messagebox, Entry
 from tkinter.ttk import Progressbar
@@ -27,11 +28,12 @@ def_fg = "lightgrey"
 
 class HomePage(Page):
 
-    def __init__(self, parent, testing=False):
+    def __init__(self, parent, root, testing=False):
         """initialize all the data and buttons """
         Page.__init__(self, parent, title='Load Data And Embedding')
         self.value = None
         self.parent = None
+        self.root = root
         self.finished_embedding = False
         self.process_bar = ProcessBar()
         print("Showing Home page")

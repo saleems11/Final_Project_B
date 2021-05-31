@@ -35,9 +35,13 @@ class ShowResultsPage(Page):
 
         self.mid_frame = Frame(parent_frame)
         self.mid_frame.grid(row=1, column=0, sticky="nswe", columnspan=2)
+        self.mid_frame.grid_propagate(1)
 
         self.bottom_frame = Frame(parent_frame)
         self.bottom_frame.grid(row=2, column=0, sticky="nswe")
+        self.bottom_frame.grid_rowconfigure(0, weight=2)
+        self.bottom_frame.grid_columnconfigure(0, weight=1)
+        self.bottom_frame.grid_propagate(1)
 
         # objects contain data for each type of data representations
         self.error_bar = None
@@ -139,7 +143,7 @@ class ShowResultsPage(Page):
         # Making the text read only
         self.text_area.configure(state='disabled')
 
-        self.text_area.grid(column=0, pady=2, padx=10, sticky='NEW')
+        self.text_area.grid(column=0, pady=15, padx=10, rowspan=3, sticky='nsew')
 
     ''' Click management '''
 
@@ -164,7 +168,7 @@ class ShowResultsPage(Page):
         print("Still not Implemented")
         self.reset_variables()
         if messagebox.askokcancel("Warning", "Do you want to quit?"):
-            self.parent_frame.destroy()
+            # root.destroy()
             sys.exit()
 
 
@@ -362,11 +366,14 @@ class ShowResultsPage(Page):
         # reset mid frame
         self.mid_frame = Frame(self.parent_frame)
         self.mid_frame.grid(row=1, column=0, sticky="nswe")
+        self.mid_frame.grid_propagate(1)
         # reset bottom frame, and delete all the  widgets
         for widgets in self.bottom_frame.winfo_children():
             widgets.destroy()
         self.bottom_frame = Frame(self.parent_frame)
-        self.bottom_frame.grid(row=2, column=0, sticky="nwe")
+        self.bottom_frame.grid(row=2, column=0, sticky="nswe")
+        self.bottom_frame.grid_rowconfigure(0, weight=2)
+        self.bottom_frame.grid_columnconfigure(0, weight=1)
 
     """ creating Sub-frames"""
 

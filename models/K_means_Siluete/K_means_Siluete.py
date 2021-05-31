@@ -81,8 +81,7 @@ def silhouette(M, labels, kmeans, iteration_size, silhouette_threshold):
     if score < silhouette_threshold:
         raise SilhouetteBellowThreshold("The silhouette accuracy is smaller than silhouette_threshold"
                                         "silhouette score is ={0}, but silhouette_threshold ={1}".format(
-                                        score, silhouette_threshold), silhouette_val=score
-                                        )
+                                        score, silhouette_threshold), silhouette_val=score)
 
     print("The Silhouette score is :" + str(score))
 

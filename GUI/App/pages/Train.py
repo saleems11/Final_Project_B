@@ -47,7 +47,7 @@ class TrainPage(Page):
         self.c2_embeded = c2_embeded
         self.testing_data_embeded = testing_data_embeded
         # init page/ delete old page
-        Page.__init__(self, parent, title='Train Page')
+        Page.__init__(self, parent, title='Training and Testing Page')
         self.value = IntVar()
         self.value.set(5)
         """Status"""
@@ -97,7 +97,7 @@ class TrainPage(Page):
         self.back_btn.place(x=470, y=400)
         """Next"""
         self.next_btn = Button(self, text="Next", bg='green', fg=def_fg, command=self.next)
-        self.next_btn.place(x=790, y=400)
+        self.next_btn.place(x=780, y=400)
         """Save Model"""
         self.save_model = Button(self, text="Save The Model", bg='blue', fg=def_fg, command=self.save_the_model)
         self.save_model.place(x=510, y=400)
@@ -114,13 +114,47 @@ class TrainPage(Page):
             self.back_btn['state'] = DISABLED
 
     def start_lstm_testing(self):
-        """
-        this function will start testing the model
-        """
+        """ this function will start testing the model, and update the page of start
+        testing and training parameters """
+
+        """ set the title ASK elia """
+        # Page.set_title(self.parent, "Testing Page")
+
+        """ disable all the buttons """
         self.back_btn['state'] = DISABLED
         self.start_testing['state'] = DISABLED
-        self.lstm.test_model(self.lstm.model, self.testing_data_embeded.anchor_c1, self.testing_data_embeded.anchor_c2,
-                             self.testing_data_embeded.c1_test,  self.testing_data_embeded.c2_test,  self.testing_data_embeded.c3_test)
+        self.save_model['state'] = DISABLED
+        self.next_btn['state'] = DISABLED
+        self.start_testing['state'] = DISABLED
+        self.load_model_btn['state'] = DISABLED
+
+        try:
+            self.M, self.silhoutte_score = self.lstm.test_model(self.testing_data_embeded)
+            self.silhouette_score_text['text'] = self.silhoutte_score
+            self.process_bar.finished = True
+            self.set_progress_bar(100.0)
+
+            """ show popup when finished successfully """
+            messagebox.showinfo(title='Testing Finished',
+                                message='Running on the testing data is finished')
+            """ make buttons click-able """
+            self.next_btn['state'] = NORMAL
+            self.load_model_btn['state'] = NORMAL
+
+        except SilhouetteBellowThreshold as e:
+            """ Handle the Exceptions """
+            messagebox.showwarning(title='Error of Silhouette Bellow Threshold', message=f'{str(e)}')
+
+            parameters_page.Param(self.parent, c1_embeded=self.c1_embeded, c2_embeded=self.c2_embeded,
+                                  testing_data_embeded=self.testing_data_embeded,
+                                  tweet_length=self.lstm.parameters.tweet_length)
+
+        except AnchorsInSameCluster as e:
+            messagebox.showwarning(title='Error of AnchorsInSameCluster', message=f'{str(e)}')
+
+            parameters_page.Param(self.parent, c1_embeded=self.c1_embeded, c2_embeded=self.c2_embeded,
+                                  testing_data_embeded=self.testing_data_embeded,
+                                  tweet_length=self.lstm.parameters.tweet_length)
 
     def load_model(self):
         """this function load the model from data file"""
@@ -131,11 +165,31 @@ class TrainPage(Page):
                 not os.path.exists(os.path.join(model_dir, 'parameters.txt')):
             messagebox.showwarning(title='File not found', message='The saved_model.pb file is not exist\n or parameters file not exist')
             return
+
+
+        """ disable all buttons """
+        self.back_btn['state'] = DISABLED
+        self.save_model['state'] = DISABLED
+        self.next_btn['state'] = DISABLED
+        self.start_testing['state'] = DISABLED
+        self.start_training_and_testing['state'] = DISABLED
+        self.load_model_btn['state'] = DISABLED
+
+        messagebox.showinfo(title='Loading Model',
+                            message='Loading The model could take some time')
+
         self.load_parameters(file_path=os.path.join(model_dir, 'parameters.txt'))
+
         self.lstm.model = models.load_model(model_dir)
         self.start_training_and_testing.place_forget()
+
+        """ reset all buttons """
+        """ set start testing status to normal """
         self.start_testing.place(x=610, y=400)
+        self.start_testing['state'] = NORMAL
         self.next_btn.place(x=690, y=400)
+        self.back_btn['state'] = NORMAL
+        self.load_model_btn['state'] = NORMAL
 
     def save_the_model(self):
         """this function will save the model"""
@@ -257,10 +311,10 @@ class TrainPage(Page):
                 value: str = value.strip()
                 if parameter == 'Tweet Length':
                     if int(self.parameters.tweet_length) != int(value):
-                        messagebox.showwarning(title='Tweet length equality', message=f'The current tweet length: {self.parameters.tweet_length}\n'
-                                                                                              f'and the Tweet length of loaded model = {value}\n'
-                                                                                      f'please provide another model')
-                        return
+                        return messagebox.showwarning(title='Tweet length equality',
+                                                      message=f'The current tweet length: {self.parameters.tweet_length}\n'
+                                                              f'and the Tweet length of loaded model = {value}\n'
+                                                              f'please provide another model')
         with open(file=file_path) as parameter_file:
             for line in parameter_file:
                 parameter, value = line.split(':')
@@ -271,28 +325,28 @@ class TrainPage(Page):
                 if parameter == 'Activation Function' and value in ACTIVATION_FUNCTION:
                     self.parameters.activation_function = value
                 elif parameter == 'Number Of Iterations':
-                    self.parameters.number_of_iteration = value
+                    self.parameters.number_of_iteration = int(value)
                 elif parameter == 'F1- The Under Sampling Rate':
-                    self.parameters.undersampling_rate = value
+                    self.parameters.undersampling_rate = int(value)
                 elif parameter == 'F2- The Multiplying Rate':
-                    self.parameters.multiplying_rate = value
+                    self.parameters.multiplying_rate = int(value)
                 elif parameter == 'Accuracy Threshold':
-                    self.parameters.accuracy_threshold = value
+                    self.parameters.accuracy_threshold = float(value)
                 elif parameter == 'Silhouette Threshold':
-                    self.parameters.silhouette_threshold = value
+                    self.parameters.silhouette_threshold = float(value)
                 elif parameter == 'Learning Rate':
-                    self.parameters.learning_rate = value
+                    self.parameters.learning_rate = float(value)
                 elif parameter == 'Number Of Epoch':
-                    self.parameters.number_of_epoch = value
+                    self.parameters.number_of_epoch = int(value)
                 elif parameter == 'Optimizer' and value in OPTIMZERS:
                     self.parameters.optimizer = value
                 elif parameter == 'Drop Out':
-                    self.parameters.drop_out = value
+                    self.parameters.drop_out = float(value)
                 elif parameter == 'Hidden State Size':
-                    self.parameters.lstm_hidden_state_size = value
+                    self.parameters.lstm_hidden_state_size = int(value)
                 elif parameter == 'Batch Size':
-                    self.parameters.batch_size = value
+                    self.parameters.batch_size = int(value)
                 elif parameter == 'Fully Connected Layer':
-                    self.parameters.fully_connect_layer = value
+                    self.parameters.fully_connect_layer = int(value)
                 elif parameter == 'Tweet Length':
-                    self.parameters.tweet_length = value
+                    self.parameters.tweet_length = int(value)

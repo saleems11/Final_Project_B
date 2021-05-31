@@ -14,6 +14,7 @@ from time import time
 import models.LoadingBalancingData.DataManagement as DM
 from GUI.App.pages.process_bar import ProcessBar
 from .Parameters import Parameters
+from Objects.TestingData import TestingData
 
 class Bi_Direct_LSTM:
     """ A Class for creating Bi-Direct lstm and training, testing it"""
@@ -76,7 +77,7 @@ class Bi_Direct_LSTM:
 
         return model
 
-    def train_test_for_iteration(self, c1, c2, testing_data):
+    def train_test_for_iteration(self, c1, c2, testing_data:TestingData):
         """Train the model for n epochs and then check it with 0.2 of the data (validation), the model accuracy
         is checked if it achieve the wanted accuracy test will run and saved in M.
         The data for testing the anchor is divided that they contain in the first place
@@ -186,6 +187,26 @@ class Bi_Direct_LSTM:
     #         books_names_as_M.append(book.book_name)
     #     return np.concatenate((prediction_t, c3_prediction), axis=0), books_names_as_M
 
+
+    def test_model(self, testing_data:TestingData):
+        M = []
+        """ make the prediction """
+        books_prediction_results = Bi_Direct_LSTM.make_prediction(self.model, testing_data.books)
+        M.append(books_prediction_results)
+
+        if M:
+            # self.set_iteration(1, 1)
+
+            M = np.concatenate(M, axis=0)
+            # calculate k-means
+            labels, kmeans = KMS.calculate_plot_Kmeans(M, testing_data.iteration_size, testing_data)
+            # calculate silhouette
+            score = KMS.silhouette(M=M, labels=labels, kmeans=kmeans,
+                                   iteration_size=testing_data.iteration_size,
+                                   silhouette_threshold=self.parameters.silhouette_threshold)
+        else:
+            score = 0
+        return M, score
 
     @staticmethod
     def make_prediction(model, books_list):
