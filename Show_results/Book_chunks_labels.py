@@ -15,8 +15,14 @@ from tkinter import Frame
 from Show_results.Matplot_show_fig_tkintner import show_in_tkinter
 
 class Book_chunks_labels(show_in_tkinter):
-
+    """ A Class that store and handle showing the data in Book chunks labels or prediction values.
+    The Class extend show_in_tkinter Class to implement showing the graph in tkniter."""
     def __init__(self, y_data, book_name, rounded, smoothed, testing=False):
+        """ There is two ways to init, the default is receiving the data, and the other is generating random samples
+        when testing is True (for testing purposes).
+        y_data:[float] array of y values for each tweet
+        book_name:string book name
+        rounded:bool round the values to (0, 0.5, 1)"""
         if testing:
             self.y_data = None
             self.book_name = None
@@ -31,6 +37,7 @@ class Book_chunks_labels(show_in_tkinter):
 
 
     def create_book_chunks_labels(self, ax):
+        """ create the graph according to the options """
         rounded_data = None
         if self.rounded:
             rounded_data = Book_chunks_labels.round_to_three_values(self.y_data, 0, 0.5, 1)
@@ -44,8 +51,8 @@ class Book_chunks_labels(show_in_tkinter):
 
 
     def create_regulare_book_chunks_labels(self, ax, rounded_data=None):
-        """" create a graph containing a function that represent each book slice and her label\n
-        :parameter\n
+        """" create a graph containing a function that represent each book slice and her label
+        :parameter
         y_data: is an array of 1d that contain the prediction of each chunk,
         book_name: is the book_name"""
         y_label = None
@@ -62,6 +69,8 @@ class Book_chunks_labels(show_in_tkinter):
 
 
     def create_smooth_line(self, ax, data=None, interval_percent=0.7):
+        """ create smooth graph for rounded data when data isn't None, and for regular data when data is None
+        It create a smoothed line using a_BSpline"""
         if data is None:
             interval = int(len(self.y_data) * interval_percent)
             a_BSpline = interpolate.make_interp_spline([i for i in range(len(self.y_data))], self.y_data)
@@ -79,8 +88,9 @@ class Book_chunks_labels(show_in_tkinter):
 
     @staticmethod
     def create_figure(result_obj, dpi) -> Figure:
+        """ create a figure according to result_obj """
         # plot the data
-        # figure = Figure(dpi=dpi)
+        # set the figure size to normal_fig_size
         figure = Figure(figsize=Book_chunks_labels.normal_fig_size)
         ax = figure.subplots()
         # call creating heat map
@@ -89,12 +99,14 @@ class Book_chunks_labels(show_in_tkinter):
 
     @staticmethod
     def create_GUI(result_obj, main_frame):
+        """ create the GUI that  contain the figure and connect to tkinter"""
         # create two frames
         top_frame = Frame(main_frame)
         top_frame.grid(row=0, column=0, sticky="nswe")
         bottom_frame = Frame(main_frame)
         bottom_frame.grid(row=1, column=0, sticky="nswe")
 
+        # create the graph frame, and reduce his size according to main_data_window_size parameter
         window_size_reduction = None
         if result_obj.main_data_window_size > 0.3:
             window_size_reduction = result_obj.main_data_window_size - 0.25
@@ -114,6 +126,7 @@ class Book_chunks_labels(show_in_tkinter):
 
     @staticmethod
     def round_to_three_values(array, min_val, mid_val, max_val):
+        """ round values to three values(min_val, mid_val, max_val) """
         first_mid_val = (min_val + mid_val) / 2.0
         second_mid_val = (max_val + mid_val) / 2.0
 
@@ -130,16 +143,6 @@ class Book_chunks_labels(show_in_tkinter):
 
 
     def _generate_sample_data(self):
+        """ generate random samples """
         self.y_data = [random() for i in range(40)]
         self.book_name = "Testing"
-
-
-
-if __name__ == "__main__":
-    # values = [0.749, 0.9, 0.3, 0.4, 0.1, 0.749, 0.9, 0.3, 0.4, 0.1, 0.3, 0.4, 0.1]
-    values = [random() for i in range(40)]
-    # print(values)
-    Book_chunks_labels.round_to_three_values(values, 0, 0.5, 1)
-    # print(values)
-    # Book_chunks_labels.create_book_chunks_labels(values, "It's me")
-    Book_chunks_labels.create_book_over_iterations_chunks_labels(values, "hello")

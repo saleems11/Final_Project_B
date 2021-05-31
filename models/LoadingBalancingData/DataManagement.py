@@ -9,6 +9,7 @@ from Objects.TestingData import TestingData
 
 
 class DataManagement:
+    """ A Class  for loading the data and creating new data batch """
     def __init__(self, tweet_size: int, embedding_size: int, c1_anchor_name: List[str], c2_anchor_name: List[str], c1_test_names: List[str],
                  c2_test_names: List[str], c3_test_names: List[str], c1_dir: str, c2_dir: str, c3_dir: str):
 
@@ -25,10 +26,15 @@ class DataManagement:
 
     def load_data(self, process_bar: ProcessBar):
         """Load the data for the 5 segments(Cl1, Cl2, Cl3, anchor_Cl1, anchor_Cl2)
-        ,the anchor contain data for testing faz that contain(in the first place the anchor and the
-        rest are for testing)"""
-
-
+        ,the anchor contain data for testing phase that contain(in the first place the anchor and the
+        rest are for testing), and create TestingData object to save all the prediction result of the model
+        :parameters
+        process_bar: ProcessBar to update the process bar while loading and embedding the data
+        :return
+        embedded_data_c1: for training the model over real data
+        embedded_data_c2: for training the model over fake data
+        testing_data: for testing the model and checking the prediction result
+        """
 
         """ The code here is better optimized for loading random dataSet for each different time, and better for
         Existing file that doesn't requires embedding them again"""
@@ -56,6 +62,16 @@ class DataManagement:
 
     @staticmethod
     def create_new_batch(embedded_data_c1, embedded_data_c2, f1=3, f2=2):
+        """ create new balanced batch of data for training the model and concatenate them into
+        x_train, y_train and shuffle the data
+        :parameters
+        embedded_data_c1: for training the model over real data
+        embedded_data_c2: for training the model over fake data
+        f1,f2 multiplying rate
+        :returns
+        x_train: embedded data set
+        y_train: 2d array for indicating the cluster of each tweet
+        """
         # Now lets balance the data
         # s1, s2 = BR.Balancing_DataSet.Balancing_Routine(embedded_data_c1,
         #                                                 embedded_data_c2,

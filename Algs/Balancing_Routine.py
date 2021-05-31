@@ -1,4 +1,3 @@
-import random as rnd
 import numpy as np
 import gc
 
@@ -7,12 +6,15 @@ class Balancing_DataSet:
 
     @staticmethod
     def Balancing_Routine(d1: [[[int]]], d2: [[[int]]], f1: int, f2: int, reduction_factor=0.8):
-        """ balance the data set according to f1, f2 randomly\n
-        !!!!    clould use numpy for better effeciency  !!!!\n
-        d1 and d2 are data set containing the representation of each tweet word
-        to embedded vectors, f1 is the undersampling rate, f2 is the
-        multisampling:parameter\n
-        random parts of d1, d2 as x_train(s1,s2):returns"""
+        """ balance the data set of (d1, d2) , that is done by repeating d2 data for f1*f2 times
+        and saving them in s2, and for d1 |s2|(size of s2) random parts of it is saved into s1.
+        :parameter
+        d1:[[int]]
+        d2:[[int]]
+        :returns
+        (s1, s2) as a concatenated numpy matrix
+        size of s1
+        size of s2"""
 
         if len(d2) > len(d1):
             raise Exception('|d1| must be bigger than |d2|, '
@@ -38,13 +40,6 @@ class Balancing_DataSet:
 
         # free d1
         del d1
-
-        # d1_rand_indexes = rnd.sample(range(0,size_of_d1), size_of_s1)
-        # s1 = np.empty(shape=(size_of_s1, len(d1[0]), len(d1[0][0])), dtype='f')
-        # s2 = np.repeat(d2, f2, axis=0)
-
-        # for i, index in enumerate(d1_rand_indexes):
-        #     s1[i] = d1[index]
 
         # free the memory by calling garbage collector
         gc.collect()

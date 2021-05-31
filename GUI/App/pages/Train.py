@@ -20,6 +20,14 @@ from models.LSTM.Bi_Direct_LSTM import Bi_Direct_LSTM
 from models.LSTM.Parameters import Parameters
 
 
+def Sprite(picture, res1, res2):
+    im = Image.open(picture).convert("RGBA").resize((res1, res2), Image.BOX)
+    pic = ImageTk.PhotoImage(im)
+    cor = Image.open(picture)
+    print(cor.mode)
+    return pic
+
+
 class TrainPage(Page):
     def __init__(self, parent, parameters: Parameters, c1_embeded, c2_embeded, testing_data_embeded: TestingData):
         print("Showning settings page")
@@ -89,7 +97,7 @@ class TrainPage(Page):
         self.back_btn.place(x=470, y=400)
         """Next"""
         self.next_btn = Button(self, text="Next", bg='green', fg=def_fg, command=self.next)
-        self.next_btn.place(x=760, y=400)
+        self.next_btn.place(x=790, y=400)
         """Save Model"""
         self.save_model = Button(self, text="Save The Model", bg='blue', fg=def_fg, command=self.save_the_model)
         self.save_model.place(x=510, y=400)
@@ -156,11 +164,11 @@ class TrainPage(Page):
     def start_training_testing(self):
         """This function will create bi-lstm model and making training,testing on the model"""
         try:
-            history, M, silhoutte_score, book_names_in_order_of_M = self.lstm.train_test_for_iteration(c1=self.c1_embeded, c2=self.c2_embeded, testing_data=self.testing_data_embeded)
+            history, M, silhoutte_score = self.lstm.train_test_for_iteration(c1=self.c1_embeded, c2=self.c2_embeded, testing_data=self.testing_data_embeded)
             self.M = M
             self.history = history
             self.silhoutte_score = silhoutte_score
-            self.book_names_in_order_of_M = book_names_in_order_of_M
+            # self.book_names_in_order_of_M = book_names_in_order_of_M
             self.silhouette_score_text['text'] = self.silhoutte_score
             self.process_bar.finished = True
 
@@ -192,7 +200,7 @@ class TrainPage(Page):
 
     def next(self):
         """Go next to the result page after the model finishing the training and testing"""
-        ShowResultsPage.ShowResultsPage(self.parent, self.M, self.testing_data_embeded, self.book_names_in_order_of_M)
+        ShowResultsPage.ShowResultsPage(self.parent, self.M, self.testing_data_embeded)
 
     def update_status(self):
         """This method will update the labels of the training page and
@@ -215,6 +223,8 @@ class TrainPage(Page):
             self.save_model['state'] = NORMAL
             self.next_btn['state'] = NORMAL
         self.back_btn['state'] = NORMAL
+        self.start_testing['state'] = DISABLED
+        self.estimated_time_remaining[0] = 0
         self.start_training_and_testing['state'] = NORMAL
 
     def save_parameters(self,path):

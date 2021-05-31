@@ -11,6 +11,19 @@ class Embed_data_set:
 
     @staticmethod
     def embed_data_set(embedding_size, tweet_size, c1_dir: str, c2_dir: str, c3_dir: str, process: ProcessBar):
+        """Embedding the data set handler, because the long time Embedding using Elmo take, we decided
+        To save the embedded data into the storage system, and this function handel embedding and saving the
+        embedded data and additionally, when there is previous data that mach the parameter the function
+        load the data from the storage system, (this is an expensive presses that could reach few GB in memory)
+        but it could save a lot of time.
+        :parameter
+        embedding_size:int the dim of embedding (to use elmo choose 1024, for AraVic use 100/300)
+        tweet_size:int the tweet length in words
+        c1_dir:str the directory to C1 data set (real data)
+        c2_dir:str the directory to C2 data set (fake data)
+        c3_dir:str the directory to testing and the anchor data (testing anchors and other (real/fake)
+        data for measuring accuracy)
+        The Func raises Exception when invalid embedding_size is sent"""
         # repeating code for c1, c2, c3
 
         c1_books_files_names_txt = Documents_utils.get_list_of_docs_files(c1_dir)
@@ -176,7 +189,14 @@ class Embed_data_set:
 
     @staticmethod
     def embed_and_save_book_1024(embedded_file_name, embedded_books_cluster_dir, curr_book_path, tweet_size):
-
+        """ Embed and save suing elmo model
+        :parameters
+        embedded_file_name:str path to embedded file(this file could be un-existed)
+        embedded_books_cluster_dir:str path to the embedded data cluster directory(this directory could be un-existed)
+        curr_book_path:str the path to the txt book
+        tweet_size:int the tweet length in words
+        :returns
+        nothing"""
         book_embedding_path = embedded_books_cluster_dir + "\\" + embedded_file_name
         # check if file exist
         if os.path.exists(book_embedding_path):
@@ -197,6 +217,11 @@ class Embed_data_set:
 
     @staticmethod
     def embed_book_AraVec(curr_book_path, embedding_size, tweet_size):
+        """Embed a txt file using AraVic
+        :parameters
+        curr_book_path:str the path to the txt book
+        embedding_size: int the dimension of  the embedding result
+        tweet_size:int the tweet length in words"""
         return Embedd_DataSet.embedd_Aravec(books=[Documents_utils.read_doc_file(curr_book_path)],
                                             tweet_size=tweet_size,
                                             embedding_dimension=embedding_size)
@@ -204,6 +229,16 @@ class Embed_data_set:
     @staticmethod
     def load_cluster_to_main_array(books_files_names_npy, embedded_cluster_dir, main_array, start_idx,
                                    embedded_books_array_length):
+        """loading data from storage system to pre-allocated memory
+        the loading is done by each npy file that contains a numpy array.
+        :parameters
+        books_files_names_npy:str npy file type name
+        embedded_cluster_dir:str the path to the saved data
+        main_array: the pre-allocated memory
+        start_idx:int the place where the pre-allocated memory has free memory
+        embedded_books_array_length:int the length of each book in tweets for updating start_idx
+        :returns
+        start_idx:int the updated start_idx"""
         for idx, book_file_name in enumerate(books_files_names_npy):
             start_idx = Embed_data_set.load_npy_file_append_to_main_matrix(
                 file_path=embedded_cluster_dir + "\\" + book_file_name,
@@ -215,6 +250,10 @@ class Embed_data_set:
 
     @staticmethod
     def load_cluster(c3_cluster, books_files_names_npy, embedded_cluster_dir):
+        """load embedded data to c3_cluster
+        :parameters
+        books_files_names_npy:str npy file type name
+        embedded_cluster_dir:str the path to the saved data"""
         for book_name in books_files_names_npy:
             file_path = embedded_cluster_dir + "\\" + book_name
             c3_cluster.append(np.load(file_path))
@@ -236,10 +275,12 @@ class Embed_data_set:
 
     @staticmethod
     def get_book_cluster_dir_path(cluster_name):
+        """get book cluster directory path by  cluster name"""
         return "\\".join([Documents_utils.project_working_dir, "Embedded_books", cluster_name])
 
     @staticmethod
     def get_cluster_size(embedded_books_names, dir_path):
+        """ get the size of each book in tweets and the total size of the cluster"""
         total_size = 0
         each_book_size = []
         for embedded_book_name in embedded_books_names:

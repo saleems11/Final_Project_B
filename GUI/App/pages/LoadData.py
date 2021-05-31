@@ -46,9 +46,12 @@ class HomePage(Page):
             c3_dir = "C:/Users/iamme/Desktop/Books/t3"
             anchor_c1_dir = ['Al_Mankhul_min_Taliqat_al_Usul.txt']
             anchor_c2_dir = ['Kimiya_yi_Saadat.txt']
-            original_dir = ['al_iqtisad_fi_al_itiqad.txt', 'Al_Mustasfa_min_ilm_al_Usul.txt', 'Fada_ih_al_Batiniyya_wa_Fada_il_al_Mustazhiriyy.txt', 'Faysal_at_Tafriqa_Bayna_al_Islam_wa_al_Zandaqa.txt', 'Iljam_Al_Awamm_an_Ilm_Al_Kalam.txt', 'Mishakat_al_Anwar.txt']
+            original_dir = ['al_iqtisad_fi_al_itiqad.txt', 'Al_Mustasfa_min_ilm_al_Usul.txt',
+                            'Fada_ih_al_Batiniyya_wa_Fada_il_al_Mustazhiriyy.txt',
+                            'Faysal_at_Tafriqa_Bayna_al_Islam_wa_al_Zandaqa.txt', 'Iljam_Al_Awamm_an_Ilm_Al_Kalam.txt',
+                            'Tahafut_al_Falasifa.txt']
             pseudo_dir = ['al_Madnun_bihi_ala_ghayri.txt']
-            test_dir = ['Tahafut_al_Falasifa.txt']
+            test_dir = ['Mishakat_al_Anwar.txt']
 
         self.p1 = threading.Thread(target=self.update_status, daemon=True)
         self.p = threading.Thread(target=self.start_embedding_process, daemon=True)
