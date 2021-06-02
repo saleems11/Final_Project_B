@@ -193,10 +193,10 @@ class TrainPage(Page):
 
     def save_the_model(self):
         """this function will save the model"""
-        c2_dir = filedialog.askdirectory()
-        if not c2_dir:
+        model_saved_path = filedialog.askdirectory()
+        if not model_saved_path:
             return
-        bi_lstm_dir = os.path.join(c2_dir, 'model')
+        bi_lstm_dir = os.path.join(model_saved_path, 'model')
         if not os.path.exists(bi_lstm_dir):
             os.makedirs(bi_lstm_dir)
         self.lstm.model.save(bi_lstm_dir)
