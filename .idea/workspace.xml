@@ -24,15 +24,7 @@
   <component name="ChangeListManager">
     <list default="true" id="88f4ee48-4d57-4b00-9926-51444e982cca" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/App/pages/LoadData.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/LoadData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/App/pages/ShowResultsPage.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/ShowResultsPage.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/App/pages/Train.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/Train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/App/pages/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/App/pages/parameters_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/App/pages/parameters_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/Gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/K_means_Siluete/K_means_Siluete.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/K_means_Siluete/K_means_Siluete.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LSTM/Bi_Direct_LSTM.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -341,26 +333,30 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="228" y="120" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1621246986079" />
-    <state width="1899" height="166" key="GridCell.Tab.0.bottom" timestamp="1622466928824">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1515" height="116" key="GridCell.Tab.0.bottom" timestamp="1622638907297">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="64" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1621865541575" />
+    <state width="1515" height="116" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1622638907297" />
     <state width="1899" height="166" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1622466928824" />
-    <state width="1899" height="166" key="GridCell.Tab.0.center" timestamp="1622466928824">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1515" height="116" key="GridCell.Tab.0.center" timestamp="1622638907297">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="64" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1621865541574" />
+    <state width="1515" height="116" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1622638907297" />
     <state width="1899" height="166" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1622466928824" />
-    <state width="1899" height="166" key="GridCell.Tab.0.left" timestamp="1622466928824">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1515" height="116" key="GridCell.Tab.0.left" timestamp="1622638907297">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="64" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1621865541574" />
+    <state width="1515" height="116" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1622638907297" />
     <state width="1899" height="166" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1622466928824" />
-    <state width="1899" height="166" key="GridCell.Tab.0.right" timestamp="1622466928824">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1515" height="116" key="GridCell.Tab.0.right" timestamp="1622638907297">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="64" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1621865541575" />
+    <state width="1515" height="116" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1622638907297" />
     <state width="1899" height="166" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1622466928824" />
+    <state x="616" y="114" key="RollbackChangesDialog" timestamp="1622634506939">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="616" y="114" key="RollbackChangesDialog/0.0.1536.824@0.0.1536.824" timestamp="1622634506939" />
     <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1622058039451">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -374,9 +370,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="761" y="308" key="git4idea.merge.GitMergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1620987108501" />
-    <state x="668" y="308" key="git4idea.merge.GitPullDialog" timestamp="1621403263937">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="534" y="244" key="git4idea.merge.GitPullDialog" timestamp="1622634517768">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="534" y="244" key="git4idea.merge.GitPullDialog/0.0.1536.824@0.0.1536.824" timestamp="1622634517768" />
     <state x="668" y="308" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1621403263937" />
   </component>
   <component name="XDebuggerManager">

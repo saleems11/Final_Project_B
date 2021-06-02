@@ -111,7 +111,7 @@ class TrainPage(Page):
         if not self.process_bar.finished:
             self.save_model['state'] = DISABLED
             self.next_btn['state'] = DISABLED
-            self.back_btn['state'] = DISABLED
+            # self.back_btn['state'] = DISABLED
 
     def start_lstm_testing(self):
         """ this function will start testing the model, and update the page of start
@@ -224,6 +224,7 @@ class TrainPage(Page):
             self.silhoutte_score = silhoutte_score
             # self.book_names_in_order_of_M = book_names_in_order_of_M
             self.silhouette_score_text['text'] = self.silhoutte_score
+            sleep(1)
             self.process_bar.finished = True
 
         except SilhouetteBellowThreshold as e:
@@ -232,7 +233,7 @@ class TrainPage(Page):
             self.process_bar.finished = True
 
             while self.p1.is_alive():
-                sleep(1)
+                sleep(2)
             parameters_page.Param(self.parent, c1_embeded=self.c1_embeded, c2_embeded=self.c2_embeded,
                                   testing_data_embeded=self.testing_data_embeded,
                                   tweet_length=self.lstm.parameters.tweet_length)
@@ -242,7 +243,7 @@ class TrainPage(Page):
             self.process_bar.finished = True
 
             while self.p1.is_alive():
-                sleep(1)
+                sleep(2)
             parameters_page.Param(self.parent, c1_embeded=self.c1_embeded, c2_embeded=self.c2_embeded,
                                   testing_data_embeded=self.testing_data_embeded,
                                   tweet_length=self.lstm.parameters.tweet_length)
@@ -261,7 +262,10 @@ class TrainPage(Page):
         process bar till the model is not finished """
         self.back_btn['state'] = DISABLED
         self.start_training_and_testing['state'] = DISABLED
-        while self.p.is_alive():
+        self.start_testing['state'] = DISABLED
+        self.load_model_btn['state'] = DISABLED
+        # while self.p.is_alive():
+        while not self.process_bar.finished:
             self.set_progress_bar(value=self.process_bar.process*100)
             self.iteration_text['text'] = self.process_bar.status
             if self.estimated_time_remaining[0] > 0.3:
@@ -273,13 +277,12 @@ class TrainPage(Page):
                 self.loss_text['text'] = self.lstm.history.history['loss'][-1]
                 self.accuracy_text['text'] = self.lstm.history.history['accuracy'][-1]
             sleep(1)
-        if self.process_bar.finished:
-            self.save_model['state'] = NORMAL
-            self.next_btn['state'] = NORMAL
+
+        self.save_model['state'] = NORMAL
+        self.next_btn['state'] = NORMAL
         self.back_btn['state'] = NORMAL
-        self.start_testing['state'] = DISABLED
+        self.start_testing['state'] = NORMAL
         self.estimated_time_remaining[0] = 0
-        self.start_training_and_testing['state'] = NORMAL
 
     def save_parameters(self,path):
         """This function create parameter file into the giving path"""
