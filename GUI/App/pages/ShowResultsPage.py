@@ -35,13 +35,12 @@ class ShowResultsPage(Page):
 
         self.mid_frame = Frame(parent_frame)
         self.mid_frame.grid(row=1, column=0, sticky="nswe", columnspan=2)
-        self.mid_frame.grid_propagate(1)
 
         self.bottom_frame = Frame(parent_frame)
         self.bottom_frame.grid(row=2, column=0, sticky="nswe")
         self.bottom_frame.grid_rowconfigure(0, weight=2)
         self.bottom_frame.grid_columnconfigure(0, weight=1)
-        self.bottom_frame.grid_propagate(1)
+        self.bottom_frame.grid_propagate(0)
 
         # objects contain data for each type of data representations
         self.error_bar = None
@@ -143,7 +142,7 @@ class ShowResultsPage(Page):
         # Making the text read only
         self.text_area.configure(state='disabled')
 
-        self.text_area.grid(column=0, pady=15, padx=10, rowspan=3, sticky='nsew')
+        self.text_area.grid(column=0, pady=25, padx=10, rowspan=3, sticky='nsew')
 
     ''' Click management '''
 
@@ -363,16 +362,18 @@ class ShowResultsPage(Page):
         cur_button["state"] = tk.DISABLED
         self.top_frame_prev_pressed_Btn = cur_button
 
-        # reset mid frame
+        # reset mid frame, and delete all the  widgets
+        for widgets in self.mid_frame.winfo_children():
+            widgets.destroy()
         self.mid_frame = Frame(self.parent_frame)
         self.mid_frame.grid(row=1, column=0, sticky="nswe")
-        self.mid_frame.grid_propagate(1)
+
         # reset bottom frame, and delete all the  widgets
         for widgets in self.bottom_frame.winfo_children():
             widgets.destroy()
         self.bottom_frame = Frame(self.parent_frame)
         self.bottom_frame.grid(row=2, column=0, sticky="nswe")
-        self.bottom_frame.grid_rowconfigure(0, weight=2)
+        self.bottom_frame.grid_rowconfigure(0, weight=4)
         self.bottom_frame.grid_columnconfigure(0, weight=1)
 
     """ creating Sub-frames"""
@@ -387,6 +388,9 @@ class ShowResultsPage(Page):
 
         Heat_map.create_GUI(result_obj=self.heat_map, main_frame=self.mid_frame)
         self.init_bottom_frame(self.testing_data.c3_books_names)
+
+        # fit to the size
+        self.mid_frame.grid_propagate(1)
 
     def create_error_bar_frame(self):
         """ create Error Bar frame using testing data object """
@@ -413,6 +417,9 @@ class ShowResultsPage(Page):
             self.error_bar.create_GUI(result_obj=self.error_bar, main_frame=self.mid_frame)
             # show  for each index in the graph details about the book
             self.init_bottom_frame(self.error_bar.books_names)
+
+        # fit to the size
+        self.mid_frame.grid_propagate(1)
 
     def selecting_book_chunks_frame(self, main_frame, list_option_value, on_click_func, smoothing_check_box_val,
                                     average_check_box_val, rounding_check_box_val=None):
@@ -476,6 +483,10 @@ class ShowResultsPage(Page):
         if rounding_check_box_val is not None:
             self.round_frequency_graph_check_box.grid(row=0, column=6, padx=x_padding, pady=y_padding, columnspan=2)
 
+        # fit to the size
+        self.mid_frame.grid_propagate(1)
+
+
     def create_chunk_labels_frame(self):
         """ creating chunk labels frame GUI elements and arranging them
         It also  load the prev run data (graph data and GUI elements options) if it exist"""
@@ -523,6 +534,9 @@ class ShowResultsPage(Page):
         if self.chunk_labels is not None:
             Book_chunks_labels.create_GUI(result_obj=self.chunk_labels, main_frame=self.chunk_labels_frame_bottom_frame)
 
+        # fit to the size
+        self.mid_frame.grid_propagate(1)
+
     def create_histograms_frame(self):
         """ creating histogram frame GUI elements and arranging them
         It also  load the prev run data (graph data and GUI elements options) if it exist"""
@@ -568,6 +582,9 @@ class ShowResultsPage(Page):
         """ load the prev graph"""
         if self.histogram is not None:
             Histograms.create_GUI(result_obj=self.histogram, main_frame=self.histogram_frame_bottom_frame)
+
+        # fit to the size
+        self.mid_frame.grid_propagate(1)
 
     """ Get data """
 
