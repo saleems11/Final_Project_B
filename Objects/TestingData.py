@@ -49,11 +49,15 @@ class TestingData:
     def reorder_books(self):
         """ reorder the book in the same order as in Zeev papper
         The reordering is done just if the files does exist"""
+
         books_in_order = ['Al_Mankhul_min_Taliqat_al_Usul.txt', 'Al_Mustasfa_min_ilm_al_Usul.txt',
                           'Fada_ih_al_Batiniyya_wa_Fada_il_al_Mustazhiriyy.txt',
                           'Faysal_at_Tafriqa_Bayna_al_Islam_wa_al_Zandaqa.txt', 'al_iqtisad_fi_al_itiqad.txt',
                           'Iljam_Al_Awamm_an_Ilm_Al_Kalam.txt', 'Tahafut_al_Falasifa.txt',
                           'al_Madnun_bihi_ala_ghayri.txt', 'Kimiya_yi_Saadat.txt', 'Mishakat_al_Anwar.txt']
+        if len(self.books) != len(books_in_order):
+            return
+
         temp_books_list = []
         for idx, book_name in enumerate(books_in_order):
             selected_idx = -1
@@ -65,7 +69,7 @@ class TestingData:
                 temp_books_list.append(self.books[selected_idx])
             else:
                 return
-
+        print("HELLOOZ")
         self.books = temp_books_list
         self.c3_books_names = books_in_order
 

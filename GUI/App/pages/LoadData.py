@@ -54,6 +54,9 @@ class HomePage(Page):
                             'Tahafut_al_Falasifa.txt']
             pseudo_dir = ['al_Madnun_bihi_ala_ghayri.txt']
             test_dir = ['Mishakat_al_Anwar.txt']
+            print("If entered")
+
+
 
         self.p1 = threading.Thread(target=self.update_status, daemon=True)
         self.p = threading.Thread(target=self.start_embedding_process, daemon=True)
@@ -62,6 +65,29 @@ class HomePage(Page):
         self.lb = Listbox(self, height=10, width=60, selectmode='multiple')
         self.lb.config(yscrollcommand=self.scroll_bar.set)
         self.scroll_bar.config(command=self.lb.yview)
+        """ code changed """
+        check_dir: list[str] = []
+        self.list_size = 0
+        if len(c3_dir):
+            self.lb.place(x=600, y=300)
+            for file in os.listdir(path=c3_dir):
+                if file.endswith('.txt'):
+                    _, tail = os.path.split(file)
+                    check_dir.append(tail)
+
+            for file in anchor_c1_dir:
+                check_dir.remove(file)
+            for file in anchor_c2_dir:
+                check_dir.remove(file)
+            for file in original_dir:
+                check_dir.remove(file)
+            for file in pseudo_dir:
+                check_dir.remove(file)
+            for file in test_dir:
+                check_dir.remove(file)
+            for file in check_dir:
+                self.lb.insert(self.list_size, file)
+                self.list_size += 1
         self.c1 = Label(self, text="Please Select C1 directory", bg=def_bg, fg=def_fg)
         self.c1.place(x=100, y=150)
         self.load_data_btn1 = Button(self, text='Select', bg=def_bg, fg=def_fg, command=self.browse_button)
@@ -85,7 +111,6 @@ class HomePage(Page):
         self.c3.place(x=100, y=260)
 
         self.progress_bar_level: int = 0
-        self.list_size = 0
         self.c3_list_btn = Button(self, text="Select C3 directory", bg='red', fg=def_fg, command=self.get_list_of_test)
         self.c3_list_btn.place(x=130, y=300)
         self.anchor_c1_btn = Button(self, text="Select anchor C1", bg=def_bg, fg=def_fg, command=self.browse_anchor_c1)

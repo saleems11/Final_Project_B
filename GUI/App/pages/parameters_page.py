@@ -3,6 +3,7 @@ from tkinter.filedialog import askopenfilename
 from tkinter.ttk import Combobox, Entry
 from typing import List
 
+
 from Objects.TestingData import TestingData
 from models.LSTM.Parameters import Parameters
 from .Train import TrainPage
@@ -129,7 +130,8 @@ class Param(Page):
         self.next_btn.place(x=760, y=400)
 
     def back(self):
-        pass
+        from GUI.App.pages.LoadData import HomePage
+        HomePage(self.parent, root=None)
 
     def next(self):
         """Function for next button:

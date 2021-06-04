@@ -282,7 +282,7 @@ class TrainPage(Page):
         self.next_btn['state'] = NORMAL
         self.back_btn['state'] = NORMAL
         self.start_testing['state'] = NORMAL
-        self.estimated_time_remaining[0] = 0
+        self.time_remaining_text['text'] = "0"
 
     def save_parameters(self,path):
         """This function create parameter file into the giving path"""
