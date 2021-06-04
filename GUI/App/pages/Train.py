@@ -190,6 +190,7 @@ class TrainPage(Page):
         self.next_btn.place(x=690, y=400)
         self.back_btn['state'] = NORMAL
         self.load_model_btn['state'] = NORMAL
+        self.title['text'] = 'Testing Page'
 
     def save_the_model(self):
         """this function will save the model"""
