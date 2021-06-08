@@ -20,8 +20,9 @@ OPTIMZERS = [
 ACTIVATION_FUNCTION = ["Sigmoid", "RElu"]
 
 
-
-
+def_red_color = '#CC0000'
+def_blue_color = '#5C5CFF'
+def_bg_text = 'black'
 class Param(Page):
     def __init__(self, parent, c1_embeded, c2_embeded, testing_data_embeded: TestingData, tweet_length):
         Page.__init__(self, parent, title='Parameters')
@@ -32,7 +33,7 @@ class Param(Page):
         self.testing_data_embeded = testing_data_embeded
         self.tweet_length = tweet_length
         """ Activation_Function """
-        self.activation_function = Label(self, text="Activation Function", bg=def_bg, fg=def_fg)
+        self.activation_function = Label(self, text="Activation Function", bg=def_bg, fg=def_bg_text)
         self.activation_function.place(x=50, y=100)
         self.n = StringVar()
         self.active_function = Combobox(parent, width=15, textvariable=self.n)
@@ -41,53 +42,53 @@ class Param(Page):
         self.active_function.current(ACTIVATION_FUNCTION.index('Sigmoid'))
 
         """Number Of Iterations"""
-        self.number_of_iterations = Label(self, text='Number Of Iterations', bg=def_bg, fg=def_fg)
+        self.number_of_iterations = Label(self, text='Number Of Iterations', bg=def_bg, fg=def_bg_text)
         self.number_of_iterations.place(x=50, y=130)
         self.number_of_iterations_text = Entry(self, width=15)
         self.number_of_iterations_text.place(x=250, y=130)
-        self.number_of_iterations_text.insert(0,'1')
+        self.number_of_iterations_text.insert(0,'3')
         """F1- the undersampling rate"""
-        self.f1_sampling = Label(self, text='F1- the under sampling rate', bg=def_bg, fg=def_fg)
+        self.f1_sampling = Label(self, text='F1- the under sampling rate', bg=def_bg, fg=def_bg_text)
         self.f1_sampling.place(x=50, y=160)
         self.f1_sampling_text = Entry(self, width=15)
         self.f1_sampling_text.place(x=250, y=160)
         self.f1_sampling_text.insert(0,'3')
         """F- the multiplying rate"""
-        self.f_multiplying = Label(self, text='F2- the multiplying rate', bg=def_bg, fg=def_fg)
+        self.f_multiplying = Label(self, text='F2- the multiplying rate', bg=def_bg, fg=def_bg_text)
         self.f_multiplying.place(x=50, y=190)
         self.f_multiplying_text = Entry(self, width=15)
         self.f_multiplying_text.place(x=250, y=190)
         self.f_multiplying_text.insert(0,'2')
         """Accuracy threshold"""
-        self.accuracy_threshold = Label(self, text='Accuracy threshold', bg=def_bg, fg=def_fg)
+        self.accuracy_threshold = Label(self, text='Accuracy threshold', bg=def_bg, fg=def_bg_text)
         self.accuracy_threshold.place(x=50, y=220)
         self.accuracy_threshold_text = Entry(self, width=15)
         self.accuracy_threshold_text.place(x=250, y=220)
         self.accuracy_threshold_text.insert(0,'0.96')
 
         """Silhouette threshold"""
-        self.silhouette_threshold = Label(self, text='Silhouette threshold', bg=def_bg, fg=def_fg)
+        self.silhouette_threshold = Label(self, text='Silhouette threshold', bg=def_bg, fg=def_bg_text)
         self.silhouette_threshold.place(x=50, y=250)
         self.silhouette_threshold_text = Entry(self, width=15)
         self.silhouette_threshold_text.place(x=250, y=250)
         self.silhouette_threshold_text.insert(0,'0.5')
 
         """Learning Rate"""
-        self.learning_rate = Label(self, text='Learning Rate', bg=def_bg, fg=def_fg)
+        self.learning_rate = Label(self, text='Learning Rate', bg=def_bg, fg=def_bg_text)
         self.learning_rate.place(x=50, y=280)
         self.learning_rate_text = Entry(self, width=15)
         self.learning_rate_text.place(x=250, y=280)
         self.learning_rate_text.insert(0,'0.001')
 
         """Number of epoch"""
-        self.number_of_epoch = Label(self, text='Number of epoch', bg=def_bg, fg=def_fg)
+        self.number_of_epoch = Label(self, text='Number of epoch', bg=def_bg, fg=def_bg_text)
         self.number_of_epoch.place(x=400, y=100)
         self.number_of_epoch_text = Entry(self, width=15)
         self.number_of_epoch_text.place(x=550, y=100)
         self.number_of_epoch_text.insert(0,'10')
 
         """Optimizer"""
-        self.optimzer = Label(self, text='Optimizer', bg=def_bg, fg=def_fg)
+        self.optimzer = Label(self, text='Optimizer', bg=def_bg, fg=def_bg_text)
         self.optimzer.place(x=400, y=130)
         self.n1 = StringVar()
         self.optimzer_func = Combobox(parent, width=15, textvariable=self.n1)
@@ -95,36 +96,36 @@ class Param(Page):
         self.optimzer_func.current(0)
         self.optimzer_func.place(x=550, y=130)
         """Drop Out"""
-        self.drop_out = Label(self, text='Drop Out', bg=def_bg, fg=def_fg)
+        self.drop_out = Label(self, text='Drop Out', bg=def_bg, fg=def_bg_text)
         self.drop_out.place(x=400, y=160)
         self.drop_out_text = Entry(self, width=15)
         self.drop_out_text.place(x=550, y=160)
         self.drop_out_text.insert(0,'0.3')
 
         """Hidden State Size"""
-        self.hidden_state_size = Label(self, text='Hidden State Size', bg=def_bg, fg=def_fg)
+        self.hidden_state_size = Label(self, text='Hidden State Size', bg=def_bg, fg=def_bg_text)
         self.hidden_state_size.place(x=400, y=190)
         self.hidden_state_size_text = Entry(self, width=15)
         self.hidden_state_size_text.place(x=550, y=190)
         self.hidden_state_size_text.insert(0,'160')
         """Batch_Size"""
-        self.batch_size = Label(self, text='Batch Size', bg=def_bg, fg=def_fg)
+        self.batch_size = Label(self, text='Batch Size', bg=def_bg, fg=def_bg_text)
         self.batch_size.place(x=400, y=220)
         self.batch_size_text = Entry(self, width=15)
         self.batch_size_text.place(x=550, y=220)
         self.batch_size_text.insert(0,'100')
 
         """Fully Connected Layer"""
-        self.fully_connected_layer = Label(self, text='Fully Connected Layer', bg=def_bg, fg=def_fg)
+        self.fully_connected_layer = Label(self, text='Fully Connected Layer', bg=def_bg, fg=def_bg_text)
         self.fully_connected_layer.place(x=400, y=250)
         self.fully_connected_layer_text = Entry(self, width=15)
         self.fully_connected_layer_text.place(x=550, y=250)
         self.fully_connected_layer_text.insert(0,'30')
 
         """Buttons"""
-        self.back_btn = Button(self, text="Back", bg='red', fg=def_fg, command=self.back)
+        self.back_btn = Button(self, text="Back", bg=def_red_color, fg=def_fg, command=self.back)
         self.back_btn.place(x=560, y=400)
-        self.add_parameters_btn = Button(self, text="Add Existing Parameters", bg='blue', fg=def_fg, command=self.add_exist_parameters)
+        self.add_parameters_btn = Button(self, text="Add Existing Parameters", bg=def_blue_color, fg=def_fg, command=self.add_exist_parameters)
         self.add_parameters_btn.place(x=610, y=400)
         self.next_btn = Button(self, text="Next", bg='green', fg=def_fg, command=self.next)
         self.next_btn.place(x=760, y=400)

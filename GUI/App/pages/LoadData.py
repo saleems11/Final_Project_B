@@ -23,8 +23,11 @@ test_dir:List[str] = []
 process_bar: int = 0
 
 def_bg = "#201F1E"
-def_fg = "lightgrey"
-
+def_fg = "white"
+def_bg_label = "#CDCDCD"
+def_fg_label = 'black'
+def_button_x_color = '#545454'
+def_red_color = '#CC0000'
 
 class HomePage(Page):
 
@@ -43,9 +46,9 @@ class HomePage(Page):
 
         if testing:
             global c1_dir, c2_dir, c3_dir, anchor_c1_dir, anchor_c2_dir, original_dir, pseudo_dir, test_dir
-            c1_dir = "C:/Users/iamme/Desktop/Books/t1"
-            c2_dir = "C:/Users/iamme/Desktop/Books/t2"
-            c3_dir = "C:/Users/iamme/Desktop/Books/t3"
+            c1_dir = "C:/Users/Unlimited/Documents/GitHub/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM/Books/t1"
+            c2_dir = "C:/Users/Unlimited/Documents/GitHub/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM/Books/t2"
+            c3_dir = "C:/Users/Unlimited/Documents/GitHub/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM/Books/t3"
             anchor_c1_dir = ['Al_Mankhul_min_Taliqat_al_Usul.txt']
             anchor_c2_dir = ['Kimiya_yi_Saadat.txt']
             original_dir = ['al_iqtisad_fi_al_itiqad.txt', 'Al_Mustasfa_min_ilm_al_Usul.txt',
@@ -88,21 +91,21 @@ class HomePage(Page):
             for file in check_dir:
                 self.lb.insert(self.list_size, file)
                 self.list_size += 1
-        self.c1 = Label(self, text="Please Select C1 directory", bg=def_bg, fg=def_fg)
+        self.c1 = Label(self, text="Please Select C1 directory", bg=def_bg_label, fg=def_fg_label)
         self.c1.place(x=100, y=150)
         self.load_data_btn1 = Button(self, text='Select', bg=def_bg, fg=def_fg, command=self.browse_button)
         self.load_data_btn1.place(x=130, y=170)
-        self.X1 = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_c1)
+        self.X1 = Button(self, text="X", bg=def_button_x_color, fg=def_fg, command=self.clear_c1)
         if c1_dir:
             self.X1.place(x=110, y=170)
             self.load_data_btn1['text'] = c1_dir + f' -Number of words files: {count_word_files(c1_dir)}'
 
-        self.c2 = Label(self, text="Please Select C2 directory", bg=def_bg, fg=def_fg)
+        self.c2 = Label(self, text="Please Select C2 directory", bg=def_bg_label, fg=def_fg_label)
         self.c2.place(x=100, y=200)
         self.load_data_btn2 = Button(self, text="Select", bg=def_bg, fg=def_fg, command=self.browse_button2)
         self.load_data_btn2.place(x=130, y=220)
 
-        self.X2 = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_c2)
+        self.X2 = Button(self, text="X", bg=def_button_x_color, fg=def_fg, command=self.clear_c2)
         if c2_dir:
             self.X2.place(x=110, y=220)
             self.load_data_btn2['text'] = c2_dir + f' -Number of words files: {count_word_files(c2_dir)}'
@@ -111,7 +114,7 @@ class HomePage(Page):
         self.c3.place(x=100, y=260)
 
         self.progress_bar_level: int = 0
-        self.c3_list_btn = Button(self, text="Select C3 directory", bg='red', fg=def_fg, command=self.get_list_of_test)
+        self.c3_list_btn = Button(self, text="Select C3 directory", bg=def_red_color, fg=def_fg, command=self.get_list_of_test)
         self.c3_list_btn.place(x=130, y=300)
         self.anchor_c1_btn = Button(self, text="Select anchor C1", bg=def_bg, fg=def_fg, command=self.browse_anchor_c1)
         self.anchor_c1_btn.place(x=130, y=330)
@@ -127,12 +130,12 @@ class HomePage(Page):
         self.test_btn.place(x=130, y=450)
         """set the dirs btn"""
         self.pseudo_al_ghazali_btn.place(x=130, y=420)
-        self.anchor_c1_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_anchor_c1)
-        self.anchor_c2_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_anchor_c2)
-        self.original_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_original_btn)
-        self.pseudo_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_pseudo_btn)
-        self.test_x_btn = Button(self, text="X", bg='red', fg=def_fg, command=self.clear_test_btn)
-        self.next_btn = Button(self, text="Next - Training Page", bg='red', fg=def_fg, command=self.go_to)
+        self.anchor_c1_x_btn = Button(self, text="X", bg=def_button_x_color, fg=def_fg, command=self.clear_anchor_c1)
+        self.anchor_c2_x_btn = Button(self, text="X", bg=def_button_x_color, fg=def_fg, command=self.clear_anchor_c2)
+        self.original_x_btn = Button(self, text="X", bg=def_button_x_color, fg=def_fg, command=self.clear_original_btn)
+        self.pseudo_x_btn = Button(self, text="X", bg=def_button_x_color, fg=def_fg, command=self.clear_pseudo_btn)
+        self.test_x_btn = Button(self, text="X", bg=def_button_x_color, fg=def_fg, command=self.clear_test_btn)
+        self.next_btn = Button(self, text="Next - Training Page", bg=def_red_color, fg=def_fg, command=self.go_to)
         """if the dirs are set the x btn will be added"""
         if anchor_c1_dir:
             self.anchor_c1_x_btn.place(x=110, y=330)
@@ -278,7 +281,9 @@ class HomePage(Page):
             self.clear_anchor_c2()
             self.clear_original_btn()
             self.clear_pseudo_btn()
-
+            self.clear_test_btn()
+            self.lb.delete(first=0,last= self.list_size)
+            self.list_size = 0
             self.lb.place(x=600, y=300)
             for file in os.listdir(path=c3_dir):
                 if file.endswith('.txt'):

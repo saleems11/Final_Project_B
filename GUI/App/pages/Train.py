@@ -19,6 +19,9 @@ from Objects import TestingData
 from models.LSTM.Bi_Direct_LSTM import Bi_Direct_LSTM
 from models.LSTM.Parameters import Parameters
 
+def_fg_label = 'black'
+def_red_color = '#CC0000'
+def_blue_color = '#5C5CFF'
 
 def Sprite(picture, res1, res2):
     im = Image.open(picture).convert("RGBA").resize((res1, res2), Image.BOX)
@@ -51,62 +54,62 @@ class TrainPage(Page):
         self.value = IntVar()
         self.value.set(5)
         """Status"""
-        self.status = Label(self, text="Status Bar", bg=def_bg, fg=def_fg)
+        self.status = Label(self, text="Status Bar", bg=def_bg, fg=def_fg_label)
         self.status.place(x=100, y=100)
         """Status bar"""
         self.bar = Progressbar(self, orient=HORIZONTAL, length=700, mode="determinate")
         self.bar.place(x=200, y=100)
         """Accuracy"""
-        self.accuracy = Label(self, text="Accuracy", bg=def_bg, fg=def_fg)
+        self.accuracy = Label(self, text="Accuracy", bg=def_bg, fg=def_fg_label)
         self.accuracy.place(x=100, y=150)
-        self.accuracy_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
+        self.accuracy_text = Label(self, text="Loading", bg=def_bg, fg=def_fg_label)
         self.accuracy_text.place(x=200, y=150)
         """Loss"""
-        self.loss = Label(self, text="Loss", bg=def_bg, fg=def_fg)
+        self.loss = Label(self, text="Loss", bg=def_bg, fg=def_fg_label)
         self.loss.place(x=100, y=180)
-        self.loss_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
+        self.loss_text = Label(self, text="Loading", bg=def_bg, fg=def_fg_label)
         self.loss_text.place(x=200, y=180)
         """Iteration"""
-        self.iteration = Label(self, text="Iteration", bg=def_bg, fg=def_fg)
+        self.iteration = Label(self, text="Iteration", bg=def_bg, fg=def_fg_label)
         self.iteration.place(x=100, y=210)
-        self.iteration_text = Label(self, text="{iteration_number}\{inumber_of_iteration}", bg=def_bg, fg=def_fg)
+        self.iteration_text = Label(self, text="{iteration_number}\{inumber_of_iteration}", bg=def_bg, fg=def_fg_label)
         self.iteration_text.place(x=200, y=210)
         """Val Accuracy"""
-        self.val_accuracy = Label(self, text="Val Accuracy", bg=def_bg, fg=def_fg)
+        self.val_accuracy = Label(self, text="Val Accuracy", bg=def_bg, fg=def_fg_label)
         self.val_accuracy.place(x=100, y=240)
-        self.val_accuracy_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
+        self.val_accuracy_text = Label(self, text="Loading", bg=def_bg, fg=def_fg_label)
         self.val_accuracy_text.place(x=200, y=240)
         """Val loss"""
-        self.val_loss = Label(self, text="Val Loss", bg=def_bg, fg=def_fg)
+        self.val_loss = Label(self, text="Val Loss", bg=def_bg, fg=def_fg_label)
         self.val_loss.place(x=100, y=270)
-        self.val_loss_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
+        self.val_loss_text = Label(self, text="Loading", bg=def_bg, fg=def_fg_label)
         self.val_loss_text.place(x=200, y=270)
         """silhouette_score"""
-        self.silhouette_score = Label(self, text="Silhouette Score", bg=def_bg, fg=def_fg)
+        self.silhouette_score = Label(self, text="Silhouette Score", bg=def_bg, fg=def_fg_label)
         self.silhouette_score.place(x=100, y=300)
-        self.silhouette_score_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
+        self.silhouette_score_text = Label(self, text="Loading", bg=def_bg, fg=def_fg_label)
         self.silhouette_score_text.place(x=200, y=300)
         """time_remaining"""
-        self.time_remaining = Label(self, text="E.Time Remaining", bg=def_bg, fg=def_fg)
+        self.time_remaining = Label(self, text="E.Time Remaining", bg=def_bg, fg=def_fg_label)
         self.time_remaining.place(x=100, y=330)
-        self.time_remaining_text = Label(self, text="Loading", bg=def_bg, fg=def_fg)
+        self.time_remaining_text = Label(self, text="Loading", bg=def_bg, fg=def_fg_label)
         self.time_remaining_text.place(x=200, y=330)
 
         """Back"""
-        self.back_btn = Button(self, text="Back", bg='red', fg=def_fg, command=self.back)
+        self.back_btn = Button(self, text="Back", bg=def_red_color, fg=def_fg, command=self.back)
         self.back_btn.place(x=470, y=400)
         """Next"""
-        self.next_btn = Button(self, text="Next", bg='green', fg=def_fg, command=self.next)
+        self.next_btn = Button(self, text="Next", bg='#5CAD5C', fg=def_fg, command=self.next)
         self.next_btn.place(x=780, y=400)
         """Save Model"""
-        self.save_model = Button(self, text="Save The Model", bg='blue', fg=def_fg, command=self.save_the_model)
+        self.save_model = Button(self, text="Save The Model", bg="#CC8400", fg=def_fg, command=self.save_the_model)
         self.save_model.place(x=510, y=400)
         """Load Model"""
-        self.load_model_btn = Button(self, text="Load Model", bg='red', fg=def_fg, command=self.load_model)
+        self.load_model_btn = Button(self, text="Load Model", bg="#CC8400", fg=def_fg, command=self.load_model)
         self.load_model_btn.place(x=390, y=400)
         """Start Testing"""
-        self.start_training_and_testing = Button(self, text="Start Training and Testing", bg='green', fg=def_fg, command=self.start_lstm_model)
-        self.start_testing = Button(self, text="Start Testing", bg='green', fg=def_fg, command=self.start_lstm_testing)
+        self.start_training_and_testing = Button(self, text="Start Training and Testing", bg='#5CAD5C', fg=def_fg, command=self.start_lstm_model)
+        self.start_testing = Button(self, text="Start Testing", bg='#5CAD5C', fg=def_fg, command=self.start_lstm_testing)
         self.start_training_and_testing.place(x=610, y=400)
         if not self.process_bar.finished:
             self.save_model['state'] = DISABLED

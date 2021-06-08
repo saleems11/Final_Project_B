@@ -9,9 +9,9 @@ from GUI.App.pages.LoadData import HomePage
 root = Tk()
 root.resizable(False, False)
 root.geometry('1200x600')
-main_frame = Frame(root, bg="grey", width=1200, height=600)
+main_frame = Frame(root, bg="white", width=1200, height=600)
 main_frame.place(x=0, y=0)
-HomePage(main_frame, root=root, testing=False)
+HomePage(main_frame, root=root, testing=True)
 
 def new_exit():
     if messagebox.askokcancel("Warning", "Do you want to quit?"):

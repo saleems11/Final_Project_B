@@ -3,7 +3,9 @@ from tkinter import *
 active_page = []
 
 def_fg = "lightgrey"
-def_bg = "#201F1E"
+def_bg = "#CDCDCD"
+def_blue_color = '#5C5CFF'
+
 TRAIN_INFO = 'In this page we can see:\n' \
                              'Load existing model, this can be process \n' \
                              'if the model are exist and parameter txt file\n' \
@@ -51,7 +53,7 @@ class Page(Frame):
             pass
 
         # create new tab
-        Frame.__init__(self, parent, bg="#201F1E", height=self.height, width=self.width)
+        Frame.__init__(self, parent, bg=def_bg, height=self.height, width=self.width)
 
         # place page
         self.place(x=0, y=0)
@@ -69,7 +71,7 @@ class Page(Frame):
             self.info_data = ''
         self.title.config(font=("Courier", 30))
         self.title.place(x=100, y=20)
-        self.user_info = Button(self, text="Help?", bg='blue', fg=def_fg, command=self.show_info)
+        self.user_info = Button(self, text="Help?", bg=def_blue_color, fg=def_fg, command=self.show_info)
         self.user_info.place(x=1100, y=30)
         active_page.append(self)
 
