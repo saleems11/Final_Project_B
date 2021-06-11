@@ -33,7 +33,7 @@ class Bi_Direct_LSTM:
 
         # for remaining time estimation
         self.prev_iteration = 0
-        self.last_iter_starting_time = time()
+        self.last_iter_starting_time = None
         self.estimated_time_remaining = estimated_time_remaining
         self.average_iteration_time = 0
         self.total_time = 0
@@ -97,6 +97,8 @@ class Bi_Direct_LSTM:
         book_names_in_order = None
         result = DataFrame()
         iterations = self.parameters.number_of_iteration
+        self.last_iter_starting_time = time()
+
         while iterations > 0:
             # update the progress bar
             self.set_iteration(self.parameters.number_of_iteration - iterations, iterations)

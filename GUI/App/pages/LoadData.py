@@ -46,9 +46,13 @@ class HomePage(Page):
 
         if testing:
             global c1_dir, c2_dir, c3_dir, anchor_c1_dir, anchor_c2_dir, original_dir, pseudo_dir, test_dir
-            c1_dir = "C:/Users/Unlimited/Documents/GitHub/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM/Books/t1"
-            c2_dir = "C:/Users/Unlimited/Documents/GitHub/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM/Books/t2"
-            c3_dir = "C:/Users/Unlimited/Documents/GitHub/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM/Books/t3"
+            # c1_dir = "C:/Users/Unlimited/Documents/GitHub/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM/Books/t1"
+            # c2_dir = "C:/Users/Unlimited/Documents/GitHub/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM/Books/t2"
+            # c3_dir = "C:/Users/Unlimited/Documents/GitHub/Attributing-authorship-of-Ghazali-book-using-Bi-Directional-LSTM/Books/t3"
+            c1_dir = "C:/Users/iamme/Desktop/Books/t1"
+            c2_dir = "C:/Users/iamme/Desktop/Books/t2"
+            c3_dir = "C:/Users/iamme/Desktop/Books/t3"
+
             anchor_c1_dir = ['Al_Mankhul_min_Taliqat_al_Usul.txt']
             anchor_c2_dir = ['Kimiya_yi_Saadat.txt']
             original_dir = ['al_iqtisad_fi_al_itiqad.txt', 'Al_Mustasfa_min_ilm_al_Usul.txt',
