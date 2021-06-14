@@ -38,7 +38,7 @@ class TrainPage(Page):
         self.process_bar = ProcessBar()
 
         # for time estimating
-        self.estimated_time_remaining = [0.0]
+        self.estimated_time_remaining = [-1]
 
         self.lstm = Bi_Direct_LSTM(parameters=self.parameters, process_bar=self.process_bar,
                                    estimated_time_remaining=self.estimated_time_remaining)
@@ -268,25 +268,32 @@ class TrainPage(Page):
         self.start_training_and_testing['state'] = DISABLED
         self.start_testing['state'] = DISABLED
         self.load_model_btn['state'] = DISABLED
+
+        # to save the prev time
+        prev_time = time.time()
+
         # while self.p.is_alive():
         while not self.process_bar.finished:
             self.set_progress_bar(value=self.process_bar.process*100)
             self.iteration_text['text'] = self.process_bar.status
-            if self.estimated_time_remaining[0] > 0.3:
-                self.time_remaining_text['text'] = "%.2fs" % self.estimated_time_remaining[0]
-                self.estimated_time_remaining[0] -= 1
+            if self.estimated_time_remaining[0] >= 0:
+                self.time_remaining_text['text'] = "%ds" % int(self.estimated_time_remaining[0])
+                self.estimated_time_remaining[0] -= (time.time()-prev_time)
+                self.estimated_time_remaining[0] = max(0, self.estimated_time_remaining[0])
+                prev_time = time.time()
+
             if self.lstm.history:
                 self.val_loss_text['text'] = self.lstm.history.history['val_loss'][-1]
                 self.val_accuracy_text['text'] = self.lstm.history.history['val_accuracy'][-1]
                 self.loss_text['text'] = self.lstm.history.history['loss'][-1]
                 self.accuracy_text['text'] = self.lstm.history.history['accuracy'][-1]
-            sleep(1)
+            sleep(2)
 
         self.save_model['state'] = NORMAL
         self.next_btn['state'] = NORMAL
         self.back_btn['state'] = NORMAL
         self.start_testing['state'] = NORMAL
-        self.time_remaining_text['text'] = "0"
+        self.time_remaining_text['text'] = "finished"
 
     def save_parameters(self,path):
         """This function create parameter file into the giving path"""
