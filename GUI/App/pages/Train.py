@@ -120,9 +120,6 @@ class TrainPage(Page):
         """ this function will start testing the model, and update the page of start
         testing and training parameters """
 
-        """ set the title ASK elia """
-        # Page.set_title(self.parent, "Testing Page")
-
         """ disable all the buttons """
         self.back_btn['state'] = DISABLED
         self.start_testing['state'] = DISABLED

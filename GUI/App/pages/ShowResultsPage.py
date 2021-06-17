@@ -84,7 +84,7 @@ class ShowResultsPage(Page):
         self.chunks_labels_show_Btn = None
         self.histogram_show_Btn = None
 
-        self.finish_Btn = None
+        self.return_Btn = None
 
         self.init_top_frame()
         """ The default page """
@@ -108,15 +108,15 @@ class ShowResultsPage(Page):
         self.histogram_show_Btn = \
             Button(self.top_frame, text="Histogram", bg=Pages_parameters.def_bg,
                    fg=Pages_parameters.def_fg, command=self.clicked_on_histogram_show_Btn)
-        self.finish_Btn = \
-            Button(self.top_frame, text="Finish", bg=Pages_parameters.red,
+        self.return_Btn = \
+            Button(self.top_frame, text="Return", bg=Pages_parameters.red,
                    fg=Pages_parameters.def_fg, command=self.clicked_on_finish_Btn)
 
         self.heat_map_show_Btn.grid(row=0, column=0, padx=10, pady=10)
         self.error_bar_show_Btn.grid(row=0, column=1, padx=10, pady=10)
         self.chunks_labels_show_Btn.grid(row=0, column=2, padx=10, pady=10)
         self.histogram_show_Btn.grid(row=0, column=3, padx=10, pady=10)
-        self.finish_Btn.grid(row=0, column=4, padx=30, pady=10)
+        self.return_Btn.grid(row=0, column=4, padx=30, pady=10)
 
     def init_bottom_frame(self, books_names=None):
         """ set book names to index, the code handel two version of indexing books names
@@ -166,9 +166,9 @@ class ShowResultsPage(Page):
     def clicked_on_finish_Btn(self):
         print("Still not Implemented")
         self.reset_variables()
-        if messagebox.askokcancel("Warning", "Do you want to quit?"):
-            # root.destroy()
-            sys.exit()
+        if messagebox.askokcancel("Warning", "Do you want to go back to the load data page?"):
+            from GUI.App.pages.LoadData import HomePage
+            HomePage(self.parent_frame, root=None)
 
 
     def clicked_on_load_book_chunks_frequency_graph(self):

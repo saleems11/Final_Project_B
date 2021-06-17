@@ -8,6 +8,7 @@ from Objects.TestingData import TestingData
 from models.LSTM.Parameters import Parameters
 from .Train import TrainPage
 from .page import Page, def_bg, def_fg
+
 ITERATION_MAX_NUMBER = 10000
 OPTIMZERS = [
     "Adam",
@@ -20,10 +21,29 @@ OPTIMZERS = [
 ACTIVATION_FUNCTION = ["Sigmoid", "RElu"]
 
 
+
+
 def_red_color = '#CC0000'
 def_blue_color = '#5C5CFF'
 def_bg_text = 'black'
 class Param(Page):
+
+    # To save the previous parameters
+    prev_activation_func_index = ACTIVATION_FUNCTION.index('Sigmoid')
+    prev_num_of_iter = 3
+    prev_f1 = 3
+    prev_f2 = 2
+    prev_accuracy_threshold = 0.96
+    prev_silhouette_threshold = 0.5
+    prev_learning_rate = 0.001
+    prev_num_of_epoch = 10
+    prev_optimizer_index = OPTIMZERS.index("Adam")
+    prev_dropout = 0.3
+    prev_hidden_state_size = 160
+    prev_batch_size = 100
+    prev_fully_connected_size = 30
+
+
     def __init__(self, parent, c1_embeded, c2_embeded, testing_data_embeded: TestingData, tweet_length):
         Page.__init__(self, parent, title='Parameters')
         self.parent = parent
@@ -39,53 +59,53 @@ class Param(Page):
         self.active_function = Combobox(parent, width=15, textvariable=self.n)
         self.active_function['values'] = ACTIVATION_FUNCTION
         self.active_function.place(x=250, y=100)
-        self.active_function.current(ACTIVATION_FUNCTION.index('Sigmoid'))
+        self.active_function.current(Param.prev_activation_func_index)
 
         """Number Of Iterations"""
         self.number_of_iterations = Label(self, text='Number Of Iterations', bg=def_bg, fg=def_bg_text)
         self.number_of_iterations.place(x=50, y=130)
         self.number_of_iterations_text = Entry(self, width=15)
         self.number_of_iterations_text.place(x=250, y=130)
-        self.number_of_iterations_text.insert(0,'3')
+        self.number_of_iterations_text.insert(0, Param.prev_num_of_iter)
         """F1- the undersampling rate"""
         self.f1_sampling = Label(self, text='F1- the under sampling rate', bg=def_bg, fg=def_bg_text)
         self.f1_sampling.place(x=50, y=160)
         self.f1_sampling_text = Entry(self, width=15)
         self.f1_sampling_text.place(x=250, y=160)
-        self.f1_sampling_text.insert(0,'3')
+        self.f1_sampling_text.insert(0, Param.prev_f1)
         """F- the multiplying rate"""
         self.f_multiplying = Label(self, text='F2- the multiplying rate', bg=def_bg, fg=def_bg_text)
         self.f_multiplying.place(x=50, y=190)
         self.f_multiplying_text = Entry(self, width=15)
         self.f_multiplying_text.place(x=250, y=190)
-        self.f_multiplying_text.insert(0,'2')
+        self.f_multiplying_text.insert(0, Param.prev_f2)
         """Accuracy threshold"""
         self.accuracy_threshold = Label(self, text='Accuracy threshold', bg=def_bg, fg=def_bg_text)
         self.accuracy_threshold.place(x=50, y=220)
         self.accuracy_threshold_text = Entry(self, width=15)
         self.accuracy_threshold_text.place(x=250, y=220)
-        self.accuracy_threshold_text.insert(0,'0.96')
+        self.accuracy_threshold_text.insert(0, Param.prev_accuracy_threshold)
 
         """Silhouette threshold"""
         self.silhouette_threshold = Label(self, text='Silhouette threshold', bg=def_bg, fg=def_bg_text)
         self.silhouette_threshold.place(x=50, y=250)
         self.silhouette_threshold_text = Entry(self, width=15)
         self.silhouette_threshold_text.place(x=250, y=250)
-        self.silhouette_threshold_text.insert(0,'0.5')
+        self.silhouette_threshold_text.insert(0, Param.prev_silhouette_threshold)
 
         """Learning Rate"""
         self.learning_rate = Label(self, text='Learning Rate', bg=def_bg, fg=def_bg_text)
         self.learning_rate.place(x=50, y=280)
         self.learning_rate_text = Entry(self, width=15)
         self.learning_rate_text.place(x=250, y=280)
-        self.learning_rate_text.insert(0,'0.001')
+        self.learning_rate_text.insert(0, Param.prev_learning_rate)
 
         """Number of epoch"""
         self.number_of_epoch = Label(self, text='Number of epoch', bg=def_bg, fg=def_bg_text)
         self.number_of_epoch.place(x=400, y=100)
         self.number_of_epoch_text = Entry(self, width=15)
         self.number_of_epoch_text.place(x=550, y=100)
-        self.number_of_epoch_text.insert(0,'10')
+        self.number_of_epoch_text.insert(0, Param.prev_num_of_epoch)
 
         """Optimizer"""
         self.optimzer = Label(self, text='Optimizer', bg=def_bg, fg=def_bg_text)
@@ -93,34 +113,34 @@ class Param(Page):
         self.n1 = StringVar()
         self.optimzer_func = Combobox(parent, width=15, textvariable=self.n1)
         self.optimzer_func['values'] = OPTIMZERS
-        self.optimzer_func.current(0)
+        self.optimzer_func.current(Param.prev_optimizer_index)
         self.optimzer_func.place(x=550, y=130)
         """Drop Out"""
         self.drop_out = Label(self, text='Drop Out', bg=def_bg, fg=def_bg_text)
         self.drop_out.place(x=400, y=160)
         self.drop_out_text = Entry(self, width=15)
         self.drop_out_text.place(x=550, y=160)
-        self.drop_out_text.insert(0,'0.3')
+        self.drop_out_text.insert(0, Param.prev_dropout)
 
         """Hidden State Size"""
         self.hidden_state_size = Label(self, text='Hidden State Size', bg=def_bg, fg=def_bg_text)
         self.hidden_state_size.place(x=400, y=190)
         self.hidden_state_size_text = Entry(self, width=15)
         self.hidden_state_size_text.place(x=550, y=190)
-        self.hidden_state_size_text.insert(0,'160')
+        self.hidden_state_size_text.insert(0, Param.prev_hidden_state_size)
         """Batch_Size"""
         self.batch_size = Label(self, text='Batch Size', bg=def_bg, fg=def_bg_text)
         self.batch_size.place(x=400, y=220)
         self.batch_size_text = Entry(self, width=15)
         self.batch_size_text.place(x=550, y=220)
-        self.batch_size_text.insert(0,'100')
+        self.batch_size_text.insert(0, Param.prev_batch_size)
 
         """Fully Connected Layer"""
         self.fully_connected_layer = Label(self, text='Fully Connected Layer', bg=def_bg, fg=def_bg_text)
         self.fully_connected_layer.place(x=400, y=250)
         self.fully_connected_layer_text = Entry(self, width=15)
         self.fully_connected_layer_text.place(x=550, y=250)
-        self.fully_connected_layer_text.insert(0,'30')
+        self.fully_connected_layer_text.insert(0, Param.prev_fully_connected_size)
 
         """Buttons"""
         self.back_btn = Button(self, text="Back", bg=def_red_color, fg=def_fg, command=self.back)
@@ -163,26 +183,49 @@ class Param(Page):
                              ]
         check_ = [not res for res in result]
         if all(check_):
-            lstm_hidden_state_size = int(self.hidden_state_size_text.get())
-            fully_connected_layer = int(self.fully_connected_layer_text.get())
-            drop_out = float(self.drop_out_text.get())
-            learning_rate = float(self.learning_rate_text.get())
-            number_of_epoch = int(self.number_of_epoch_text.get())
-            number_of_iteration = int(self.number_of_iterations_text.get())
-            undersampling_rate = int(self.f1_sampling_text.get())
-            multiplying_rate = int(self.f_multiplying_text.get())
-            accuracy_threshold = float(self.accuracy_threshold_text.get())
-            silhouette_threshold = float(self.silhouette_threshold_text.get())
-            optimizer = str(self.optimzer_func.get())
-            activation_function = str(self.active_function.get())
-            batch_size = int(self.batch_size_text.get())
+            Param.prev_hidden_state_size = int(self.hidden_state_size_text.get())
 
-            parameters = Parameters(lstm_hidden_state_size=lstm_hidden_state_size, fully_connect_layer=fully_connected_layer,
-                                    drop_out=drop_out, learning_rate=learning_rate, number_of_epoch=number_of_epoch,
-                                    number_of_iteration=number_of_iteration, undersampling_rate=undersampling_rate,
-                                    multiplying_rate=multiplying_rate, accuracy_threshold=accuracy_threshold,
-                                    silhouette_threshold=silhouette_threshold, optimizer=optimizer, activation_function=activation_function,
-                                    batch_size=batch_size,tweet_length=self.tweet_length)
+            Param.prev_fully_connected_size = int(self.fully_connected_layer_text.get())
+
+            Param.prev_dropout = float(self.drop_out_text.get())
+
+            Param.prev_learning_rate = float(self.learning_rate_text.get())
+
+            Param.prev_num_of_epoch = int(self.number_of_epoch_text.get())
+
+            Param.prev_num_of_iter = int(self.number_of_iterations_text.get())
+
+            Param.prev_f1 = int(self.f1_sampling_text.get())
+
+            Param.prev_f2 = int(self.f_multiplying_text.get())
+
+            Param.prev_accuracy_threshold = float(self.accuracy_threshold_text.get())
+
+            Param.prev_silhouette_threshold = float(self.silhouette_threshold_text.get())
+
+            optimizer = str(self.optimzer_func.get())
+            Param.prev_optimizer_index = OPTIMZERS.index(optimizer)
+
+            activation_function = str(self.active_function.get())
+            Param.prev_activation_func_index = ACTIVATION_FUNCTION.index(activation_function)
+
+            Param.prev_batch_size = int(self.batch_size_text.get())
+
+
+            parameters = Parameters(lstm_hidden_state_size=Param.prev_hidden_state_size,
+                                    fully_connect_layer=Param.prev_fully_connected_size,
+                                    drop_out=Param.prev_dropout,
+                                    learning_rate=Param.prev_learning_rate,
+                                    number_of_epoch=Param.prev_num_of_epoch,
+                                    number_of_iteration=Param.prev_num_of_iter,
+                                    undersampling_rate=Param.prev_f1,
+                                    multiplying_rate=Param.prev_f2,
+                                    accuracy_threshold=Param.prev_accuracy_threshold,
+                                    silhouette_threshold=Param.prev_silhouette_threshold,
+                                    optimizer=optimizer,
+                                    activation_function=activation_function,
+                                    batch_size=Param.prev_batch_size,
+                                    tweet_length=self.tweet_length)
             TrainPage(parent=self.parent, parameters=parameters, c1_embeded=self.c1_embeded,
                       c2_embeded=self.c2_embeded, testing_data_embeded=self.testing_data_embeded)
         else:
@@ -229,6 +272,7 @@ class Param(Page):
         if not self.filename.endswith('.txt'):
             messagebox.showwarning(title='Tip', message='File is not txt file')
             return
+
         with open(file=self.filename) as parameter_file:
             for line in parameter_file:
                 parameter, value = line.split(':')
@@ -236,44 +280,59 @@ class Param(Page):
                 value: str = value.strip()
                 if parameter == 'Activation Function' and value in ACTIVATION_FUNCTION:
                     self.active_function.current(ACTIVATION_FUNCTION.index(value))
+                    Param.prev_activation_func_index = ACTIVATION_FUNCTION.index(value)
                 elif parameter == 'Number Of Iterations':
                     self.number_of_iterations_text.delete(0, END)
                     self.number_of_iterations_text.insert(0, value)
+                    Param.prev_num_of_iter = value
                 elif parameter == 'F1- The Under Sampling Rate':
                     self.f1_sampling_text.delete(0, END)
                     self.f1_sampling_text.insert(0, value)
+                    Param.prev_f1 = value
                 elif parameter == 'F2- The Multiplying Rate':
                     self.f_multiplying_text.delete(0, END)
                     self.f_multiplying_text.insert(0, value)
+                    Param.prev_f2 = value
                 elif parameter == 'Accuracy Threshold':
                     self.accuracy_threshold_text.delete(0, END)
                     self.accuracy_threshold_text.insert(0, value)
+                    Param.prev_accuracy_threshold = value
                 elif parameter == 'Silhouette Threshold':
                     self.silhouette_threshold_text.delete(0, END)
                     self.silhouette_threshold_text.insert(0, value)
+                    Param.prev_silhouette_threshold = value
                 elif parameter == 'Learning Rate':
                     self.learning_rate_text.delete(0, END)
                     self.learning_rate_text.insert(0, value)
+                    Param.prev_learning_rate = value
                 elif parameter == 'Number Of Epoch':
                     self.number_of_epoch_text.delete(0, END)
                     self.number_of_epoch_text.insert(0, value)
+                    Param.prev_num_of_epoch = value
                 elif parameter == 'Optimizer' and value in OPTIMZERS:
                     print(OPTIMZERS.index(value))
                     self.optimzer_func.current(OPTIMZERS.index(value))
+                    Param.prev_optimizer_index = OPTIMZERS.index(value)
                 elif parameter == 'Drop Out':
                     self.drop_out_text.delete(0, END)
                     self.drop_out_text.insert(0, value)
+                    Param.prev_dropout = value
                 elif parameter == 'Hidden State Size':
                     self.hidden_state_size_text.delete(0, END)
                     self.hidden_state_size_text.insert(0, value)
+                    Param.prev_hidden_state_size = value
                 elif parameter == 'Batch Size':
                     self.batch_size_text.delete(0, END)
                     self.batch_size_text.insert(0, value)
+                    Param.prev_batch_size = value
                 elif parameter == 'Fully Connected Layer':
                     self.fully_connected_layer_text.delete(0, END)
                     self.fully_connected_layer_text.insert(0, value)
+                    Param.prev_fully_connected_size = value
                 elif parameter == 'Tweet Length':
                     pass
                 else:
                     messagebox.showwarning(title='Tip', message=f'The {parameter} is not exist please check it or\n it not assigned perfectly')
+                    break
+
 
