@@ -15,7 +15,6 @@ HomePage(main_frame, root=root, testing=True)
 
 def new_exit():
     if messagebox.askokcancel("Warning", "Do you want to quit?"):
-        root.destroy()
         sys.exit()
 
 

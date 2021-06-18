@@ -69,7 +69,6 @@ class TestingData:
                 temp_books_list.append(self.books[selected_idx])
             else:
                 return
-        print("HELLOOZ")
         self.books = temp_books_list
         self.c3_books_names = books_in_order
 
