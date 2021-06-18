@@ -23,6 +23,7 @@ class Book_chunks_labels(show_in_tkinter):
         y_data:[float] array of y values for each tweet
         book_name:string book name
         rounded:bool round the values to (0, 0.5, 1)"""
+        show_in_tkinter.__init__(self)
         if testing:
             self.y_data = None
             self.book_name = None
@@ -91,7 +92,7 @@ class Book_chunks_labels(show_in_tkinter):
         """ create a figure according to result_obj """
         # plot the data
         # set the figure size to normal_fig_size
-        figure = Figure(figsize=Book_chunks_labels.normal_fig_size)
+        figure = Figure(figsize=result_obj.normal_fig_size)
         ax = figure.subplots()
         # call creating heat map
         result_obj.create_book_chunks_labels(ax=ax)

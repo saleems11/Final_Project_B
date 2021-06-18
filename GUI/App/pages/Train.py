@@ -13,7 +13,7 @@ from keras import models
 from Exceptions.Exceptions import SilhouetteBellowThreshold, AnchorsInSameCluster
 from GUI.App.pages import parameters_page
 from GUI.App.pages import ShowResultsPage
-from GUI.App.pages.page import Page, def_fg, def_bg
+from GUI.App.pages.page import Page, def_fg, def_bg, TESTING_INFO
 from GUI.App.pages.process_bar import ProcessBar
 from Objects import TestingData
 from models.LSTM.Bi_Direct_LSTM import Bi_Direct_LSTM
@@ -191,6 +191,7 @@ class TrainPage(Page):
         self.back_btn['state'] = NORMAL
         self.load_model_btn['state'] = NORMAL
         self.title['text'] = 'Testing Page'
+        self.info_data = TESTING_INFO
 
     def save_the_model(self):
         """this function will save the model"""

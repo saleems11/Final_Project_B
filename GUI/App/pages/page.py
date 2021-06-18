@@ -61,7 +61,7 @@ class Page(Frame):
         self.info_data = ''
         if title == 'Load Data And Embedding':
             self.info_data = LOAD_DATA_INFO
-        elif title == 'Train Page':
+        elif title == 'Training and Testing Page':
             self.info_data = TRAIN_INFO
         elif title == 'Parameters':
             self.info_data = PARAMETER_INFO

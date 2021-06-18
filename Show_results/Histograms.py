@@ -15,6 +15,7 @@ from Show_results.Matplot_show_fig_tkintner import show_in_tkinter
 class Histograms(show_in_tkinter):
 
     def __init__(self, book_prediction_res, book_name, smoothed, testing=False):
+        show_in_tkinter.__init__(self)
         if testing:
             self.book_prediction_res = None
             self.book_name = None
@@ -54,7 +55,7 @@ class Histograms(show_in_tkinter):
         """ create a figure according to result_obj """
         # plot the data
         # set the figure size to normal_fig_size
-        figure = Figure(figsize=Histograms.normal_fig_size)
+        figure = Figure(figsize=result_obj.normal_fig_size)
         ax = figure.subplots()
         # call creating heat map
         result_obj.create_Histograms(ax=ax)
@@ -64,11 +65,11 @@ class Histograms(show_in_tkinter):
     def create_GUI(result_obj, main_frame):
         """ create the GUI that  contain the figure and connect to tkinter"""
         # create two frames
+
         top_frame = Frame(main_frame)
         top_frame.grid(row=0, column=0, sticky="nswe")
         bottom_frame = Frame(main_frame)
         bottom_frame.grid(row=1, column=0, sticky="nswe")
-
         # create the graph frame, and reduce his size according to main_data_window_size parameter
         window_size_reduction = None
         if result_obj.main_data_window_size > 0.3:

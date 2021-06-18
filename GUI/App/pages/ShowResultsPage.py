@@ -164,7 +164,6 @@ class ShowResultsPage(Page):
         self.create_histograms_frame()
 
     def clicked_on_finish_Btn(self):
-        print("Still not Implemented")
         self.reset_variables()
         if messagebox.askokcancel("Warning", "Do you want to go back to the load data page?"):
             from GUI.App.pages.LoadData import HomePage

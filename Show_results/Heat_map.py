@@ -22,6 +22,7 @@ class Heat_map(show_in_tkinter):
             data: 1D array of prediction data
             iteration_size:int number of book who had been predicted in every iteration
             """
+        show_in_tkinter.__init__(self)
         if testing:
             self.data = None
             self.iteration_size = None
@@ -47,7 +48,7 @@ class Heat_map(show_in_tkinter):
         """ create a figure according to result_obj """
         # plot the data
         # set the figure size to tall_fig_size
-        figure = Figure(figsize=Heat_map.tall_fig_size)
+        figure = Figure(figsize=result_obj.tall_fig_size)
         ax = figure.subplots()
         # call creating heat map
         result_obj.create_heat_map(ax=ax)

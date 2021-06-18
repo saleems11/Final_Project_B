@@ -24,7 +24,7 @@ class Error_bar(show_in_tkinter):
         label: is string for the name of the plot
         asymmetric_y_error: [-y, +y] the error for the y value
         from the top and the bottom, input structure [[y-,..], [y+,..]]"""
-
+        show_in_tkinter.__init__(self)
         if testing:
             self.books_names =None
             self.x = None
@@ -67,7 +67,7 @@ class Error_bar(show_in_tkinter):
         """ create a figure according to result_obj """
         # plot the data
         # set the figure size to tall_fig_size
-        figure = Figure(figsize=Error_bar.tall_fig_size)
+        figure = Figure(figsize=result_obj.tall_fig_size)
         ax = figure.subplots()
         # call creating heat map
         result_obj.create_error_bar(ax=ax)
