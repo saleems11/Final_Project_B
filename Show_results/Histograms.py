@@ -1,7 +1,7 @@
-import matplotlib.pyplot as plt
 from numpy.random import random
 from scipy import interpolate
 from numpy import linspace
+from numpy import repeat
 
 from matplotlib.figure import Figure
 from matplotlib.backends._backend_tk import NavigationToolbar2Tk
@@ -41,11 +41,17 @@ class Histograms(show_in_tkinter):
 
 
     def create_smoothed_histogram(self, ax, bins=10, interval_percent=0.5):
-        interval = int(len(self.book_prediction_res) * interval_percent)
+        interval = round(len(self.book_prediction_res)*interval_percent)
 
         a_BSpline = interpolate.make_interp_spline([i for i in range(len(self.book_prediction_res))], self.book_prediction_res)
-        x_new = linspace(1, interval, len(self.book_prediction_res))
+        x_new = linspace(0, len(self.book_prediction_res)-1, interval, endpoint=True)
         book_prediction_smooth = a_BSpline(x_new)
+        # keep the values between 0, 1
+        for i in range(len(book_prediction_smooth)):
+            book_prediction_smooth[i] = max(book_prediction_smooth[i], 0)
+            book_prediction_smooth[i] = min(book_prediction_smooth[i], 1)
+
+        book_prediction_smooth = repeat(a=book_prediction_smooth, repeats=round(1/interval_percent), axis=0)
 
         ax.hist(book_prediction_smooth, bins=bins, color='r', alpha=0.5, label='Smoothed Value', edgecolor='black', linewidth=1.2)
         ax.legend()

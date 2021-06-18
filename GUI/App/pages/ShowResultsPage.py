@@ -209,7 +209,7 @@ class ShowResultsPage(Page):
                     self.chunk_labels = Book_chunks_labels(
                         mean_over_iterations[
                         self.chunks_labels_selected_book_chunk_staring_idx_value:
-                        self.chunks_labels_selected_book_chunk_ending_idx_value],
+                        self.chunks_labels_selected_book_chunk_ending_idx_value+1],
                         book_name=book.book_name,
                         rounded=rounding_option,
                         smoothed=smoothing_option)
@@ -218,7 +218,7 @@ class ShowResultsPage(Page):
                     self.chunk_labels = Book_chunks_labels(
                         book.predictions_res_over_iter[-1][
                         self.chunks_labels_selected_book_chunk_staring_idx_value:
-                        self.chunks_labels_selected_book_chunk_ending_idx_value],
+                        self.chunks_labels_selected_book_chunk_ending_idx_value+1],
                         book_name=book.book_name,
                         rounded=rounding_option,
                         smoothed=smoothing_option)
@@ -282,7 +282,7 @@ class ShowResultsPage(Page):
                     self.histogram = Histograms(
                         book_prediction_res=mean_over_iterations[
                                             self.histogram_selected_book_chunk_staring_idx_value:
-                                            self.histogram_selected_book_chunk_ending_idx_value],
+                                            self.histogram_selected_book_chunk_ending_idx_value+1],
                         book_name=book.book_name,
                         smoothed=smoothing_option)
                 else:
@@ -290,7 +290,7 @@ class ShowResultsPage(Page):
                     self.histogram = Histograms(
                         book_prediction_res=book.predictions_res_over_iter[-1][
                                             self.histogram_selected_book_chunk_staring_idx_value:
-                                            self.histogram_selected_book_chunk_ending_idx_value],
+                                            self.histogram_selected_book_chunk_ending_idx_value+1],
                         book_name=book.book_name,
                         smoothed=smoothing_option)
 
@@ -313,8 +313,8 @@ class ShowResultsPage(Page):
                         book_name=book.book_name,
                         smoothed=smoothing_option)
 
-        """ Pre built function that build selecting the option for book frequency graph and Histogram"""
-        Histograms.create_GUI(result_obj=self.histogram, main_frame=self.histogram_frame_bottom_frame)
+            """ Pre built function that build selecting the option for book frequency graph and Histogram"""
+            Histograms.create_GUI(result_obj=self.histogram, main_frame=self.histogram_frame_bottom_frame)
 
     """ Logic's Handling and input data checking """
 
@@ -329,7 +329,7 @@ class ShowResultsPage(Page):
         try:
             staring_idx = int(self.select_book_chunk_staring_idx_entry.get())
             if self.select_book_chunk_ending_idx_entry.get() != '':
-                ending_idx = int(self.select_book_chunk_ending_idx_entry.get()) + 1
+                ending_idx = int(self.select_book_chunk_ending_idx_entry.get())
                 all_rest_of_data_index = False
         except Exception:
             tk.messagebox.showinfo("Input miss mach", "Please input valid number(Integer)")
@@ -343,7 +343,7 @@ class ShowResultsPage(Page):
             if ending_idx < 0:
                 tk.messagebox.showinfo("Input miss mach", "Please input valid number(Positive) for Final index")
                 return False
-            if staring_idx > ending_idx - 10 + 1:
+            if staring_idx > ending_idx - 9:
                 tk.messagebox.showinfo("Input miss mach",
                                        "Please set the Starting index smaller that Final by 10 at least")
                 return False
