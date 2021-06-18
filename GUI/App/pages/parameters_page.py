@@ -275,7 +275,11 @@ class Param(Page):
 
         with open(file=self.filename) as parameter_file:
             for line in parameter_file:
-                parameter, value = line.split(':')
+                data = line.split(':')
+                if len(data) != 2:
+                    messagebox.showwarning(title='Unknown Parameter', message='please check this parameter '+ str(data))
+                    break
+                parameter, value = data[0], data[1]
                 parameter = str(parameter).title()
                 value: str = value.strip()
                 if parameter == 'Activation Function' and value in ACTIVATION_FUNCTION:
