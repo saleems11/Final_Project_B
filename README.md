@@ -14,7 +14,11 @@ Due to that, the minority group will be ignored, caused by the bias towards the 
 considering the two datasets D1 and D2 that is |D1|>|D2|
 
 ## Runing the model 
-RUN the GUI.py file.
+RUN the GUI.py file found in GUI\GUI.py.
+USE the dataset found in the project in Books directory which contains t1\t2\t3.
+t1: Al-Ghazali data.
+t2: Pseduo Al-Ghazali data.
+t3: Testing dataset.
 
 ## Git LFS
 The Project uses Git LFS, for the trained models(Elmo).
