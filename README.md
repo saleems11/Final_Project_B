@@ -22,16 +22,16 @@ t3: Testing dataset.
 
 ## Info about the dataset of testing(found in t3)
 ➢ Books are written by Al-Ghazali:
-0) Al-Mankhul min Taliqat al-Usul* (an anchor);
-1) Al Mustasfa min ilm al-Usul*;
-2) Fada'ih al-Batiniyya wa Fada'il al-Mustazhiriyy*;.
-3) Faysal at-Tafriqa Bayna al-Islam wa al-Zandaqa*;
-4) Kitab al-iqtisad fi al-i'tiqad*;
-5) Kitab Iljam Al- Awamm an Ilm Al-Kalam*;
-6) Tahafut al-Falasifa;
+0) Al-Mankhul min Taliqat al-Usul (an anchor);
+1) Al Mustasfa min ilm al-Usul;
+2) Fada'ih al-Batiniyya wa Fada'il al-Mustazhiriyy;.
+3) Faysal at-Tafriqa Bayna al-Islam wa al-Zandaqa;
+4) Kitab al-iqtisad fi al-i'tiqad;
+5) Kitab Iljam Al- Awamm an Ilm Al-Kalam;
+6) Tahafut al-Falasifa;\
 ➢ Texts agreed not written by Al Ghazali ("Pseudo- Ghazali):
-7) Ahliyi al-Madnun bihi ala ghayri*;
-8) Kimiya-yi Sa'ādat* (an anchor);
+7) Ahliyi al-Madnun bihi ala ghayri;
+8) Kimiya-yi Sa'ādat (an anchor);\
 ➢ A book with questionable authorship:
 9) Mishakat al-Anwar
 
